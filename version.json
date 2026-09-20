@@ -1,6 +1,6 @@
 [
   {
-    "id": "Zappora_ Store",
+    "id": "Zappora_Store",
     "title": "Zappora Store",
     "category": "App",
     "versionName": "1.0.2",
@@ -23,7 +23,7 @@
     "icon": "https://deca-chat.onrender.com/chat.png",
     "downloadUrl": "https://github.com/ankurkumar-ship-it/AppVault/releases/download/DECA_1.0.1/Deca.Chat.apk",
     "forceUpdate": false,
-    "releaseNotes": "• Initial release (v1.0.1) with real-time messaging and image sharing.  • Instant room access with random 6-character room codes (no PIN/passwords needed).  • Customizable member limits per room (up to 20 members).  • Privacy Shield protection with anti-screenshot blur support.  • Quick room renaming and localized device customization."
+    "releaseNotes": "• Initial release (v1.0.1) with real-time messaging and image sharing. • Instant room access with random 6-character room codes (no PIN/passwords needed). • Customizable member limits per room (up to 20 members). • Privacy Shield protection with anti-screenshot blur support. • Quick room renaming and localized device customization."
   },
   {
     "id": "peer_slove",
@@ -37,6 +37,5 @@
     "downloadUrl": "https://github.com/ankurkumar-ship-it/AppVault/releases/download/1.0.1/PeerSolve.apk",
     "forceUpdate": false,
     "releaseNotes": "Peer slove"
-  },
-  {
-[
+  }
+]
