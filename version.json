@@ -38,30 +38,3 @@
     "forceUpdate": false,
     "releaseNotes": "Peer slove"
   },
-  {
-    "id": "app_01",
-    "title": "Devil Dash Runner",
-    "category": "Game",
-    "versionName": "1.0.4",
-    "versionCode": 2,
-    "size": "24 MB",
-    "desc": "A fast-paced obstacle platformer featuring tricky puzzle layouts and precision timing mechanics.",
-    "icon": "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=150&auto=format&fit=crop&q=60",
-    "downloadUrl": "https://example.com/downloads/devil-dash.apk",
-    "forceUpdate": false,
-    "releaseNotes": "Bug fixes and smoother touch controls."
-  },
-  {
-    "id": "app_02",
-    "title": "Smart Study Dashboard",
-    "category": "App",
-    "versionName": "2.1.0",
-    "versionCode": 5,
-    "size": "16 MB",
-    "desc": "A daily productivity tracker, formula notebook, and exam preparation organizer for students.",
-    "icon": "https://images.unsplash.com/photo-1434030216411-0b793f4b4173?w=150&auto=format&fit=crop&q=60",
-    "downloadUrl": "https://example.com/downloads/study-dashboard.apk",
-    "forceUpdate": false,
-    "releaseNotes": "Added new subject folders and offline sync."
-  }
-]
