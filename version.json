@@ -1,5 +1,18 @@
 [
   {
+    "id": "Zappora_ Store",
+    "title": "Zappora Store",
+    "category": "App",
+    "versionName": "1.0.2",
+    "versionCode": 1,
+    "size": "6.4MB",
+    "desc": "Zappora is a fast, lightweight native app store for downloading and installing Android apps and games seamlessly.",
+    "icon": "./icons/favicon.png",
+    "downloadUrl": "./apks/app-debug.apk",
+    "forceUpdate": false,
+    "releaseNotes": "v1.0.2: Initial official release with direct background downloads, native package installer support, and custom branding."
+  },
+  {
     "id": "Deca_chat",
     "title": "Deca chat",
     "category": "App",
