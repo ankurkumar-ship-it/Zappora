@@ -8,7 +8,7 @@
     "size": "6.4MB",
     "desc": "Zappora is a fast, lightweight native app store for downloading and installing Android apps and games seamlessly.",
     "icon": "https://zappora.onrender.com/favicon.png",
-    "downloadUrl": "./apks/app-debug.apk",
+    "downloadUrl": "https://github.com/ankurkumar-ship-it/Zappora/releases/download/Zapoora_1.0.2/app-debug.apk",
     "forceUpdate": false,
     "releaseNotes": "v1.0.2: Initial official release with direct background downloads, native package installer support, and custom branding."
   },
