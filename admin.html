@@ -162,7 +162,7 @@
 
     /* Form Design */
     .form-group {
-      margin-bottom: 14px;
+      margin-bottom: 16px;
     }
 
     .form-group label {
@@ -189,6 +189,49 @@
       display: flex;
       gap: 14px;
       flex-wrap: wrap;
+    }
+
+    /* Upload Dropzone Box */
+    .file-dropzone {
+      border: 2px dashed #cbd5e1;
+      border-radius: 10px;
+      padding: 14px;
+      background: #f8fafc;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .file-dropzone:hover {
+      border-color: var(--primary);
+      background: #f0f9ff;
+    }
+
+    .file-dropzone input[type="file"] {
+      display: none;
+    }
+
+    .file-info-tag {
+      font-size: 0.85rem;
+      color: var(--primary-dark);
+      font-weight: 600;
+      margin-top: 6px;
+    }
+
+    .preview-box {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-top: 10px;
+    }
+
+    .preview-box img {
+      width: 50px;
+      height: 50px;
+      border-radius: 10px;
+      object-fit: cover;
+      border: 1px solid var(--border-color);
+      display: none;
     }
 
     .btn-submit {
@@ -319,19 +362,34 @@
             <input type="number" id="appVersionCode" placeholder="1" required />
           </div>
           <div class="form-group" style="flex: 1; min-width: 140px;">
-            <label>Package Size</label>
-            <input type="text" id="appSize" placeholder="12MB" required />
+            <label>Package Size (Auto Calculated)</label>
+            <input type="text" id="appSize" placeholder="Select APK to auto-fill" required />
           </div>
         </div>
 
+        <!-- App Icon Picker -->
         <div class="form-group">
-          <label>App Icon URL</label>
-          <input type="url" id="appIcon" required />
+          <label>App Icon (Click to choose PNG / JPG)</label>
+          <div class="file-dropzone" onclick="document.getElementById('iconFileInput').click()">
+            <input type="file" id="iconFileInput" accept="image/*" onchange="handleIconFile(event)" />
+            <span id="iconUploadPrompt">Select or Drop App Icon File</span>
+            <div class="preview-box" id="iconPreviewContainer" style="justify-content: center;">
+              <img id="iconPreview" alt="Icon Preview" />
+              <span id="iconFileName" class="file-info-tag"></span>
+            </div>
+          </div>
+          <input type="hidden" id="appIcon" required />
         </div>
 
+        <!-- Direct APK File Picker -->
         <div class="form-group">
-          <label>Direct APK Download Link</label>
-          <input type="url" id="appDownloadUrl" required />
+          <label>Direct APK File (Select from PC - Auto extracts size)</label>
+          <div class="file-dropzone" onclick="document.getElementById('apkFileInput').click()">
+            <input type="file" id="apkFileInput" accept=".apk" onchange="handleApkFile(event)" />
+            <span id="apkUploadPrompt">Click to Select .apk File from PC</span>
+            <div id="apkFileName" class="file-info-tag"></div>
+          </div>
+          <input type="hidden" id="appDownloadUrl" required />
         </div>
 
         <div class="form-group">
@@ -365,6 +423,31 @@
   <script>
     let memoryCatalog = [];
 
+    // Auto-fill APK info and package size
+    function handleApkFile(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+
+      const sizeInMB = (file.size / (1024 * 1024)).toFixed(1) + "MB";
+      document.getElementById("appSize").value = sizeInMB;
+      document.getElementById("apkFileName").innerText = `${file.name} (${sizeInMB})`;
+      document.getElementById("apkUploadPrompt").style.display = "none";
+      document.getElementById("appDownloadUrl").value = "./apks/" + file.name;
+    }
+
+    // Auto-preview App Icon
+    function handleIconFile(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+
+      const preview = document.getElementById("iconPreview");
+      preview.src = URL.createObjectURL(file);
+      preview.style.display = "inline-block";
+      document.getElementById("iconFileName").innerText = file.name;
+      document.getElementById("iconUploadPrompt").style.display = "none";
+      document.getElementById("appIcon").value = "./icons/" + file.name;
+    }
+
     // Force fetch version.json bypassing browser cache
     async function initAdmin() {
       try {
@@ -383,12 +466,10 @@
     }
 
     function renderAdminView() {
-      // Update Stats
       document.getElementById("statTotal").innerText = memoryCatalog.length;
       document.getElementById("statApps").innerText = memoryCatalog.filter(i => i.category === "App").length;
       document.getElementById("statGames").innerText = memoryCatalog.filter(i => i.category === "Game").length;
 
-      // Update Table
       const tbody = document.getElementById("catalogTableBody");
       tbody.innerHTML = "";
 
@@ -414,11 +495,9 @@
         });
       }
 
-      // Refresh Textarea
       document.getElementById("jsonOutput").value = JSON.stringify(memoryCatalog, null, 2);
     }
 
-    // Populate form fields for editing
     function populateEdit(id) {
       const item = memoryCatalog.find(i => i.id === id);
       if (!item) return;
@@ -434,12 +513,20 @@
       document.getElementById("appDesc").value = item.desc;
       document.getElementById("appNotes").value = item.releaseNotes || "";
 
+      document.getElementById("apkFileName").innerText = "Current URL: " + item.downloadUrl;
+      document.getElementById("iconFileName").innerText = "Current URL: " + item.icon;
+      document.getElementById("apkUploadPrompt").style.display = "none";
+      document.getElementById("iconUploadPrompt").style.display = "none";
+
+      const preview = document.getElementById("iconPreview");
+      preview.src = item.icon;
+      preview.style.display = "inline-block";
+
       document.getElementById("formHeading").innerText = "Editing: " + item.title;
       document.getElementById("btnSubmit").innerText = "Update Application";
       document.getElementById("formCard").scrollIntoView({ behavior: "smooth" });
     }
 
-    // Delete item from queue
     function deleteApp(id) {
       if (confirm("Are you sure you want to remove this app?")) {
         memoryCatalog = memoryCatalog.filter(i => i.id !== id);
@@ -447,7 +534,6 @@
       }
     }
 
-    // Form Submit
     function handleFormSubmit(e) {
       e.preventDefault();
 
@@ -474,10 +560,15 @@
 
       renderAdminView();
 
-      // Reset form title
       document.getElementById("formHeading").innerText = "Add or Update Application";
       document.getElementById("btnSubmit").innerText = "Save & Update Catalog";
       document.getElementById("appForm").reset();
+
+      document.getElementById("apkFileName").innerText = "";
+      document.getElementById("iconFileName").innerText = "";
+      document.getElementById("apkUploadPrompt").style.display = "block";
+      document.getElementById("iconUploadPrompt").style.display = "block";
+      document.getElementById("iconPreview").style.display = "none";
 
       alert("Updated! Now copy the JSON from the bottom and commit it to GitHub.");
     }
