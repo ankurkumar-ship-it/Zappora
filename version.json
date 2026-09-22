@@ -1,5 +1,18 @@
 [
   {
+    "id": "OX_ARENA",
+    "title": "OX ARENA",
+    "category": "Game",
+    "versionName": "1.0.2",
+    "versionCode": 1,
+    "size": "6.2MB",
+    "desc": "OX ARENA: A fast tactical Tic-Tac-Toe duel. Play offline 2-player on one device, duel friends online using private room codes, or compete globally in real-time.",
+    "icon": "https://github.com/ankurkumar-ship-it/Zappora/releases/download/OX_ARENA.1.0.2/logo.png",
+    "downloadUrl": "https://github.com/ankurkumar-ship-it/Zappora/releases/download/OX_ARENA.1.0.2/OX.ARENA.apk",
+    "forceUpdate": false,
+    "releaseNotes": "v1.0.2 Initial Launch: • Offline 2-Player local pass & play mode • Real-time Private Room multiplayer using invite codes • Global Matchmaking to challenge players worldwide • Interactive procedural sound effects and audio toggle • Modern dark cyber-neon tactical HUD interface • Optimized for smooth low-latency mobile gameplay"
+  },
+  {
     "id": "Neon_Dash123",
     "title": "Neon Dash",
     "category": "Game",
