@@ -1,5 +1,18 @@
 [
   {
+    "id": "Bagh_Chal.1",
+    "title": "Goats and Tigers | BaghChal",
+    "category": "Game",
+    "versionName": "1.0.1",
+    "versionCode": 1,
+    "size": "7.3MB",
+    "desc": "Play the classic traditional Bagh-Chal (Tiger and Goat) board game offline! Features authentic rules, 3 board styles, sound effects, and pass-and-play 2 player mode.",
+    "icon": "https://github.com/ankurkumar-ship-it/Zappora/releases/download/Bagh_Chal.1/Tiger.and.Goat.Board.Game.Showdown.png",
+    "downloadUrl": "https://github.com/ankurkumar-ship-it/Zappora/releases/download/Bagh_Chal.1/Bagh.Chal.apk",
+    "forceUpdate": false,
+    "releaseNotes": "Initial Release (v1.0.1): - Authentic traditional Bagh-Chal rules and jump-capture mechanics. - Support for 3 board styles: Classic 5x5, Trapezoid, and Triangle. - Pass & Play 2-Player offline mode. - Interactive move hints and crisp sound effects. - Clean, responsive UI with Undo and Restart support."
+  },
+  {
     "id": "OX_ARENA",
     "title": "OX ARENA",
     "category": "Game",
