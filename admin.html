@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Zappora Admin Dashboard</title>
+  <title>Zappora Admin Panel</title>
   <link rel="icon" type="image/png" href="favicon.png" />
   <style>
     :root {
@@ -32,7 +32,7 @@
     }
 
     .container {
-      max-width: 1020px;
+      max-width: 1040px;
       margin: 0 auto;
     }
 
@@ -44,19 +44,35 @@
       justify-content: space-between;
       align-items: center;
       flex-wrap: wrap;
-      gap: 10px;
+      gap: 12px;
+    }
+
+    .brand-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .brand-logo {
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      object-fit: cover;
+      border: 1px solid var(--border-color);
+      box-shadow: 0 2px 5px rgba(2, 132, 199, 0.15);
     }
 
     .header h1 {
-      font-size: 1.6rem;
+      font-size: 1.55rem;
       font-weight: 800;
       color: var(--primary);
+      letter-spacing: -0.3px;
     }
 
     /* Stats Overview Cards */
     .stats-row {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
       gap: 16px;
       margin-bottom: 25px;
     }
@@ -69,7 +85,7 @@
     }
 
     .stat-card span {
-      font-size: 0.82rem;
+      font-size: 0.8rem;
       color: var(--text-muted);
       font-weight: 700;
       text-transform: uppercase;
@@ -96,7 +112,7 @@
       color: var(--text-main);
     }
 
-    /* Table Styles - Fixed Icon Alignment */
+    /* Table Styles */
     .table-responsive {
       overflow-x: auto;
       margin-top: 10px;
@@ -233,8 +249,9 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 12px;
+      gap: 10px;
       margin-top: 8px;
+      flex-wrap: wrap;
     }
 
     .preview-box img {
@@ -244,6 +261,13 @@
       object-fit: cover;
       border: 1px solid var(--border-color);
       display: none;
+    }
+
+    .ss-thumb {
+      height: 64px !important;
+      width: auto !important;
+      border-radius: 8px !important;
+      display: inline-block !important;
     }
 
     .btn-submit {
@@ -316,7 +340,10 @@
 
   <div class="container">
     <div class="header">
-      <h1>⚡ Zappora Admin Panel</h1>
+      <div class="brand-header">
+        <img src="favicon.png" alt="Zappora Logo" class="brand-logo" onerror="this.src='logo.png'" />
+        <h1>Zappora Admin Panel</h1>
+      </div>
       <a href="index.html" target="_blank" style="font-size: 0.9rem; color: var(--primary); font-weight: 700; text-decoration: none;">View Live Store ↗</a>
     </div>
 
@@ -334,6 +361,10 @@
         <span>Games</span>
         <h3 id="statGames">0</h3>
       </div>
+      <div class="stat-card">
+        <span>Total Downloads</span>
+        <h3 id="statDownloads">0</h3>
+      </div>
     </div>
 
     <!-- Existing Apps Inventory Table -->
@@ -347,12 +378,13 @@
               <th>Category</th>
               <th>Version</th>
               <th>Size</th>
+              <th>Downloads</th>
               <th>Actions</th>
             </tr>
           </thead>
           <tbody id="catalogTableBody">
             <tr>
-              <td colspan="5" style="text-align: center; color: var(--text-muted);">Loading live items...</td>
+              <td colspan="6" style="text-align: center; color: var(--text-muted);">Loading live items...</td>
             </tr>
           </tbody>
         </table>
@@ -375,24 +407,28 @@
         </div>
 
         <div class="form-row">
-          <div class="form-group" style="flex: 1; min-width: 140px;">
+          <div class="form-group" style="flex: 1; min-width: 130px;">
             <label>Category</label>
             <select id="appCategory">
               <option value="App">App</option>
               <option value="Game">Game</option>
             </select>
           </div>
-          <div class="form-group" style="flex: 1; min-width: 140px;">
+          <div class="form-group" style="flex: 1; min-width: 130px;">
             <label>Version Name</label>
             <input type="text" id="appVersionName" placeholder="1.0.1" required />
           </div>
-          <div class="form-group" style="flex: 1; min-width: 140px;">
+          <div class="form-group" style="flex: 1; min-width: 120px;">
             <label>Version Code</label>
             <input type="number" id="appVersionCode" placeholder="1" value="1" required />
           </div>
           <div class="form-group" style="flex: 1; min-width: 140px;">
             <label>Package Size (Auto)</label>
-            <input type="text" id="appSize" placeholder="Select APK to auto-fill" required />
+            <input type="text" id="appSize" placeholder="Select APK" required />
+          </div>
+          <div class="form-group" style="flex: 1; min-width: 130px;">
+            <label>Downloads Count</label>
+            <input type="number" id="appDownloads" placeholder="10" value="0" />
           </div>
         </div>
 
@@ -419,6 +455,17 @@
             <div id="apkFileName" class="file-info-tag"></div>
           </div>
           <input type="text" id="appDownloadUrl" placeholder="Direct APK Download URL" required />
+        </div>
+
+        <!-- Multiple Game/App Screenshots Picker + Editable URLs -->
+        <div class="form-group">
+          <label>Game / App Screenshots Slider (Select Multiple Images OR Paste Comma-Separated URLs)</label>
+          <div class="file-dropzone" onclick="document.getElementById('ssFileInput').click()">
+            <input type="file" id="ssFileInput" accept="image/*" multiple onchange="handleScreenshotFiles(event)" />
+            <span id="ssUploadPrompt">🖼️ Click to Select 2-5 Screenshots from PC</span>
+            <div class="preview-box" id="ssPreviewBox"></div>
+          </div>
+          <textarea id="appScreenshots" rows="2" placeholder="Optional: Screenshot URLs separated by commas (https://.../screen1.png, https://.../screen2.png)"></textarea>
         </div>
 
         <div class="form-group">
@@ -461,7 +508,6 @@
     let memoryCatalog = [];
     const GITHUB_REPO = "ankurkumar-ship-it/Zappora";
 
-    // Load saved token if available
     window.addEventListener("DOMContentLoaded", () => {
       const savedToken = localStorage.getItem("zappora_gh_token");
       if (savedToken) document.getElementById("ghToken").value = savedToken;
@@ -499,6 +545,31 @@
       document.getElementById("appIcon").value = `https://github.com/${GITHUB_REPO}/releases/download/${tag}/${cleanName}`;
     }
 
+    // Auto-preview Multiple Screenshots and generate GitHub release URLs
+    function handleScreenshotFiles(event) {
+      const files = Array.from(event.target.files);
+      if (files.length === 0) return;
+
+      const previewBox = document.getElementById("ssPreviewBox");
+      previewBox.innerHTML = "";
+      document.getElementById("ssUploadPrompt").style.display = "none";
+
+      const tag = document.getElementById("appId").value.trim() || "v1.0.0";
+      const generatedUrls = [];
+
+      files.forEach(file => {
+        const img = document.createElement("img");
+        img.src = URL.createObjectURL(file);
+        img.className = "ss-thumb";
+        previewBox.appendChild(img);
+
+        const cleanName = file.name.replace(/\s+/g, ".");
+        generatedUrls.push(`https://github.com/${GITHUB_REPO}/releases/download/${tag}/${cleanName}`);
+      });
+
+      document.getElementById("appScreenshots").value = generatedUrls.join(", ");
+    }
+
     async function initAdmin() {
       try {
         const res = await fetch("./version.json?t=" + new Date().getTime(), { cache: "no-store" });
@@ -518,13 +589,17 @@
       document.getElementById("statApps").innerText = memoryCatalog.filter(i => i.category === "App").length;
       document.getElementById("statGames").innerText = memoryCatalog.filter(i => i.category === "Game").length;
 
+      const totalDl = memoryCatalog.reduce((sum, item) => sum + (parseInt(item.downloads, 10) || 0), 0);
+      document.getElementById("statDownloads").innerText = totalDl;
+
       const tbody = document.getElementById("catalogTableBody");
       tbody.innerHTML = "";
 
       if (memoryCatalog.length === 0) {
-        tbody.innerHTML = '<tr><td colspan="5" style="text-align: center; color: var(--text-muted);">No applications found. Add your first app below.</td></tr>';
+        tbody.innerHTML = '<tr><td colspan="6" style="text-align: center; color: var(--text-muted);">No applications found. Add your first app below.</td></tr>';
       } else {
         memoryCatalog.forEach(app => {
+          const dlCount = parseInt(app.downloads, 10) || 0;
           const row = document.createElement("tr");
           row.innerHTML = `
             <td>
@@ -536,6 +611,7 @@
             <td><span class="table-badge">${app.category}</span></td>
             <td>${app.versionName}</td>
             <td>${app.size}</td>
+            <td><strong>⬇ ${dlCount}</strong></td>
             <td>
               <button class="action-btn btn-edit" onclick="populateEdit('${app.id}')">Edit</button>
               <button class="action-btn btn-delete" onclick="deleteApp('${app.id}')">Delete</button>
@@ -558,14 +634,28 @@
       document.getElementById("appVersionName").value = item.versionName;
       document.getElementById("appVersionCode").value = item.versionCode || 1;
       document.getElementById("appSize").value = item.size;
+      document.getElementById("appDownloads").value = item.downloads || 0;
       document.getElementById("appIcon").value = item.icon;
       document.getElementById("appDownloadUrl").value = item.downloadUrl;
+      document.getElementById("appScreenshots").value = Array.isArray(item.screenshots) ? item.screenshots.join(", ") : "";
       document.getElementById("appDesc").value = item.desc;
       document.getElementById("appNotes").value = item.releaseNotes || "";
 
       const preview = document.getElementById("iconPreview");
       preview.src = item.icon;
       preview.style.display = "inline-block";
+
+      const ssPreviewBox = document.getElementById("ssPreviewBox");
+      ssPreviewBox.innerHTML = "";
+      if (Array.isArray(item.screenshots) && item.screenshots.length > 0) {
+        document.getElementById("ssUploadPrompt").style.display = "none";
+        item.screenshots.forEach(url => {
+          const img = document.createElement("img");
+          img.src = url;
+          img.className = "ss-thumb";
+          ssPreviewBox.appendChild(img);
+        });
+      }
 
       document.getElementById("formHeading").innerText = "Editing: " + item.title;
       document.getElementById("btnSubmit").innerText = "Update Application";
@@ -582,6 +672,11 @@
     function handleFormSubmit(e) {
       e.preventDefault();
 
+      const rawScreenshots = document.getElementById("appScreenshots").value.trim();
+      const screenshotsArray = rawScreenshots
+        ? rawScreenshots.split(",").map(s => s.trim()).filter(Boolean)
+        : [];
+
       const newEntry = {
         id: document.getElementById("appId").value.trim(),
         title: document.getElementById("appTitle").value.trim(),
@@ -589,9 +684,11 @@
         versionName: document.getElementById("appVersionName").value.trim(),
         versionCode: parseInt(document.getElementById("appVersionCode").value.trim(), 10) || 1,
         size: document.getElementById("appSize").value.trim(),
+        downloads: parseInt(document.getElementById("appDownloads").value, 10) || 0,
         desc: document.getElementById("appDesc").value.trim(),
         icon: document.getElementById("appIcon").value.trim(),
         downloadUrl: document.getElementById("appDownloadUrl").value.trim(),
+        screenshots: screenshotsArray,
         forceUpdate: false,
         releaseNotes: document.getElementById("appNotes").value.trim()
       };
@@ -610,8 +707,10 @@
       document.getElementById("appForm").reset();
       document.getElementById("apkFileName").innerText = "";
       document.getElementById("iconFileName").innerText = "";
+      document.getElementById("ssPreviewBox").innerHTML = "";
       document.getElementById("apkUploadPrompt").style.display = "block";
       document.getElementById("iconUploadPrompt").style.display = "block";
+      document.getElementById("ssUploadPrompt").style.display = "block";
       document.getElementById("iconPreview").style.display = "none";
 
       showStatus("Catalog updated below! Click Copy or Push to GitHub.");
