@@ -8,12 +8,12 @@
     "size": "1.5MB",
     "downloads": 0,
     "desc": "Real-time collaborative whiteboard app to draw, brainstorm, chat, and solve problems together with friends using private room codes.",
-    "icon": "https://github.com/ankurkumar-ship-it/Zappora/releases/download/peer_slove/icon.png",
-    "downloadUrl": "https://github.com/ankurkumar-ship-it/Zappora/releases/download/peer_slove/PeerSolve.apk",
+    "icon": "https://raw.githubusercontent.com/ankurkumar-ship-it/Zappora/main/assets/peer_slove/icon/icon.png",
+    "downloadUrl": "https://raw.githubusercontent.com/ankurkumar-ship-it/Zappora/main/assets/peer_slove/apk/PeerSolve.apk",
     "screenshots": [
-      "https://github.com/ankurkumar-ship-it/Zappora/releases/download/peer_slove/WhatsApp.Image.2026-10-14.at.9.34.26.PM.jpeg",
-      "https://github.com/ankurkumar-ship-it/Zappora/releases/download/peer_slove/WhatsApp.Image.2026-10-14.at.9.34.25.PM.(1).jpeg",
-      "https://github.com/ankurkumar-ship-it/Zappora/releases/download/peer_slove/WhatsApp.Image.2026-10-14.at.9.34.25.PM.jpeg"
+      "https://raw.githubusercontent.com/ankurkumar-ship-it/Zappora/main/assets/peer_slove/screenshots/WhatsApp_Image_2026-10-14_at_9.34.26_PM.jpeg",
+      "https://raw.githubusercontent.com/ankurkumar-ship-it/Zappora/main/assets/peer_slove/screenshots/WhatsApp_Image_2026-10-14_at_9.34.25_PM__1_.jpeg",
+      "https://raw.githubusercontent.com/ankurkumar-ship-it/Zappora/main/assets/peer_slove/screenshots/WhatsApp_Image_2026-10-14_at_9.34.25_PM.jpeg"
     ],
     "forceUpdate": false,
     "releaseNotes": ".Initial release of DDIRE-PeerSolve:\n.Real-time multiplayer drawing whiteboard\n.Secure room joining with custom room codes\n.Synchronized drawing, shapes, clear, undo, and redo\n.Built-in live room chat system\n.Save whiteboard drawings directly to gallery"
