@@ -1,5 +1,24 @@
 [
   {
+    "id": "peer_slove",
+    "title": "Peer Slove",
+    "category": "App",
+    "versionName": "1.01",
+    "versionCode": 1,
+    "size": "1.5MB",
+    "downloads": 0,
+    "desc": "Real-time collaborative whiteboard app to draw, brainstorm, chat, and solve problems together with friends using private room codes.",
+    "icon": "https://github.com/ankurkumar-ship-it/Zappora/releases/download/peer_slove/icon.png",
+    "downloadUrl": "https://github.com/ankurkumar-ship-it/Zappora/releases/download/peer_slove/PeerSolve.apk",
+    "screenshots": [
+      "https://github.com/ankurkumar-ship-it/Zappora/releases/download/peer_slove/WhatsApp.Image.2026-10-14.at.9.34.26.PM.jpeg",
+      "https://github.com/ankurkumar-ship-it/Zappora/releases/download/peer_slove/WhatsApp.Image.2026-10-14.at.9.34.25.PM.(1).jpeg",
+      "https://github.com/ankurkumar-ship-it/Zappora/releases/download/peer_slove/WhatsApp.Image.2026-10-14.at.9.34.25.PM.jpeg"
+    ],
+    "forceUpdate": false,
+    "releaseNotes": ".Initial release of DDIRE-PeerSolve:\n.Real-time multiplayer drawing whiteboard\n.Secure room joining with custom room codes\n.Synchronized drawing, shapes, clear, undo, and redo\n.Built-in live room chat system\n.Save whiteboard drawings directly to gallery"
+  },
+  {
     "id": "Bagh_Chal.1",
     "title": "Goats and Tigers | BaghChal",
     "category": "Game",
@@ -63,18 +82,5 @@
     "downloadUrl": "https://github.com/ankurkumar-ship-it/AppVault/releases/download/DECA_1.0.1/Deca.Chat.apk",
     "forceUpdate": false,
     "releaseNotes": "• Initial release (v1.0.1) with real-time messaging and image sharing. • Instant room access with random 6-character room codes (no PIN/passwords needed). • Customizable member limits per room (up to 20 members). • Privacy Shield protection with anti-screenshot blur support. • Quick room renaming and localized device customization."
-  },
-  {
-    "id": "peer_slove",
-    "title": "Peer Slove",
-    "category": "App",
-    "versionName": "1.0.1",
-    "versionCode": 1,
-    "size": "12MB",
-    "desc": "Peer slove",
-    "icon": "https://ddire-peersolve.onrender.com/icon.png",
-    "downloadUrl": "https://github.com/ankurkumar-ship-it/AppVault/releases/download/1.0.1/PeerSolve.apk",
-    "forceUpdate": false,
-    "releaseNotes": "Peer slove"
   }
 ]
