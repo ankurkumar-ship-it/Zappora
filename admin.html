@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Zappora Admin Dashboard</title>
-  <link rel="icon" type="image/png" href="logo.png" />
+  <link rel="icon" type="image/png" href="favicon.png" />
   <style>
     :root {
       --bg-main: #f8fafc;
@@ -15,6 +15,7 @@
       --text-main: #0f172a;
       --text-muted: #64748b;
       --danger: #ef4444;
+      --success: #10b981;
     }
 
     * {
@@ -31,7 +32,7 @@
     }
 
     .container {
-      max-width: 1000px;
+      max-width: 1020px;
       margin: 0 auto;
     }
 
@@ -42,6 +43,8 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
+      flex-wrap: wrap;
+      gap: 10px;
     }
 
     .header h1 {
@@ -66,9 +69,9 @@
     }
 
     .stat-card span {
-      font-size: 0.85rem;
+      font-size: 0.82rem;
       color: var(--text-muted);
-      font-weight: 600;
+      font-weight: 700;
       text-transform: uppercase;
     }
 
@@ -88,12 +91,12 @@
     }
 
     .card h2 {
-      font-size: 1.25rem;
+      font-size: 1.22rem;
       margin-bottom: 16px;
       color: var(--text-main);
     }
 
-    /* Table Styles */
+    /* Table Styles - Fixed Icon Alignment */
     .table-responsive {
       overflow-x: auto;
       margin-top: 10px;
@@ -115,27 +118,35 @@
     th {
       background: #f1f5f9;
       color: var(--text-muted);
-      font-weight: 600;
-      font-size: 0.82rem;
+      font-weight: 700;
+      font-size: 0.8rem;
       text-transform: uppercase;
     }
 
+    .app-cell {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
     .table-icon {
-      width: 36px;
-      height: 36px;
-      border-radius: 8px;
+      width: 42px;
+      height: 42px;
+      min-width: 42px;
+      border-radius: 10px;
       object-fit: cover;
-      vertical-align: middle;
+      object-position: center;
+      background: #f1f5f9;
       border: 1px solid var(--border-color);
-      margin-right: 8px;
+      display: block;
     }
 
     .table-badge {
       display: inline-block;
       font-size: 0.75rem;
       font-weight: 700;
-      padding: 2px 8px;
-      border-radius: 4px;
+      padding: 3px 9px;
+      border-radius: 5px;
       background: #e0f2fe;
       color: var(--primary-dark);
     }
@@ -167,7 +178,7 @@
 
     .form-group label {
       display: block;
-      font-size: 0.88rem;
+      font-size: 0.86rem;
       font-weight: 600;
       margin-bottom: 6px;
     }
@@ -177,7 +188,7 @@
       padding: 10px 14px;
       border-radius: 8px;
       border: 1px solid var(--border-color);
-      font-size: 0.95rem;
+      font-size: 0.94rem;
       outline: none;
     }
 
@@ -191,7 +202,6 @@
       flex-wrap: wrap;
     }
 
-    /* Upload Dropzone Box */
     .file-dropzone {
       border: 2px dashed #cbd5e1;
       border-radius: 10px;
@@ -200,6 +210,7 @@
       text-align: center;
       cursor: pointer;
       transition: all 0.2s ease;
+      margin-bottom: 8px;
     }
 
     .file-dropzone:hover {
@@ -212,22 +223,23 @@
     }
 
     .file-info-tag {
-      font-size: 0.85rem;
+      font-size: 0.84rem;
       color: var(--primary-dark);
       font-weight: 600;
-      margin-top: 6px;
+      margin-top: 4px;
     }
 
     .preview-box {
       display: flex;
       align-items: center;
+      justify-content: center;
       gap: 12px;
-      margin-top: 10px;
+      margin-top: 8px;
     }
 
     .preview-box img {
-      width: 50px;
-      height: 50px;
+      width: 48px;
+      height: 48px;
       border-radius: 10px;
       object-fit: cover;
       border: 1px solid var(--border-color);
@@ -235,7 +247,7 @@
     }
 
     .btn-submit {
-      padding: 12px 20px;
+      padding: 12px 22px;
       background: var(--primary);
       color: #fff;
       border: none;
@@ -258,8 +270,16 @@
       border-radius: 8px;
       border: 1px solid #334155;
       font-size: 0.85rem;
-      min-height: 180px;
+      min-height: 200px;
       margin-top: 10px;
+    }
+
+    .btn-bar {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      align-items: center;
+      margin-top: 12px;
     }
 
     .btn-copy {
@@ -271,15 +291,24 @@
       font-weight: 700;
       border: none;
       cursor: pointer;
-      margin-top: 12px;
+    }
+
+    .btn-github {
+      background: var(--success);
+      color: white;
+      padding: 10px 18px;
+      border-radius: 8px;
+      font-size: 0.9rem;
+      font-weight: 700;
+      border: none;
+      cursor: pointer;
     }
 
     .badge-status {
       font-size: 0.85rem;
-      color: #059669;
-      font-weight: 600;
+      color: var(--success);
+      font-weight: 700;
       display: none;
-      margin-left: 10px;
     }
   </style>
 </head>
@@ -287,8 +316,8 @@
 
   <div class="container">
     <div class="header">
-      <h1>Zappora Management</h1>
-      <span style="font-size: 0.85rem; color: var(--text-muted);">Admin Panel</span>
+      <h1>⚡ Zappora Admin Panel</h1>
+      <a href="index.html" target="_blank" style="font-size: 0.9rem; color: var(--primary); font-weight: 700; text-decoration: none;">View Live Store ↗</a>
     </div>
 
     <!-- Live Counters -->
@@ -336,12 +365,12 @@
       <form id="appForm" onsubmit="handleFormSubmit(event)">
         <div class="form-row">
           <div class="form-group" style="flex: 1; min-width: 200px;">
-            <label>Unique ID (e.g. peer_slove, runner_game)</label>
-            <input type="text" id="appId" required />
+            <label>Unique ID / Release Tag (e.g. Bagh_Chal.1)</label>
+            <input type="text" id="appId" placeholder="Bagh_Chal.1" required />
           </div>
           <div class="form-group" style="flex: 2; min-width: 260px;">
             <label>Application Title</label>
-            <input type="text" id="appTitle" required />
+            <input type="text" id="appTitle" placeholder="Goats and Tigers | BaghChal" required />
           </div>
         </div>
 
@@ -359,37 +388,37 @@
           </div>
           <div class="form-group" style="flex: 1; min-width: 140px;">
             <label>Version Code</label>
-            <input type="number" id="appVersionCode" placeholder="1" required />
+            <input type="number" id="appVersionCode" placeholder="1" value="1" required />
           </div>
           <div class="form-group" style="flex: 1; min-width: 140px;">
-            <label>Package Size (Auto Calculated)</label>
+            <label>Package Size (Auto)</label>
             <input type="text" id="appSize" placeholder="Select APK to auto-fill" required />
           </div>
         </div>
 
-        <!-- App Icon Picker -->
+        <!-- App Icon Picker + Editable URL -->
         <div class="form-group">
-          <label>App Icon (Click to choose PNG / JPG)</label>
+          <label>App Icon (Select Image File OR Paste Direct URL below)</label>
           <div class="file-dropzone" onclick="document.getElementById('iconFileInput').click()">
             <input type="file" id="iconFileInput" accept="image/*" onchange="handleIconFile(event)" />
-            <span id="iconUploadPrompt">Select or Drop App Icon File</span>
-            <div class="preview-box" id="iconPreviewContainer" style="justify-content: center;">
+            <span id="iconUploadPrompt">📁 Click to Select Icon Image from PC</span>
+            <div class="preview-box">
               <img id="iconPreview" alt="Icon Preview" />
               <span id="iconFileName" class="file-info-tag"></span>
             </div>
           </div>
-          <input type="hidden" id="appIcon" required />
+          <input type="text" id="appIcon" placeholder="Icon URL (e.g. https://github.com/ankurkumar-ship-it/Zappora/releases/download/...)" required />
         </div>
 
-        <!-- Direct APK File Picker -->
+        <!-- Direct APK File Picker + Editable URL -->
         <div class="form-group">
-          <label>Direct APK File (Select from PC - Auto extracts size)</label>
+          <label>Direct APK File (Select .apk from PC to auto-calculate size & link)</label>
           <div class="file-dropzone" onclick="document.getElementById('apkFileInput').click()">
             <input type="file" id="apkFileInput" accept=".apk" onchange="handleApkFile(event)" />
-            <span id="apkUploadPrompt">Click to Select .apk File from PC</span>
+            <span id="apkUploadPrompt">📦 Click to Select .apk File from PC</span>
             <div id="apkFileName" class="file-info-tag"></div>
           </div>
-          <input type="hidden" id="appDownloadUrl" required />
+          <input type="text" id="appDownloadUrl" placeholder="Direct APK Download URL" required />
         </div>
 
         <div class="form-group">
@@ -399,31 +428,47 @@
 
         <div class="form-group">
           <label>Release Notes</label>
-          <input type="text" id="appNotes" required />
+          <textarea id="appNotes" rows="2" required></textarea>
         </div>
 
         <button type="submit" class="btn-submit" id="btnSubmit">Save & Update Catalog</button>
       </form>
     </div>
 
-    <!-- JSON Output Section -->
+    <!-- JSON Output & Direct GitHub Sync Section -->
     <div class="card">
       <h2>Generated version.json</h2>
-      <p style="color: var(--text-muted); font-size: 0.88rem;">
-        Whenever you make changes, copy this code and commit it to your GitHub <code>version.json</code> file.
+      <p style="color: var(--text-muted); font-size: 0.88rem; margin-bottom: 10px;">
+        Copy this JSON or push directly to your <code>ankurkumar-ship-it/Zappora</code> GitHub repository.
       </p>
+
+      <div class="form-row" style="margin-bottom: 8px;">
+        <div class="form-group" style="flex: 1; margin-bottom: 0;">
+          <input type="password" id="ghToken" placeholder="Optional: Enter GitHub Personal Access Token for 1-Click Push" />
+        </div>
+      </div>
+
       <textarea id="jsonOutput" class="code-output" readonly></textarea>
-      <div>
-        <button class="btn-copy" onclick="copyJson()">Copy Updated JSON</button>
-        <span class="badge-status" id="copiedText">Copied to clipboard!</span>
+      <div class="btn-bar">
+        <button class="btn-copy" onclick="copyJson()">📋 Copy Updated JSON</button>
+        <button class="btn-github" onclick="pushToGitHub()">🚀 Push Directly to GitHub</button>
+        <span class="badge-status" id="statusText"></span>
       </div>
     </div>
   </div>
 
   <script>
     let memoryCatalog = [];
+    const GITHUB_REPO = "ankurkumar-ship-it/Zappora";
 
-    // Auto-fill APK info and package size
+    // Load saved token if available
+    window.addEventListener("DOMContentLoaded", () => {
+      const savedToken = localStorage.getItem("zappora_gh_token");
+      if (savedToken) document.getElementById("ghToken").value = savedToken;
+      initAdmin();
+    });
+
+    // Auto-fill APK info, size, and GitHub release URL
     function handleApkFile(event) {
       const file = event.target.files[0];
       if (!file) return;
@@ -432,10 +477,13 @@
       document.getElementById("appSize").value = sizeInMB;
       document.getElementById("apkFileName").innerText = `${file.name} (${sizeInMB})`;
       document.getElementById("apkUploadPrompt").style.display = "none";
-      document.getElementById("appDownloadUrl").value = "./apks/" + file.name;
+
+      const tag = document.getElementById("appId").value.trim() || "v1.0.0";
+      const cleanName = file.name.replace(/\s+/g, ".");
+      document.getElementById("appDownloadUrl").value = `https://github.com/${GITHUB_REPO}/releases/download/${tag}/${cleanName}`;
     }
 
-    // Auto-preview App Icon
+    // Auto-preview App Icon and generate GitHub release URL
     function handleIconFile(event) {
       const file = event.target.files[0];
       if (!file) return;
@@ -445,15 +493,15 @@
       preview.style.display = "inline-block";
       document.getElementById("iconFileName").innerText = file.name;
       document.getElementById("iconUploadPrompt").style.display = "none";
-      document.getElementById("appIcon").value = "./icons/" + file.name;
+
+      const tag = document.getElementById("appId").value.trim() || "v1.0.0";
+      const cleanName = file.name.replace(/\s+/g, ".");
+      document.getElementById("appIcon").value = `https://github.com/${GITHUB_REPO}/releases/download/${tag}/${cleanName}`;
     }
 
-    // Force fetch version.json bypassing browser cache
     async function initAdmin() {
       try {
-        const res = await fetch("./version.json?t=" + new Date().getTime(), {
-          cache: "no-store"
-        });
+        const res = await fetch("./version.json?t=" + new Date().getTime(), { cache: "no-store" });
         if (res.ok) {
           memoryCatalog = await res.json();
         } else {
@@ -480,8 +528,10 @@
           const row = document.createElement("tr");
           row.innerHTML = `
             <td>
-              <img src="${app.icon}" class="table-icon" onerror="this.src='https://via.placeholder.com/36'" />
-              <strong>${app.title}</strong>
+              <div class="app-cell">
+                <img src="${app.icon}" class="table-icon" onerror="this.src='favicon.png'" />
+                <strong>${app.title}</strong>
+              </div>
             </td>
             <td><span class="table-badge">${app.category}</span></td>
             <td>${app.versionName}</td>
@@ -512,11 +562,6 @@
       document.getElementById("appDownloadUrl").value = item.downloadUrl;
       document.getElementById("appDesc").value = item.desc;
       document.getElementById("appNotes").value = item.releaseNotes || "";
-
-      document.getElementById("apkFileName").innerText = "Current URL: " + item.downloadUrl;
-      document.getElementById("iconFileName").innerText = "Current URL: " + item.icon;
-      document.getElementById("apkUploadPrompt").style.display = "none";
-      document.getElementById("iconUploadPrompt").style.display = "none";
 
       const preview = document.getElementById("iconPreview");
       preview.src = item.icon;
@@ -563,29 +608,68 @@
       document.getElementById("formHeading").innerText = "Add or Update Application";
       document.getElementById("btnSubmit").innerText = "Save & Update Catalog";
       document.getElementById("appForm").reset();
-
       document.getElementById("apkFileName").innerText = "";
       document.getElementById("iconFileName").innerText = "";
       document.getElementById("apkUploadPrompt").style.display = "block";
       document.getElementById("iconUploadPrompt").style.display = "block";
       document.getElementById("iconPreview").style.display = "none";
 
-      alert("Updated! Now copy the JSON from the bottom and commit it to GitHub.");
+      showStatus("Catalog updated below! Click Copy or Push to GitHub.");
     }
 
     function copyJson() {
       const textarea = document.getElementById("jsonOutput");
       textarea.select();
       navigator.clipboard.writeText(textarea.value);
-
-      const status = document.getElementById("copiedText");
-      status.style.display = "inline";
-      setTimeout(() => {
-        status.style.display = "none";
-      }, 2500);
+      showStatus("✓ Copied to clipboard!");
     }
 
-    window.addEventListener("DOMContentLoaded", initAdmin);
+    async function pushToGitHub() {
+      const token = document.getElementById("ghToken").value.trim();
+      if (!token) {
+        alert("Please enter your GitHub Personal Access Token first, or use Copy Updated JSON.");
+        return;
+      }
+      localStorage.setItem("zappora_gh_token", token);
+      showStatus("⏳ Pushing version.json to GitHub...");
+
+      try {
+        const apiUrl = `https://api.github.com/repos/${GITHUB_REPO}/contents/version.json`;
+        const getRes = await fetch(apiUrl, {
+          headers: { Authorization: `Bearer ${token}` }
+        });
+        const fileData = await getRes.json();
+
+        const contentBase64 = btoa(unescape(encodeURIComponent(document.getElementById("jsonOutput").value)));
+        const putRes = await fetch(apiUrl, {
+          method: "PUT",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            message: "Update version.json via Zappora Admin",
+            content: contentBase64,
+            sha: fileData.sha
+          })
+        });
+
+        if (putRes.ok) {
+          showStatus("✅ Successfully published live to GitHub!");
+        } else {
+          alert("GitHub Push Failed. Check your token permissions.");
+        }
+      } catch (err) {
+        alert("Error connecting to GitHub API: " + err.message);
+      }
+    }
+
+    function showStatus(msg) {
+      const status = document.getElementById("statusText");
+      status.innerText = msg;
+      status.style.display = "inline";
+      setTimeout(() => { status.style.display = "none"; }, 4000);
+    }
   </script>
 </body>
 </html>
