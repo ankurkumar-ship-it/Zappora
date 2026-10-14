@@ -7,20 +7,22 @@
   <title>Zappora | Official Android App & Game Directory</title>
   <link rel="icon" type="image/png" href="favicon.png" />
   <!-- SEO & Keywords -->
-    <meta name="description" content="Download official Android APK games and apps directly from Zappora. Fast, verified, and secure downloads without third-party installers." />
-    <meta name="keywords" content="Zappora, download apk, android apps download, apk store, deca chat apk, download android games, free apk portal" />
-    <meta name="author" content="Zappora" />
-    <meta name="robots" content="index, follow" />
+  <meta name="description" content="Download official Android APK games and apps directly from Zappora. Fast, verified, and secure downloads without third-party installers." />
+  <meta name="keywords" content="Zappora, download apk, android apps download, apk store, deca chat apk, download android games, free apk portal" />
+  <meta name="author" content="Zappora" />
+  <meta name="robots" content="index, follow" />
 
-    <!-- Social Media Preview -->
-    <meta property="og:title" content="Zappora App Store | Official Android App & Game Directory" />
-    <meta property="og:description" content="Download official Android APK games and apps directly from Zappora." />
-    <meta property="og:image" content="favicon.png" />
-    <meta property="og:type" content="website" />
+  <!-- Social Media Preview -->
+  <meta property="og:title" content="Zappora App Store | Official Android App & Game Directory" />
+  <meta property="og:description" content="Download official Android APK games and apps directly from Zappora." />
+  <meta property="og:image" content="favicon.png" />
+  <meta property="og:type" content="website" />
+
   <style>
     :root {
       --bg-main: #f8fafc;
       --surface: #ffffff;
+      --surface-hover: #f1f5f9;
       --primary: #0284c7;
       --primary-dark: #0369a1;
       --primary-light: #e0f2fe;
@@ -29,6 +31,26 @@
       --text-muted: #64748b;
       --badge-game: #0369a1;
       --badge-app: #0d9488;
+      --badge-app-bg: #ccfbf1;
+      --shadow-card: 0 2px 6px rgba(0, 0, 0, 0.04);
+      --shadow-hover: 0 12px 20px -4px rgba(2, 132, 199, 0.14);
+    }
+
+    body.dark-mode {
+      --bg-main: #0b1120;
+      --surface: #1e293b;
+      --surface-hover: #334155;
+      --primary: #38bdf8;
+      --primary-dark: #0284c7;
+      --primary-light: rgba(56, 189, 248, 0.15);
+      --border-color: #334155;
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --badge-game: #38bdf8;
+      --badge-app: #2dd4bf;
+      --badge-app-bg: rgba(45, 212, 191, 0.15);
+      --shadow-card: 0 4px 10px rgba(0, 0, 0, 0.3);
+      --shadow-hover: 0 12px 24px -4px rgba(56, 189, 248, 0.2);
     }
 
     * {
@@ -41,44 +63,88 @@
     body {
       background-color: var(--bg-main);
       color: var(--text-main);
-      padding: 24px 16px 60px;
+      padding: 20px 16px 85px;
+      transition: background-color 0.25s, color 0.25s;
     }
 
     .container {
-      max-width: 960px;
+      max-width: 980px;
       margin: 0 auto;
     }
 
+    /* Navbar */
     .navbar {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 12px 0 24px;
+      padding: 10px 0 20px;
       border-bottom: 1px solid var(--border-color);
-      margin-bottom: 32px;
+      margin-bottom: 28px;
     }
 
     .brand {
-      font-size: 1.4rem;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+    }
+
+    .brand img {
+      width: 36px;
+      height: 36px;
+      border-radius: 9px;
+      object-fit: cover;
+    }
+
+    .brand span {
       font-weight: 800;
+      font-size: 1.4rem;
       color: var(--primary);
-      letter-spacing: -0.5px;
-      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .nav-right {
+      display: flex;
+      align-items: center;
+      gap: 12px;
     }
 
     .nav-tag {
-      font-size: 0.85rem;
+      font-size: 0.82rem;
       color: var(--text-muted);
       font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 5px;
     }
 
+    .theme-btn {
+      background: var(--surface);
+      border: 1px solid var(--border-color);
+      color: var(--text-main);
+      width: 38px;
+      height: 38px;
+      border-radius: 10px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.1rem;
+      transition: 0.2s;
+    }
+
+    .theme-btn:hover {
+      border-color: var(--primary);
+    }
+
+    /* Hero Section */
     .hero {
       text-align: center;
-      margin-bottom: 36px;
+      margin-bottom: 30px;
     }
 
     .hero h1 {
-      font-size: 2.2rem;
+      font-size: 2.1rem;
       color: var(--text-main);
       margin-bottom: 8px;
       font-weight: 800;
@@ -91,33 +157,35 @@
 
     .hero p {
       color: var(--text-muted);
-      font-size: 1rem;
-      max-width: 600px;
+      font-size: 0.98rem;
+      max-width: 580px;
       margin: 0 auto;
     }
 
+    /* Search & Filter */
     .controls {
       display: flex;
       gap: 12px;
-      margin-bottom: 28px;
+      margin-bottom: 22px;
       flex-wrap: wrap;
     }
 
     .search-box {
       flex: 1;
-      min-width: 260px;
+      min-width: 250px;
+      position: relative;
     }
 
     .search-box input {
       width: 100%;
       padding: 13px 18px;
-      border-radius: 10px;
+      border-radius: 11px;
       border: 1px solid var(--border-color);
       background-color: var(--surface);
       color: var(--text-main);
       font-size: 0.95rem;
       outline: none;
-      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+      box-shadow: var(--shadow-card);
       transition: border-color 0.2s, box-shadow 0.2s;
     }
 
@@ -128,38 +196,69 @@
 
     .filter-select {
       padding: 13px 18px;
-      border-radius: 10px;
+      border-radius: 11px;
       border: 1px solid var(--border-color);
       background-color: var(--surface);
       color: var(--text-main);
       font-size: 0.95rem;
+      font-weight: 600;
       outline: none;
       cursor: pointer;
-      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+      box-shadow: var(--shadow-card);
     }
 
+    /* Category Pills */
+    .category-pills {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 24px;
+      overflow-x: auto;
+      padding-bottom: 4px;
+    }
+
+    .pill {
+      padding: 8px 18px;
+      border-radius: 20px;
+      font-size: 0.88rem;
+      font-weight: 700;
+      cursor: pointer;
+      border: 1px solid var(--border-color);
+      background: var(--surface);
+      color: var(--text-muted);
+      transition: 0.2s;
+      white-space: nowrap;
+    }
+
+    .pill.active {
+      background: var(--primary);
+      color: #ffffff;
+      border-color: var(--primary);
+    }
+
+    /* Apps Grid */
     .grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(285px, 1fr));
-      gap: 22px;
+      grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+      gap: 20px;
     }
 
     .card {
       background: var(--surface);
       border: 1px solid var(--border-color);
-      border-radius: 14px;
-      padding: 22px;
+      border-radius: 15px;
+      padding: 20px;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.03);
+      box-shadow: var(--shadow-card);
       transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+      cursor: pointer;
     }
 
     .card:hover {
       transform: translateY(-3px);
-      box-shadow: 0 10px 18px -3px rgba(2, 132, 199, 0.12);
-      border-color: #bae6fd;
+      box-shadow: var(--shadow-hover);
+      border-color: var(--primary);
     }
 
     .card-header {
@@ -170,26 +269,26 @@
     }
 
     .app-icon {
-      width: 60px;
-      height: 60px;
-      border-radius: 12px;
+      width: 62px;
+      height: 62px;
+      border-radius: 14px;
       object-fit: cover;
-      background: #f1f5f9;
+      background: var(--surface-hover);
       border: 1px solid var(--border-color);
       flex-shrink: 0;
     }
 
     .app-title-block h2 {
-      font-size: 1.15rem;
+      font-size: 1.12rem;
       font-weight: 700;
       color: var(--text-main);
-      margin-bottom: 4px;
-      line-height: 1.3;
+      margin-bottom: 5px;
+      line-height: 1.25;
     }
 
     .badge {
       display: inline-block;
-      font-size: 0.72rem;
+      font-size: 0.7rem;
       font-weight: 700;
       padding: 3px 8px;
       border-radius: 5px;
@@ -203,59 +302,186 @@
     }
 
     .badge-app {
-      background: #ccfbf1;
+      background: var(--badge-app-bg);
       color: var(--badge-app);
     }
 
     .app-desc {
       color: var(--text-muted);
-      font-size: 0.92rem;
+      font-size: 0.9rem;
       line-height: 1.5;
-      margin-bottom: 18px;
+      margin-bottom: 16px;
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
       flex-grow: 1;
     }
 
     .card-footer {
       border-top: 1px solid var(--border-color);
-      padding-top: 14px;
+      padding-top: 12px;
     }
 
     .meta-specs {
       display: flex;
       justify-content: space-between;
-      font-size: 0.82rem;
+      font-size: 0.8rem;
       color: var(--text-muted);
       margin-bottom: 12px;
-      font-weight: 500;
+      font-weight: 600;
+    }
+
+    .card-actions {
+      display: flex;
+      gap: 8px;
     }
 
     .btn-download {
+      flex: 1;
       display: block;
       text-align: center;
-      background: var(--primary);
+      background: #0284c7;
       color: #ffffff;
       text-decoration: none;
       font-weight: 700;
-      font-size: 0.95rem;
+      font-size: 0.92rem;
       padding: 11px;
       border-radius: 9px;
       transition: background-color 0.2s;
+      border: none;
+      cursor: pointer;
     }
 
     .btn-download:hover {
-      background: var(--primary-dark);
+      background: #0369a1;
+    }
+
+    .btn-info {
+      padding: 11px 13px;
+      border-radius: 9px;
+      border: 1px solid var(--border-color);
+      background: var(--surface-hover);
+      color: var(--text-main);
+      font-weight: 700;
+      font-size: 0.85rem;
+      cursor: pointer;
+    }
+
+    /* Modal Popup (App Details) */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.65);
+      backdrop-filter: blur(4px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 10000;
+      padding: 16px;
+    }
+
+    .modal-overlay.open {
+      display: flex;
+    }
+
+    .modal-box {
+      background: var(--surface);
+      border: 1px solid var(--border-color);
+      border-radius: 18px;
+      max-width: 540px;
+      width: 100%;
+      padding: 24px;
+      max-height: 88vh;
+      overflow-y: auto;
+      position: relative;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+    }
+
+    .modal-close {
+      position: absolute;
+      top: 18px;
+      right: 18px;
+      background: var(--surface-hover);
+      border: none;
+      color: var(--text-main);
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      font-size: 1.1rem;
+      cursor: pointer;
+      font-weight: 700;
+    }
+
+    .modal-header {
+      display: flex;
+      gap: 16px;
+      align-items: center;
+      margin-bottom: 18px;
+    }
+
+    .modal-icon {
+      width: 76px;
+      height: 76px;
+      border-radius: 16px;
+      object-fit: cover;
+      border: 1px solid var(--border-color);
+    }
+
+    .modal-stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      background: var(--bg-main);
+      padding: 12px;
+      border-radius: 12px;
+      border: 1px solid var(--border-color);
+      margin-bottom: 18px;
+      text-align: center;
+    }
+
+    .modal-stats div span {
+      display: block;
+      font-size: 0.72rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      font-weight: 600;
+    }
+
+    .modal-stats div strong {
+      font-size: 0.95rem;
+      color: var(--text-main);
+    }
+
+    .modal-section {
+      margin-bottom: 16px;
+    }
+
+    .modal-section h4 {
+      font-size: 0.9rem;
+      color: var(--primary);
+      margin-bottom: 6px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .modal-section p {
+      font-size: 0.92rem;
+      color: var(--text-muted);
+      line-height: 1.6;
+      white-space: pre-line;
     }
 
     .info-box {
-      margin-top: 45px;
+      margin-top: 40px;
       padding: 22px;
       border-radius: 12px;
-      background: #eff6ff;
-      border: 1px solid #bfdbfe;
+      background: var(--primary-light);
+      border: 1px solid var(--border-color);
     }
 
     .info-box h3 {
-      color: var(--primary-dark);
+      color: var(--primary);
       margin-bottom: 10px;
       font-size: 1.05rem;
       font-weight: 700;
@@ -270,140 +496,68 @@
 
     footer {
       text-align: center;
-      margin-top: 45px;
+      margin-top: 40px;
       color: var(--text-muted);
       font-size: 0.85rem;
     }
 
-    /* Windows / Desktop Default: Bottom Nav Hide */
-.mobile-bottom-nav {
-  display: none;
-}
+    /* Sticky Bottom Navigation Bar (Mobile) */
+    .mobile-bottom-nav {
+      display: none;
+    }
 
-/* =========================================
-   ANDROID / MOBILE PLAY STORE UI (max 768px)
-   ========================================= */
-@media (max-width: 768px) {
-  body {
-    padding-bottom: 75px; /* Space for bottom nav */
-    background: #ffffff !important;
-  }
+    @media (max-width: 768px) {
+      .hero h1 {
+        font-size: 1.65rem;
+      }
+      .nav-tag {
+        display: none;
+      }
+      .mobile-bottom-nav {
+        display: flex;
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        height: 62px;
+        background: var(--surface);
+        border-top: 1px solid var(--border-color);
+        justify-content: space-around;
+        align-items: center;
+        z-index: 9999;
+      }
 
-  /* Header Clean Play Store Style */
-  .brand {
-    font-size: 1.2rem;
-    font-weight: 700;
-  }
+      .nav-item {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 3px;
+        color: var(--text-muted);
+        font-size: 0.75rem;
+        font-weight: 600;
+        cursor: pointer;
+      }
 
-  /* App Cards Container: Row / List Style */
-  .app-grid {
-    display: flex !important;
-    flex-direction: column !important;
-    gap: 14px !important;
-    padding: 10px 16px !important;
-  }
-
-  /* Single App Item (Play Store Row) */
-  .app-card {
-    display: grid !important;
-    grid-template-columns: 64px 1fr auto !important;
-    align-items: center !important;
-    gap: 14px !important;
-    padding: 8px 0 !important;
-    background: transparent !important;
-    box-shadow: none !important;
-    border: none !important;
-    border-bottom: 1px solid #f1f3f4 !important;
-    border-radius: 0 !important;
-  }
-
-  /* App Icon: Play Store Squircle */
-  .app-card img, .app-card .app-icon {
-    width: 64px !important;
-    height: 64px !important;
-    border-radius: 16px !important;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.1) !important;
-  }
-
-  /* App Title & Details */
-  .app-card h3 {
-    font-size: 0.98rem !important;
-    margin: 0 0 3px 0 !important;
-    color: #202124 !important;
-    font-weight: 600 !important;
-  }
-
-  .app-card p {
-    font-size: 0.8rem !important;
-    color: #5f6368 !important;
-    margin: 0 !important;
-    display: -webkit-box !important;
-    -webkit-line-clamp: 1 !important;
-    -webkit-box-orient: vertical !important;
-    overflow: hidden !important;
-  }
-
-  /* Meta: Version, Category, Size */
-  .app-card .meta, .app-card .badge {
-    font-size: 0.75rem !important;
-    color: #5f6368 !important;
-  }
-
-  /* Download Button: Minimal Play Store Pill */
-  .app-card button, .app-card .download-btn {
-    padding: 6px 14px !important;
-    font-size: 0.82rem !important;
-    font-weight: 600 !important;
-    background-color: #01875f !important; /* Play Store Green */
-    color: #fff !important;
-    border-radius: 20px !important;
-    border: none !important;
-    width: auto !important;
-  }
-
-  /* Sticky Bottom Navigation Bar */
-  .mobile-bottom-nav {
-    display: flex;
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    height: 62px;
-    background: #ffffff;
-    border-top: 1px solid #e0e0e0;
-    justify-content: space-around;
-    align-items: center;
-    z-index: 9999;
-  }
-
-  .nav-item {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 3px;
-    color: #5f6368;
-    font-size: 0.75rem;
-    font-weight: 500;
-    cursor: pointer;
-  }
-
-  .nav-item.active {
-    color: #0284c7; /* Brand Blue */
-    font-weight: 700;
-  }
-}
+      .nav-item.active {
+        color: var(--primary);
+        font-weight: 700;
+      }
+    }
   </style>
 </head>
 <body>
 
   <div class="container">
     <header class="navbar">
-      <div class="brand" style="display: flex; align-items: center; gap: 10px;">
-      <img src="favicon.png" alt="Zappora" style="width: 34px; height: 34px; border-radius: 8px;" />
-      <span style="font-weight: 800; font-size: 1.4rem; color: #0284c7; letter-spacing: 0.5px;">ZAPPORA</span>
-  </div>
-      <div class="nav-tag">Verified Android Builds</div>
+      <a href="#" class="brand">
+        <img src="favicon.png" alt="Zappora" onerror="this.src='logo.png'" />
+        <span>ZAPPORA</span>
+      </a>
+      <div class="nav-right">
+        <div class="nav-tag">✓ Verified Android Builds</div>
+        <button class="theme-btn" id="themeToggle" onclick="toggleTheme()" title="Toggle Dark/Light Mode">🌙</button>
+      </div>
     </header>
 
     <section class="hero">
@@ -415,12 +569,18 @@
       <div class="search-box">
         <input type="text" id="searchInput" placeholder="Search applications and games..." oninput="filterCatalog()" />
       </div>
-      <select id="categoryFilter" class="filter-select" onchange="filterCatalog()">
+      <select id="categoryFilter" class="filter-select" onchange="setCategory(this.value)">
         <option value="ALL">All Categories</option>
         <option value="Game">Games Only</option>
         <option value="App">Apps Only</option>
       </select>
     </section>
+
+    <div class="category-pills">
+      <div class="pill active" id="pill-ALL" onclick="setCategory('ALL')">All Releases</div>
+      <div class="pill" id="pill-Game" onclick="setCategory('Game')">🎮 Games</div>
+      <div class="pill" id="pill-App" onclick="setCategory('App')">📱 Apps</div>
+    </div>
 
     <main class="grid" id="appsContainer"></main>
 
@@ -434,18 +594,96 @@
     </section>
 
     <footer>
-      &copy; 2026 Zappora. All rights reserved.
+      &copy; 2026 Zappora Store. All rights reserved.
     </footer>
   </div>
 
+  <!-- App Details Modal -->
+  <div class="modal-overlay" id="appModal" onclick="closeModal(event)">
+    <div class="modal-box" onclick="event.stopPropagation()">
+      <button class="modal-close" onclick="closeModal()">✕</button>
+      <div class="modal-header">
+        <img id="mIcon" src="" alt="App Icon" class="modal-icon" />
+        <div>
+          <h2 id="mTitle" style="font-size: 1.3rem; margin-bottom: 4px;"></h2>
+          <span id="mBadge" class="badge"></span>
+        </div>
+      </div>
+
+      <div class="modal-stats">
+        <div>
+          <span>Version</span>
+          <strong id="mVersion">1.0</strong>
+        </div>
+        <div>
+          <span>Package Size</span>
+          <strong id="mSize">10MB</strong>
+        </div>
+        <div>
+          <span>Security</span>
+          <strong style="color: #10b981;">✓ Verified</strong>
+        </div>
+      </div>
+
+      <div class="modal-section">
+        <h4>About This Application</h4>
+        <p id="mDesc"></p>
+      </div>
+
+      <div class="modal-section" id="mNotesSection">
+        <h4>What's New (Release Notes)</h4>
+        <p id="mNotes"></p>
+      </div>
+
+      <div style="display: flex; gap: 10px; margin-top: 20px;">
+        <a id="mDownloadBtn" href="#" class="btn-download" target="_blank" rel="noopener noreferrer">Download APK</a>
+        <button class="btn-info" onclick="shareCurrentApp()">Share 🔗</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Mobile Bottom Navigation -->
+  <nav class="mobile-bottom-nav">
+    <div class="nav-item active" id="nav-ALL" onclick="setCategory('ALL')">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M4 8h4V4H4v4zm6 12h4v-4h-4v4zm-6 0h4v-4H4v4zm0-6h4v-4H4v4zm6 0h4v-4h-4v4zm6-10v4h4V4h-4zm-6 4h4V4h-4v4zm6 6h4v-4h-4v4zm0 6h4v-4h-4v4z"/></svg>
+      <span>All</span>
+    </div>
+    <div class="nav-item" id="nav-Game" onclick="setCategory('Game')">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M21 6H3c-1.1 0-2 .9-2 2v8c0 1.1.9 2 2 2h18c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2zm-10 7H8v3H6v-3H3v-2h3V8h2v3h3v2zm4.5 2c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5zm4-3c-.83 0-1.5-.67-1.5-1.5S18.67 9 19.5 9s1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/></svg>
+      <span>Games</span>
+    </div>
+    <div class="nav-item" id="nav-App" onclick="setCategory('App')">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M17 1.01L7 1c-1.1 0-2 .9-2 2v18c0 1.1.9 2 2 2h10c1.1 0 2-.9 2-2V3c0-1.1-.9-1.99-2-1.99zM17 19H7V5h10v14z"/></svg>
+      <span>Apps</span>
+    </div>
+    <div class="nav-item" onclick="document.getElementById('searchInput').focus(); window.scrollTo({top: 0, behavior: 'smooth'});">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
+      <span>Search</span>
+    </div>
+  </nav>
+
   <script>
     let activeCatalog = [];
+    let currentModalApp = null;
 
-    // Fetch live version.json file directly from root
+    // Theme Setup
+    if (localStorage.getItem("zappora_theme") === "dark") {
+      document.body.classList.add("dark-mode");
+      document.getElementById("themeToggle").innerText = "☀️";
+    }
+
+    function toggleTheme() {
+      document.body.classList.toggle("dark-mode");
+      const isDark = document.body.classList.contains("dark-mode");
+      localStorage.setItem("zappora_theme", isDark ? "dark" : "light");
+      document.getElementById("themeToggle").innerText = isDark ? "☀️" : "🌙";
+    }
+
+    // Load version.json
     async function loadCatalog() {
       const container = document.getElementById("appsContainer");
       try {
-        const response = await fetch("./version.json?cache_bust=" + Date.now());
+        const response = await fetch("./version.json?cache_bust=" + Date.now(), { cache: "no-store" });
         if (!response.ok) throw new Error("Could not load version.json");
         activeCatalog = await response.json();
         renderApps(activeCatalog);
@@ -465,29 +703,50 @@
 
       items.forEach(app => {
         const badgeClass = app.category === "Game" ? "badge-game" : "badge-app";
-        const cardHTML = `
-          <article class="card">
-            <div>
-              <div class="card-header">
-                <img src="${app.icon}" alt="${app.title} icon" class="app-icon" onerror="this.src='https://via.placeholder.com/60?text=App'" />
-                <div class="app-title-block">
-                  <h2>${app.title}</h2>
-                  <span class="badge ${badgeClass}">${app.category}</span>
-                </div>
+        const card = document.createElement("article");
+        card.className = "card";
+        card.onclick = () => openModal(app.id);
+
+        card.innerHTML = `
+          <div>
+            <div class="card-header">
+              <img src="${app.icon}" alt="${app.title}" class="app-icon" onerror="this.src='favicon.png'" />
+              <div class="app-title-block">
+                <h2>${app.title}</h2>
+                <span class="badge ${badgeClass}">${app.category}</span>
               </div>
-              <p class="app-desc">${app.desc}</p>
             </div>
-            <div class="card-footer">
-              <div class="meta-specs">
-                <span>Version: ${app.versionName}</span>
-                <span>Size: ${app.size}</span>
-              </div>
+            <p class="app-desc">${app.desc}</p>
+          </div>
+          <div class="card-footer">
+            <div class="meta-specs">
+              <span>v${app.versionName}</span>
+              <span>${app.size}</span>
+            </div>
+            <div class="card-actions" onclick="event.stopPropagation()">
               <a href="${app.downloadUrl}" class="btn-download" target="_blank" rel="noopener noreferrer">Download APK</a>
+              <button class="btn-info" onclick="openModal('${app.id}')" title="View Details & Release Notes">ⓘ</button>
             </div>
-          </article>
+          </div>
         `;
-        container.innerHTML += cardHTML;
+        container.appendChild(card);
       });
+    }
+
+    function setCategory(cat) {
+      document.getElementById("categoryFilter").value = cat;
+
+      // Update Pills
+      document.querySelectorAll(".pill").forEach(p => p.classList.remove("active"));
+      const activePill = document.getElementById("pill-" + cat);
+      if (activePill) activePill.classList.add("active");
+
+      // Update Mobile Bottom Nav
+      document.querySelectorAll(".mobile-bottom-nav .nav-item").forEach(n => n.classList.remove("active"));
+      const activeNav = document.getElementById("nav-" + cat);
+      if (activeNav) activeNav.classList.add("active");
+
+      filterCatalog();
     }
 
     function filterCatalog() {
@@ -503,22 +762,53 @@
       renderApps(filtered);
     }
 
+    function openModal(id) {
+      const app = activeCatalog.find(item => item.id === id);
+      if (!app) return;
+      currentModalApp = app;
+
+      document.getElementById("mIcon").src = app.icon;
+      document.getElementById("mTitle").innerText = app.title;
+      const badge = document.getElementById("mBadge");
+      badge.innerText = app.category;
+      badge.className = "badge " + (app.category === "Game" ? "badge-game" : "badge-app");
+
+      document.getElementById("mVersion").innerText = "v" + app.versionName;
+      document.getElementById("mSize").innerText = app.size;
+      document.getElementById("mDesc").innerText = app.desc;
+
+      const notesSec = document.getElementById("mNotesSection");
+      if (app.releaseNotes && app.releaseNotes.trim() !== "") {
+        notesSec.style.display = "block";
+        document.getElementById("mNotes").innerText = app.releaseNotes;
+      } else {
+        notesSec.style.display = "none";
+      }
+
+      document.getElementById("mDownloadBtn").href = app.downloadUrl;
+      document.getElementById("appModal").classList.add("open");
+    }
+
+    function closeModal() {
+      document.getElementById("appModal").classList.remove("open");
+    }
+
+    function shareCurrentApp() {
+      if (!currentModalApp) return;
+      const shareData = {
+        title: currentModalApp.title + " - Zappora Store",
+        text: `Download ${currentModalApp.title} (v${currentModalApp.versionName}) directly from Zappora Store!`,
+        url: window.location.href
+      };
+      if (navigator.share) {
+        navigator.share(shareData);
+      } else {
+        navigator.clipboard.writeText(currentModalApp.downloadUrl);
+        alert("Download link copied to clipboard!");
+      }
+    }
+
     window.addEventListener("DOMContentLoaded", loadCatalog);
   </script>
-  <!-- Google Play Style Bottom Navigation (Only for Mobile) -->
-<nav class="mobile-bottom-nav">
-  <div class="nav-item active" onclick="filterCategory('All')">
-    <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M4 8h4V4H4v4zm6 12h4v-4h-4v4zm-6 0h4v-4H4v4zm0-6h4v-4H4v4zm6 0h4v-4h-4v4zm6-10v4h4V4h-4zm-6 4h4V4h-4v4zm6 6h4v-4h-4v4zm0 6h4v-4h-4v4z"/></svg>
-    <span>Apps</span>
-  </div>
-  <div class="nav-item" onclick="filterCategory('Game')">
-    <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M21 6H3c-1.1 0-2 .9-2 2v8c0 1.1.9 2 2 2h18c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2zm-10 7H8v3H6v-3H3v-2h3V8h2v3h3v2zm4.5 2c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5zm4-3c-.83 0-1.5-.67-1.5-1.5S18.67 9 19.5 9s1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/></svg>
-    <span>Games</span>
-  </div>
-  <div class="nav-item" onclick="document.getElementById('searchInput').focus()">
-    <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
-    <span>Search</span>
-  </div>
-</nav>
 </body>
 </html>
