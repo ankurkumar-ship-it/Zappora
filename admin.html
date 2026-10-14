@@ -309,7 +309,7 @@
     .btn-copy {
       background: #0f172a;
       color: white;
-      padding: 10px 18px;
+      padding: 11px 18px;
       border-radius: 8px;
       font-size: 0.9rem;
       font-weight: 700;
@@ -320,18 +320,28 @@
     .btn-github {
       background: var(--success);
       color: white;
-      padding: 10px 18px;
+      padding: 11px 20px;
       border-radius: 8px;
-      font-size: 0.9rem;
+      font-size: 0.92rem;
       font-weight: 700;
       border: none;
       cursor: pointer;
     }
 
-    .badge-status {
-      font-size: 0.85rem;
-      color: var(--success);
-      font-weight: 700;
+    .btn-github:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+
+    .upload-log {
+      margin-top: 12px;
+      padding: 12px 16px;
+      border-radius: 8px;
+      background: #f0fdf4;
+      border: 1px solid #bbf7d0;
+      color: #166534;
+      font-size: 0.88rem;
+      font-weight: 600;
       display: none;
     }
   </style>
@@ -397,12 +407,12 @@
       <form id="appForm" onsubmit="handleFormSubmit(event)">
         <div class="form-row">
           <div class="form-group" style="flex: 1; min-width: 200px;">
-            <label>Unique ID / Release Tag (e.g. Bagh_Chal.1)</label>
-            <input type="text" id="appId" placeholder="Bagh_Chal.1" required />
+            <label>Unique ID (e.g. peer_slove, bagh_chal)</label>
+            <input type="text" id="appId" placeholder="peer_slove" oninput="refreshGeneratedPaths()" required />
           </div>
           <div class="form-group" style="flex: 2; min-width: 260px;">
             <label>Application Title</label>
-            <input type="text" id="appTitle" placeholder="Goats and Tigers | BaghChal" required />
+            <input type="text" id="appTitle" placeholder="Peer Slove" required />
           </div>
         </div>
 
@@ -428,13 +438,13 @@
           </div>
           <div class="form-group" style="flex: 1; min-width: 130px;">
             <label>Downloads Count</label>
-            <input type="number" id="appDownloads" placeholder="10" value="0" />
+            <input type="number" id="appDownloads" placeholder="0" value="0" />
           </div>
         </div>
 
-        <!-- App Icon Picker + Editable URL -->
+        <!-- App Icon Picker -->
         <div class="form-group">
-          <label>App Icon (Select Image File OR Paste Direct URL below)</label>
+          <label>App Icon (Select Image from PC - Will auto-upload to GitHub)</label>
           <div class="file-dropzone" onclick="document.getElementById('iconFileInput').click()">
             <input type="file" id="iconFileInput" accept="image/*" onchange="handleIconFile(event)" />
             <span id="iconUploadPrompt">📁 Click to Select Icon Image from PC</span>
@@ -443,29 +453,29 @@
               <span id="iconFileName" class="file-info-tag"></span>
             </div>
           </div>
-          <input type="text" id="appIcon" placeholder="Icon URL (e.g. https://github.com/ankurkumar-ship-it/Zappora/releases/download/...)" required />
+          <input type="text" id="appIcon" placeholder="Icon URL (auto-filled when you pick a file)" required />
         </div>
 
-        <!-- Direct APK File Picker + Editable URL -->
+        <!-- Direct APK File Picker -->
         <div class="form-group">
-          <label>Direct APK File (Select .apk from PC to auto-calculate size & link)</label>
+          <label>Direct APK File (Select .apk from PC - Will auto-upload to GitHub)</label>
           <div class="file-dropzone" onclick="document.getElementById('apkFileInput').click()">
             <input type="file" id="apkFileInput" accept=".apk" onchange="handleApkFile(event)" />
             <span id="apkUploadPrompt">📦 Click to Select .apk File from PC</span>
             <div id="apkFileName" class="file-info-tag"></div>
           </div>
-          <input type="text" id="appDownloadUrl" placeholder="Direct APK Download URL" required />
+          <input type="text" id="appDownloadUrl" placeholder="Direct APK Download URL (auto-filled when you pick a file)" required />
         </div>
 
-        <!-- Multiple Game/App Screenshots Picker + Editable URLs -->
+        <!-- Multiple Game/App Screenshots Picker -->
         <div class="form-group">
-          <label>Game / App Screenshots Slider (Select Multiple Images OR Paste Comma-Separated URLs)</label>
+          <label>Game / App Screenshots Slider (Select 2-5 Images from PC - Will auto-upload to GitHub)</label>
           <div class="file-dropzone" onclick="document.getElementById('ssFileInput').click()">
             <input type="file" id="ssFileInput" accept="image/*" multiple onchange="handleScreenshotFiles(event)" />
-            <span id="ssUploadPrompt">🖼️ Click to Select 2-5 Screenshots from PC</span>
+            <span id="ssUploadPrompt">🖼️ Click to Select Multiple Screenshots from PC</span>
             <div class="preview-box" id="ssPreviewBox"></div>
           </div>
-          <textarea id="appScreenshots" rows="2" placeholder="Optional: Screenshot URLs separated by commas (https://.../screen1.png, https://.../screen2.png)"></textarea>
+          <textarea id="appScreenshots" rows="2" placeholder="Screenshot URLs separated by commas (auto-filled when you select files)"></textarea>
         </div>
 
         <div class="form-group">
@@ -478,35 +488,44 @@
           <textarea id="appNotes" rows="2" required></textarea>
         </div>
 
-        <button type="submit" class="btn-submit" id="btnSubmit">Save & Update Catalog</button>
+        <button type="submit" class="btn-submit" id="btnSubmit">1. Save to Catalog Queue</button>
       </form>
     </div>
 
-    <!-- JSON Output & Direct GitHub Sync Section -->
+    <!-- JSON Output & Direct GitHub File + JSON Sync Section -->
     <div class="card">
-      <h2>Generated version.json</h2>
+      <h2>2. Publish Files & Catalog to GitHub</h2>
       <p style="color: var(--text-muted); font-size: 0.88rem; margin-bottom: 10px;">
-        Copy this JSON or push directly to your <code>ankurkumar-ship-it/Zappora</code> GitHub repository.
+        Enter your GitHub Token below and click <strong>Upload Files & Publish to GitHub</strong>. It will automatically upload your selected Icon, APK, Screenshots, and <code>version.json</code> directly to your repository!
       </p>
 
       <div class="form-row" style="margin-bottom: 8px;">
         <div class="form-group" style="flex: 1; margin-bottom: 0;">
-          <input type="password" id="ghToken" placeholder="Optional: Enter GitHub Personal Access Token for 1-Click Push" />
+          <input type="password" id="ghToken" placeholder="Enter GitHub Personal Access Token (ghp_...)" />
         </div>
       </div>
 
-      <textarea id="jsonOutput" class="code-output" readonly></textarea>
       <div class="btn-bar">
-        <button class="btn-copy" onclick="copyJson()">📋 Copy Updated JSON</button>
-        <button class="btn-github" onclick="pushToGitHub()">🚀 Push Directly to GitHub</button>
-        <span class="badge-status" id="statusText"></span>
+        <button class="btn-github" id="btnPushGithub" onclick="pushToGitHub()">🚀 Upload Files & Publish to GitHub</button>
+        <button class="btn-copy" onclick="copyJson()">📋 Copy JSON Only</button>
       </div>
+
+      <div class="upload-log" id="statusLog"></div>
+
+      <textarea id="jsonOutput" class="code-output" readonly></textarea>
     </div>
   </div>
 
   <script>
     let memoryCatalog = [];
     const GITHUB_REPO = "ankurkumar-ship-it/Zappora";
+    const GITHUB_BRANCH = "main";
+
+    // Queue for real files selected from PC so they get uploaded to GitHub
+    let pendingUploads = {}; // { appId: { iconFile, apkFile, ssFiles: [] } }
+    let currentSelectedIcon = null;
+    let currentSelectedApk = null;
+    let currentSelectedScreenshots = [];
 
     window.addEventListener("DOMContentLoaded", () => {
       const savedToken = localStorage.getItem("zappora_gh_token");
@@ -514,60 +533,74 @@
       initAdmin();
     });
 
-    // Auto-fill APK info, size, and GitHub release URL
-    function handleApkFile(event) {
-      const file = event.target.files[0];
-      if (!file) return;
-
-      const sizeInMB = (file.size / (1024 * 1024)).toFixed(1) + "MB";
-      document.getElementById("appSize").value = sizeInMB;
-      document.getElementById("apkFileName").innerText = `${file.name} (${sizeInMB})`;
-      document.getElementById("apkUploadPrompt").style.display = "none";
-
-      const tag = document.getElementById("appId").value.trim() || "v1.0.0";
-      const cleanName = file.name.replace(/\s+/g, ".");
-      document.getElementById("appDownloadUrl").value = `https://github.com/${GITHUB_REPO}/releases/download/${tag}/${cleanName}`;
+    function sanitizeFileName(name) {
+      return name.replace(/[^a-zA-Z0-9._-]/g, "_");
     }
 
-    // Auto-preview App Icon and generate GitHub release URL
+    function getRawGitHubUrl(appId, folder, filename) {
+      const cleanId = sanitizeFileName(appId || "app");
+      const cleanFile = sanitizeFileName(filename);
+      return `https://raw.githubusercontent.com/${GITHUB_REPO}/${GITHUB_BRANCH}/assets/${cleanId}/${folder}/${cleanFile}`;
+    }
+
+    function refreshGeneratedPaths() {
+      const appId = document.getElementById("appId").value.trim() || "app";
+      if (currentSelectedIcon) {
+        document.getElementById("appIcon").value = getRawGitHubUrl(appId, "icon", currentSelectedIcon.name);
+      }
+      if (currentSelectedApk) {
+        document.getElementById("appDownloadUrl").value = getRawGitHubUrl(appId, "apk", currentSelectedApk.name);
+      }
+      if (currentSelectedScreenshots.length > 0) {
+        const urls = currentSelectedScreenshots.map(f => getRawGitHubUrl(appId, "screenshots", f.name));
+        document.getElementById("appScreenshots").value = urls.join(", ");
+      }
+    }
+
     function handleIconFile(event) {
       const file = event.target.files[0];
       if (!file) return;
+      currentSelectedIcon = file;
 
       const preview = document.getElementById("iconPreview");
       preview.src = URL.createObjectURL(file);
       preview.style.display = "inline-block";
-      document.getElementById("iconFileName").innerText = file.name;
+      document.getElementById("iconFileName").innerText = file.name + " (Ready to upload)";
       document.getElementById("iconUploadPrompt").style.display = "none";
 
-      const tag = document.getElementById("appId").value.trim() || "v1.0.0";
-      const cleanName = file.name.replace(/\s+/g, ".");
-      document.getElementById("appIcon").value = `https://github.com/${GITHUB_REPO}/releases/download/${tag}/${cleanName}`;
+      refreshGeneratedPaths();
     }
 
-    // Auto-preview Multiple Screenshots and generate GitHub release URLs
+    function handleApkFile(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+      currentSelectedApk = file;
+
+      const sizeInMB = (file.size / (1024 * 1024)).toFixed(1) + "MB";
+      document.getElementById("appSize").value = sizeInMB;
+      document.getElementById("apkFileName").innerText = `${file.name} (${sizeInMB} - Ready to upload)`;
+      document.getElementById("apkUploadPrompt").style.display = "none";
+
+      refreshGeneratedPaths();
+    }
+
     function handleScreenshotFiles(event) {
       const files = Array.from(event.target.files);
       if (files.length === 0) return;
+      currentSelectedScreenshots = files;
 
       const previewBox = document.getElementById("ssPreviewBox");
       previewBox.innerHTML = "";
       document.getElementById("ssUploadPrompt").style.display = "none";
-
-      const tag = document.getElementById("appId").value.trim() || "v1.0.0";
-      const generatedUrls = [];
 
       files.forEach(file => {
         const img = document.createElement("img");
         img.src = URL.createObjectURL(file);
         img.className = "ss-thumb";
         previewBox.appendChild(img);
-
-        const cleanName = file.name.replace(/\s+/g, ".");
-        generatedUrls.push(`https://github.com/${GITHUB_REPO}/releases/download/${tag}/${cleanName}`);
       });
 
-      document.getElementById("appScreenshots").value = generatedUrls.join(", ");
+      refreshGeneratedPaths();
     }
 
     async function initAdmin() {
@@ -628,6 +661,10 @@
       const item = memoryCatalog.find(i => i.id === id);
       if (!item) return;
 
+      currentSelectedIcon = null;
+      currentSelectedApk = null;
+      currentSelectedScreenshots = [];
+
       document.getElementById("appId").value = item.id;
       document.getElementById("appTitle").value = item.title;
       document.getElementById("appCategory").value = item.category;
@@ -658,13 +695,14 @@
       }
 
       document.getElementById("formHeading").innerText = "Editing: " + item.title;
-      document.getElementById("btnSubmit").innerText = "Update Application";
+      document.getElementById("btnSubmit").innerText = "1. Update in Catalog Queue";
       document.getElementById("formCard").scrollIntoView({ behavior: "smooth" });
     }
 
     function deleteApp(id) {
       if (confirm("Are you sure you want to remove this app?")) {
         memoryCatalog = memoryCatalog.filter(i => i.id !== id);
+        delete pendingUploads[id];
         renderAdminView();
       }
     }
@@ -672,13 +710,21 @@
     function handleFormSubmit(e) {
       e.preventDefault();
 
+      const appId = document.getElementById("appId").value.trim();
       const rawScreenshots = document.getElementById("appScreenshots").value.trim();
       const screenshotsArray = rawScreenshots
         ? rawScreenshots.split(",").map(s => s.trim()).filter(Boolean)
         : [];
 
+      // Save selected files in memory queue for GitHub upload
+      pendingUploads[appId] = {
+        iconFile: currentSelectedIcon,
+        apkFile: currentSelectedApk,
+        ssFiles: [...currentSelectedScreenshots]
+      };
+
       const newEntry = {
-        id: document.getElementById("appId").value.trim(),
+        id: appId,
         title: document.getElementById("appTitle").value.trim(),
         category: document.getElementById("appCategory").value,
         versionName: document.getElementById("appVersionName").value.trim(),
@@ -702,8 +748,12 @@
 
       renderAdminView();
 
+      currentSelectedIcon = null;
+      currentSelectedApk = null;
+      currentSelectedScreenshots = [];
+
       document.getElementById("formHeading").innerText = "Add or Update Application";
-      document.getElementById("btnSubmit").innerText = "Save & Update Catalog";
+      document.getElementById("btnSubmit").innerText = "1. Save to Catalog Queue";
       document.getElementById("appForm").reset();
       document.getElementById("apkFileName").innerText = "";
       document.getElementById("iconFileName").innerText = "";
@@ -713,61 +763,123 @@
       document.getElementById("ssUploadPrompt").style.display = "block";
       document.getElementById("iconPreview").style.display = "none";
 
-      showStatus("Catalog updated below! Click Copy or Push to GitHub.");
+      showLog("✅ Step 1 Complete! Now click '🚀 Upload Files & Publish to GitHub' below to upload your APK, Icon, and Screenshots.");
+    }
+
+    function fileToBase64(file) {
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => {
+          const base64 = reader.result.split(",")[1];
+          resolve(base64);
+        };
+        reader.onerror = reject;
+        reader.readAsDataURL(file);
+      });
+    }
+
+    async function uploadFileToGitHubRepo(token, repoPath, base64Content, commitMsg) {
+      const apiUrl = `https://api.github.com/repos/${GITHUB_REPO}/contents/${repoPath}`;
+      let existingSha = null;
+
+      const getRes = await fetch(apiUrl, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      if (getRes.ok) {
+        const data = await getRes.json();
+        existingSha = data.sha;
+      }
+
+      const bodyData = {
+        message: commitMsg,
+        content: base64Content,
+        branch: GITHUB_BRANCH
+      };
+      if (existingSha) bodyData.sha = existingSha;
+
+      const putRes = await fetch(apiUrl, {
+        method: "PUT",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(bodyData)
+      });
+
+      if (!putRes.ok) {
+        const errData = await putRes.json();
+        throw new Error(errData.message || `Failed to upload ${repoPath}`);
+      }
+    }
+
+    async function pushToGitHub() {
+      const token = document.getElementById("ghToken").value.trim();
+      if (!token) {
+        alert("Please enter your GitHub Personal Access Token (ghp_...) first!");
+        return;
+      }
+      localStorage.setItem("zappora_gh_token", token);
+
+      const pushBtn = document.getElementById("btnPushGithub");
+      pushBtn.disabled = true;
+
+      try {
+        // 1. Upload any pending Icon, APK, and Screenshot files first
+        for (const appId of Object.keys(pendingUploads)) {
+          const bundle = pendingUploads[appId];
+          const cleanId = sanitizeFileName(appId);
+
+          if (bundle.iconFile) {
+            const cleanName = sanitizeFileName(bundle.iconFile.name);
+            showLog(`⏳ Uploading Icon (${cleanName}) for ${appId}...`);
+            const b64 = await fileToBase64(bundle.iconFile);
+            await uploadFileToGitHubRepo(token, `assets/${cleanId}/icon/${cleanName}`, b64, `Upload icon for ${appId}`);
+          }
+
+          if (bundle.apkFile) {
+            const cleanName = sanitizeFileName(bundle.apkFile.name);
+            showLog(`⏳ Uploading APK (${cleanName}) for ${appId}... Please wait, this may take 10-30 seconds.`);
+            const b64 = await fileToBase64(bundle.apkFile);
+            await uploadFileToGitHubRepo(token, `assets/${cleanId}/apk/${cleanName}`, b64, `Upload APK for ${appId}`);
+          }
+
+          if (bundle.ssFiles && bundle.ssFiles.length > 0) {
+            for (let i = 0; i < bundle.ssFiles.length; i++) {
+              const ssFile = bundle.ssFiles[i];
+              const cleanName = sanitizeFileName(ssFile.name);
+              showLog(`⏳ Uploading Screenshot ${i + 1}/${bundle.ssFiles.length} (${cleanName})...`);
+              const b64 = await fileToBase64(ssFile);
+              await uploadFileToGitHubRepo(token, `assets/${cleanId}/screenshots/${cleanName}`, b64, `Upload screenshot for ${appId}`);
+            }
+          }
+        }
+
+        // 2. Upload updated version.json
+        showLog("⏳ Updating version.json on GitHub...");
+        const jsonBase64 = btoa(unescape(encodeURIComponent(document.getElementById("jsonOutput").value)));
+        await uploadFileToGitHubRepo(token, "version.json", jsonBase64, "Update version.json via Zappora Admin");
+
+        pendingUploads = {};
+        showLog("🎉 All files (Icon, APK, Screenshots) and version.json are now LIVE on GitHub!");
+      } catch (err) {
+        alert("GitHub Upload Error: " + err.message);
+        showLog("❌ Upload failed: " + err.message);
+      } finally {
+        pushBtn.disabled = false;
+      }
     }
 
     function copyJson() {
       const textarea = document.getElementById("jsonOutput");
       textarea.select();
       navigator.clipboard.writeText(textarea.value);
-      showStatus("✓ Copied to clipboard!");
+      showLog("✓ Copied JSON to clipboard!");
     }
 
-    async function pushToGitHub() {
-      const token = document.getElementById("ghToken").value.trim();
-      if (!token) {
-        alert("Please enter your GitHub Personal Access Token first, or use Copy Updated JSON.");
-        return;
-      }
-      localStorage.setItem("zappora_gh_token", token);
-      showStatus("⏳ Pushing version.json to GitHub...");
-
-      try {
-        const apiUrl = `https://api.github.com/repos/${GITHUB_REPO}/contents/version.json`;
-        const getRes = await fetch(apiUrl, {
-          headers: { Authorization: `Bearer ${token}` }
-        });
-        const fileData = await getRes.json();
-
-        const contentBase64 = btoa(unescape(encodeURIComponent(document.getElementById("jsonOutput").value)));
-        const putRes = await fetch(apiUrl, {
-          method: "PUT",
-          headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-Type": "application/json"
-          },
-          body: JSON.stringify({
-            message: "Update version.json via Zappora Admin",
-            content: contentBase64,
-            sha: fileData.sha
-          })
-        });
-
-        if (putRes.ok) {
-          showStatus("✅ Successfully published live to GitHub!");
-        } else {
-          alert("GitHub Push Failed. Check your token permissions.");
-        }
-      } catch (err) {
-        alert("Error connecting to GitHub API: " + err.message);
-      }
-    }
-
-    function showStatus(msg) {
-      const status = document.getElementById("statusText");
-      status.innerText = msg;
-      status.style.display = "inline";
-      setTimeout(() => { status.style.display = "none"; }, 4000);
+    function showLog(msg) {
+      const logBox = document.getElementById("statusLog");
+      logBox.innerText = msg;
+      logBox.style.display = "block";
     }
   </script>
 </body>
