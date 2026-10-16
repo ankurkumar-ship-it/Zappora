@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Zappora Admin Panel</title>
+  <title>Zappora Developer Console</title>
   <link rel="icon" type="image/png" href="favicon.png" />
   <style>
     :root {
@@ -16,6 +16,7 @@
       --text-muted: #64748b;
       --danger: #ef4444;
       --success: #10b981;
+      --warning: #f59e0b;
     }
 
     * {
@@ -32,10 +33,67 @@
     }
 
     .container {
-      max-width: 1040px;
+      max-width: 1060px;
       margin: 0 auto;
     }
 
+    /* Auth Screen (Login / Sign Up) */
+    .auth-wrapper {
+      max-width: 420px;
+      margin: 50px auto;
+      background: var(--surface);
+      border: 1px solid var(--border-color);
+      border-radius: 16px;
+      padding: 30px 26px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+    }
+
+    .auth-logo {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+
+    .auth-logo img {
+      width: 44px;
+      height: 44px;
+      border-radius: 10px;
+    }
+
+    .auth-logo h2 {
+      font-size: 1.5rem;
+      color: var(--primary);
+      font-weight: 800;
+    }
+
+    .auth-tabs {
+      display: flex;
+      margin-bottom: 20px;
+      background: #f1f5f9;
+      border-radius: 10px;
+      padding: 4px;
+    }
+
+    .auth-tab {
+      flex: 1;
+      text-align: center;
+      padding: 9px;
+      font-weight: 700;
+      font-size: 0.9rem;
+      cursor: pointer;
+      border-radius: 8px;
+      color: var(--text-muted);
+    }
+
+    .auth-tab.active {
+      background: var(--surface);
+      color: var(--primary);
+      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    }
+
+    /* Dashboard Header */
     .header {
       padding-bottom: 20px;
       border-bottom: 1px solid var(--border-color);
@@ -59,14 +117,44 @@
       border-radius: 10px;
       object-fit: cover;
       border: 1px solid var(--border-color);
-      box-shadow: 0 2px 5px rgba(2, 132, 199, 0.15);
     }
 
     .header h1 {
-      font-size: 1.55rem;
+      font-size: 1.5rem;
       font-weight: 800;
       color: var(--primary);
-      letter-spacing: -0.3px;
+    }
+
+    .user-bar {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .role-badge {
+      font-size: 0.75rem;
+      font-weight: 700;
+      padding: 4px 10px;
+      border-radius: 20px;
+      background: #e0f2fe;
+      color: var(--primary-dark);
+    }
+
+    .role-badge.admin {
+      background: #fef3c7;
+      color: #b45309;
+    }
+
+    .btn-logout {
+      padding: 7px 14px;
+      border-radius: 8px;
+      border: 1px solid var(--border-color);
+      background: var(--surface);
+      color: var(--danger);
+      font-weight: 700;
+      font-size: 0.82rem;
+      cursor: pointer;
     }
 
     /* Stats Overview Cards */
@@ -122,7 +210,7 @@
       width: 100%;
       border-collapse: collapse;
       text-align: left;
-      font-size: 0.92rem;
+      font-size: 0.9rem;
     }
 
     th, td {
@@ -135,7 +223,7 @@
       background: #f1f5f9;
       color: var(--text-muted);
       font-weight: 700;
-      font-size: 0.8rem;
+      font-size: 0.78rem;
       text-transform: uppercase;
     }
 
@@ -151,30 +239,41 @@
       min-width: 42px;
       border-radius: 10px;
       object-fit: cover;
-      object-position: center;
-      background: #f1f5f9;
       border: 1px solid var(--border-color);
-      display: block;
     }
 
-    .table-badge {
+    .status-pill {
       display: inline-block;
-      font-size: 0.75rem;
+      font-size: 0.74rem;
       font-weight: 700;
       padding: 3px 9px;
-      border-radius: 5px;
-      background: #e0f2fe;
-      color: var(--primary-dark);
+      border-radius: 20px;
+    }
+
+    .status-approved {
+      background: #dcfce7;
+      color: #15803d;
+    }
+
+    .status-pending {
+      background: #fef3c7;
+      color: #b45309;
     }
 
     .action-btn {
-      padding: 6px 12px;
+      padding: 6px 11px;
       border-radius: 6px;
-      font-size: 0.8rem;
-      font-weight: 600;
+      font-size: 0.78rem;
+      font-weight: 700;
       cursor: pointer;
       border: none;
-      margin-right: 6px;
+      margin-right: 4px;
+      margin-bottom: 4px;
+    }
+
+    .btn-approve {
+      background: #dcfce7;
+      color: #15803d;
     }
 
     .btn-edit {
@@ -221,28 +320,15 @@
     .file-dropzone {
       border: 2px dashed #cbd5e1;
       border-radius: 10px;
-      padding: 14px;
+      padding: 12px;
       background: #f8fafc;
       text-align: center;
       cursor: pointer;
-      transition: all 0.2s ease;
       margin-bottom: 8px;
-    }
-
-    .file-dropzone:hover {
-      border-color: var(--primary);
-      background: #f0f9ff;
     }
 
     .file-dropzone input[type="file"] {
       display: none;
-    }
-
-    .file-info-tag {
-      font-size: 0.84rem;
-      color: var(--primary-dark);
-      font-weight: 600;
-      margin-top: 4px;
     }
 
     .preview-box {
@@ -259,12 +345,11 @@
       height: 48px;
       border-radius: 10px;
       object-fit: cover;
-      border: 1px solid var(--border-color);
       display: none;
     }
 
     .ss-thumb {
-      height: 64px !important;
+      height: 60px !important;
       width: auto !important;
       border-radius: 8px !important;
       display: inline-block !important;
@@ -279,58 +364,11 @@
       font-size: 0.95rem;
       font-weight: 700;
       cursor: pointer;
+      width: 100%;
     }
 
     .btn-submit:hover {
       background: var(--primary-dark);
-    }
-
-    textarea.code-output {
-      width: 100%;
-      font-family: monospace;
-      background: #0f172a;
-      color: #38bdf8;
-      padding: 16px;
-      border-radius: 8px;
-      border: 1px solid #334155;
-      font-size: 0.85rem;
-      min-height: 200px;
-      margin-top: 10px;
-    }
-
-    .btn-bar {
-      display: flex;
-      gap: 10px;
-      flex-wrap: wrap;
-      align-items: center;
-      margin-top: 12px;
-    }
-
-    .btn-copy {
-      background: #0f172a;
-      color: white;
-      padding: 11px 18px;
-      border-radius: 8px;
-      font-size: 0.9rem;
-      font-weight: 700;
-      border: none;
-      cursor: pointer;
-    }
-
-    .btn-github {
-      background: var(--success);
-      color: white;
-      padding: 11px 20px;
-      border-radius: 8px;
-      font-size: 0.92rem;
-      font-weight: 700;
-      border: none;
-      cursor: pointer;
-    }
-
-    .btn-github:disabled {
-      opacity: 0.6;
-      cursor: not-allowed;
     }
 
     .upload-log {
@@ -348,28 +386,85 @@
 </head>
 <body>
 
-  <div class="container">
+  <!-- 1. LOGIN / SIGN UP VIEW -->
+  <div id="authSection" class="auth-wrapper">
+    <div class="auth-logo">
+      <img src="favicon.png" alt="Zappora" onerror="this.src='logo.png'" />
+      <h2>Zappora Console</h2>
+    </div>
+    <p style="text-align: center; color: var(--text-muted); font-size: 0.88rem; margin-bottom: 18px;">
+      Publish and manage your Android Apps & Games on Zappora Store.
+    </p>
+
+    <div class="auth-tabs">
+      <div class="auth-tab active" id="tabLogin" onclick="switchAuthTab('login')">Login</div>
+      <div class="auth-tab" id="tabSignup" onclick="switchAuthTab('signup')">Developer Sign Up</div>
+    </div>
+
+    <form id="authForm" onsubmit="handleAuth(event)">
+      <div class="form-group" id="devNameGroup" style="display: none;">
+        <label>Developer / Studio Name</label>
+        <input type="text" id="authDevName" placeholder="e.g. Ankur Studios" />
+      </div>
+      <div class="form-group">
+        <label>Email Address</label>
+        <input type="email" id="authEmail" placeholder="developer@example.com" required />
+      </div>
+      <div class="form-group">
+        <label>Password</label>
+        <input type="password" id="authPassword" placeholder="Minimum 6 characters" required />
+      </div>
+      <button type="submit" class="btn-submit" id="authSubmitBtn">Login to Console</button>
+    </form>
+    <p id="authError" style="color: var(--danger); font-size: 0.85rem; margin-top: 12px; text-align: center;"></p>
+    <div style="text-align: center; margin-top: 18px;">
+      <a href="index.html" style="font-size: 0.85rem; color: var(--primary); text-decoration: none; font-weight: 600;">← Back to Zappora Store</a>
+    </div>
+  </div>
+
+  <!-- 2. DEVELOPER & ADMIN DASHBOARD VIEW -->
+  <div id="dashboardSection" class="container" style="display: none;">
     <div class="header">
       <div class="brand-header">
         <img src="favicon.png" alt="Zappora Logo" class="brand-logo" onerror="this.src='logo.png'" />
-        <h1>Zappora Admin Panel</h1>
+        <div>
+          <h1>Zappora Developer Console</h1>
+          <span id="welcomeText" style="font-size: 0.82rem; color: var(--text-muted);"></span>
+        </div>
       </div>
-      <a href="index.html" target="_blank" style="font-size: 0.9rem; color: var(--primary); font-weight: 700; text-decoration: none;">View Live Store ↗</a>
+      <div class="user-bar">
+        <span id="roleBadge" class="role-badge">Developer</span>
+        <a href="index.html" target="_blank" style="font-size: 0.88rem; color: var(--primary); font-weight: 700; text-decoration: none;">Live Store ↗</a>
+        <button class="btn-logout" onclick="logoutUser()">Logout</button>
+      </div>
+    </div>
+
+    <!-- Super Admin Quick Tools -->
+    <div id="superAdminTools" class="card" style="display: none; background: #fffbeb; border-color: #fde68a;">
+      <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
+        <div>
+          <h2 style="color: #92400e; margin-bottom: 4px; font-size: 1.05rem;">👑 Super Admin Controls</h2>
+          <p style="font-size: 0.84rem; color: #b45309;">You can approve/delete any developer's app, or import your old <code>version.json</code> apps into Firebase.</p>
+        </div>
+        <button onclick="importVersionJsonToFirebase()" style="padding: 9px 14px; background: #d97706; color: #fff; border: none; border-radius: 8px; font-weight: 700; cursor: pointer; font-size: 0.84rem;">
+          🔄 Import Old version.json Apps
+        </button>
+      </div>
     </div>
 
     <!-- Live Counters -->
     <div class="stats-row">
       <div class="stat-card">
-        <span>Total Published</span>
+        <span>Total Apps</span>
         <h3 id="statTotal">0</h3>
       </div>
       <div class="stat-card">
-        <span>Apps</span>
-        <h3 id="statApps">0</h3>
+        <span>Approved & Live</span>
+        <h3 id="statApproved" style="color: var(--success);">0</h3>
       </div>
       <div class="stat-card">
-        <span>Games</span>
-        <h3 id="statGames">0</h3>
+        <span>Pending Review</span>
+        <h3 id="statPending" style="color: var(--warning);">0</h3>
       </div>
       <div class="stat-card">
         <span>Total Downloads</span>
@@ -377,42 +472,42 @@
       </div>
     </div>
 
-    <!-- Existing Apps Inventory Table -->
+    <!-- Apps Inventory Table -->
     <div class="card">
-      <h2>Published Catalog</h2>
+      <h2 id="tableHeading">Your Submitted Applications</h2>
       <div class="table-responsive">
         <table>
           <thead>
             <tr>
-              <th>App Name & Icon</th>
+              <th>App & Developer</th>
               <th>Category</th>
               <th>Version</th>
-              <th>Size</th>
+              <th>Status</th>
               <th>Downloads</th>
               <th>Actions</th>
             </tr>
           </thead>
           <tbody id="catalogTableBody">
             <tr>
-              <td colspan="6" style="text-align: center; color: var(--text-muted);">Loading live items...</td>
+              <td colspan="6" style="text-align: center; color: var(--text-muted);">Loading applications from Firebase...</td>
             </tr>
           </tbody>
         </table>
       </div>
     </div>
 
-    <!-- Add / Edit Application Form -->
+    <!-- Submit / Edit Application Form -->
     <div class="card" id="formCard">
-      <h2 id="formHeading">Add or Update Application</h2>
+      <h2 id="formHeading">Submit New App or Game</h2>
       <form id="appForm" onsubmit="handleFormSubmit(event)">
         <div class="form-row">
           <div class="form-group" style="flex: 1; min-width: 200px;">
-            <label>Unique ID (e.g. peer_slove, bagh_chal)</label>
-            <input type="text" id="appId" placeholder="peer_slove" oninput="refreshGeneratedPaths()" required />
+            <label>Unique App ID (e.g. bagh_chal, neon_dash)</label>
+            <input type="text" id="appId" placeholder="my_awesome_game" required />
           </div>
           <div class="form-group" style="flex: 2; min-width: 260px;">
             <label>Application Title</label>
-            <input type="text" id="appTitle" placeholder="Peer Slove" required />
+            <input type="text" id="appTitle" placeholder="My Awesome Game" required />
           </div>
         </div>
 
@@ -420,62 +515,54 @@
           <div class="form-group" style="flex: 1; min-width: 130px;">
             <label>Category</label>
             <select id="appCategory">
-              <option value="App">App</option>
               <option value="Game">Game</option>
+              <option value="App">App</option>
             </select>
           </div>
           <div class="form-group" style="flex: 1; min-width: 130px;">
             <label>Version Name</label>
-            <input type="text" id="appVersionName" placeholder="1.0.1" required />
-          </div>
-          <div class="form-group" style="flex: 1; min-width: 120px;">
-            <label>Version Code</label>
-            <input type="number" id="appVersionCode" placeholder="1" value="1" required />
+            <input type="text" id="appVersionName" placeholder="1.0.0" required />
           </div>
           <div class="form-group" style="flex: 1; min-width: 140px;">
-            <label>Package Size (Auto)</label>
-            <input type="text" id="appSize" placeholder="Select APK" required />
-          </div>
-          <div class="form-group" style="flex: 1; min-width: 130px;">
-            <label>Downloads Count</label>
-            <input type="number" id="appDownloads" placeholder="0" value="0" />
+            <label>Package Size</label>
+            <input type="text" id="appSize" placeholder="e.g. 12.4MB" required />
           </div>
         </div>
 
-        <!-- App Icon Picker -->
+        <!-- App Icon Picker (Auto converts to fast DataURL or accepts direct link) -->
         <div class="form-group">
-          <label>App Icon (Select Image from PC - Will auto-upload to GitHub)</label>
+          <label>App Icon (Select PNG/JPG from PC OR Paste Direct Image URL)</label>
           <div class="file-dropzone" onclick="document.getElementById('iconFileInput').click()">
             <input type="file" id="iconFileInput" accept="image/*" onchange="handleIconFile(event)" />
-            <span id="iconUploadPrompt">📁 Click to Select Icon Image from PC</span>
+            <span id="iconUploadPrompt">📁 Click to Select App Icon from PC</span>
             <div class="preview-box">
               <img id="iconPreview" alt="Icon Preview" />
-              <span id="iconFileName" class="file-info-tag"></span>
             </div>
           </div>
-          <input type="text" id="appIcon" placeholder="Icon URL (auto-filled when you pick a file)" required />
+          <input type="text" id="appIcon" placeholder="Or paste direct Icon URL (https://...)" required />
         </div>
 
-        <!-- Direct APK File Picker -->
+        <!-- Direct APK File Picker (Auto calculates size) + Link Input -->
         <div class="form-group">
-          <label>Direct APK File (Select .apk from PC - Will auto-upload to GitHub)</label>
+          <label>APK File (Select .apk from PC to auto-read size & enter Download Link)</label>
           <div class="file-dropzone" onclick="document.getElementById('apkFileInput').click()">
             <input type="file" id="apkFileInput" accept=".apk" onchange="handleApkFile(event)" />
-            <span id="apkUploadPrompt">📦 Click to Select .apk File from PC</span>
-            <div id="apkFileName" class="file-info-tag"></div>
+            <span id="apkUploadPrompt">📦 Optional: Select .apk from PC to Auto-Calculate Size</span>
+            <div id="apkFileName" style="font-size: 0.84rem; color: var(--primary-dark); font-weight: 600; margin-top: 4px;"></div>
           </div>
-          <input type="text" id="appDownloadUrl" placeholder="Direct APK Download URL (auto-filled when you pick a file)" required />
+          <input type="url" id="appDownloadUrl" placeholder="Paste Direct APK Download URL (GitHub Release / Google Drive / Direct Link)" required />
         </div>
 
-        <!-- Multiple Game/App Screenshots Picker -->
+        <!-- Super Admin Optional GitHub Auto-Upload Token -->
+        <div class="form-group" id="ghUploadBox" style="display: none; background: #f0f9ff; padding: 12px; border-radius: 8px; border: 1px solid #bae6fd;">
+          <label style="color: #0369a1;">⚡ Super Admin GitHub Auto-Uploader (Optional Token)</label>
+          <input type="password" id="ghToken" placeholder="Enter GitHub Personal Access Token (ghp_...) to auto-host selected APK on GitHub" />
+        </div>
+
+        <!-- Screenshots -->
         <div class="form-group">
-          <label>Game / App Screenshots Slider (Select 2-5 Images from PC - Will auto-upload to GitHub)</label>
-          <div class="file-dropzone" onclick="document.getElementById('ssFileInput').click()">
-            <input type="file" id="ssFileInput" accept="image/*" multiple onchange="handleScreenshotFiles(event)" />
-            <span id="ssUploadPrompt">🖼️ Click to Select Multiple Screenshots from PC</span>
-            <div class="preview-box" id="ssPreviewBox"></div>
-          </div>
-          <textarea id="appScreenshots" rows="2" placeholder="Screenshot URLs separated by commas (auto-filled when you select files)"></textarea>
+          <label>Screenshots URLs (Comma-separated image links)</label>
+          <textarea id="appScreenshots" rows="2" placeholder="https://.../screen1.png, https://.../screen2.png"></textarea>
         </div>
 
         <div class="form-group">
@@ -484,403 +571,377 @@
         </div>
 
         <div class="form-group">
-          <label>Release Notes</label>
+          <label>Release Notes (What's New)</label>
           <textarea id="appNotes" rows="2" required></textarea>
         </div>
 
-        <button type="submit" class="btn-submit" id="btnSubmit">1. Save to Catalog Queue</button>
+        <button type="submit" class="btn-submit" id="btnSubmit">🚀 Submit Application</button>
+        <div class="upload-log" id="statusLog"></div>
       </form>
-    </div>
-
-    <!-- JSON Output & Direct GitHub File + JSON Sync Section -->
-    <div class="card">
-      <h2>2. Publish Files & Catalog to GitHub</h2>
-      <p style="color: var(--text-muted); font-size: 0.88rem; margin-bottom: 10px;">
-        Enter your GitHub Token below and click <strong>Upload Files & Publish to GitHub</strong>. It will automatically upload your selected Icon, APK, Screenshots, and <code>version.json</code> directly to your repository!
-      </p>
-
-      <div class="form-row" style="margin-bottom: 8px;">
-        <div class="form-group" style="flex: 1; margin-bottom: 0;">
-          <input type="password" id="ghToken" placeholder="Enter GitHub Personal Access Token (ghp_...)" />
-        </div>
-      </div>
-
-      <div class="btn-bar">
-        <button class="btn-github" id="btnPushGithub" onclick="pushToGitHub()">🚀 Upload Files & Publish to GitHub</button>
-        <button class="btn-copy" onclick="copyJson()">📋 Copy JSON Only</button>
-      </div>
-
-      <div class="upload-log" id="statusLog"></div>
-
-      <textarea id="jsonOutput" class="code-output" readonly></textarea>
     </div>
   </div>
 
-  <script>
-    let memoryCatalog = [];
+  <!-- FIREBASE SDK & LOGIC -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
+    import {
+      getAuth,
+      createUserWithEmailAndPassword,
+      signInWithEmailAndPassword,
+      signOut,
+      onAuthStateChanged,
+      updateProfile
+    } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
+    import {
+      getFirestore,
+      collection,
+      doc,
+      setDoc,
+      getDocs,
+      deleteDoc,
+      updateDoc
+    } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyDRsTWsXM7NB2EyL6RYOQ6OFL5mAnzaicc",
+      authDomain: "zappora-store.firebaseapp.com",
+      projectId: "zappora-store",
+      storageBucket: "zappora-store.firebasestorage.app",
+      messagingSenderId: "461582949255",
+      appId: "1:461582949255:web:cb7ee3bbf8d54b24879122",
+      measurementId: "G-ZH4T3SV0NE"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+
+    // Put your main admin email here (or any email containing 'ankur' automatically gets Super Admin)
+    const SUPER_ADMIN_EMAILS = ["ankur@zappora.com"];
     const GITHUB_REPO = "ankurkumar-ship-it/Zappora";
-    const GITHUB_BRANCH = "main";
 
-    // Queue for real files selected from PC so they get uploaded to GitHub
-    let pendingUploads = {}; // { appId: { iconFile, apkFile, ssFiles: [] } }
-    let currentSelectedIcon = null;
-    let currentSelectedApk = null;
-    let currentSelectedScreenshots = [];
+    let authMode = "login";
+    let currentUser = null;
+    let isSuperAdmin = false;
+    let allApps = [];
+    let selectedApkFile = null;
 
-    window.addEventListener("DOMContentLoaded", () => {
-      const savedToken = localStorage.getItem("zappora_gh_token");
-      if (savedToken) document.getElementById("ghToken").value = savedToken;
-      initAdmin();
+    // Expose functions to global window for HTML onclick handlers
+    window.switchAuthTab = (mode) => {
+      authMode = mode;
+      document.getElementById("tabLogin").classList.toggle("active", mode === "login");
+      document.getElementById("tabSignup").classList.toggle("active", mode === "signup");
+      document.getElementById("devNameGroup").style.display = mode === "signup" ? "block" : "none";
+      document.getElementById("authSubmitBtn").innerText = mode === "login" ? "Login to Console" : "Create Developer Account";
+      document.getElementById("authError").innerText = "";
+    };
+
+    window.handleAuth = async (e) => {
+      e.preventDefault();
+      const email = document.getElementById("authEmail").value.trim();
+      const pass = document.getElementById("authPassword").value;
+      const devName = document.getElementById("authDevName").value.trim();
+      const errBox = document.getElementById("authError");
+      errBox.innerText = "Processing...";
+
+      try {
+        if (authMode === "signup") {
+          const cred = await createUserWithEmailAndPassword(auth, email, pass);
+          if (devName) {
+            await updateProfile(cred.user, { displayName: devName });
+          }
+        } else {
+          await signInWithEmailAndPassword(auth, email, pass);
+        }
+      } catch (err) {
+        errBox.innerText = err.message.replace("Firebase:", "");
+      }
+    };
+
+    window.logoutUser = async () => {
+      await signOut(auth);
+    };
+
+    onAuthStateChanged(auth, async (user) => {
+      currentUser = user;
+      if (user) {
+        document.getElementById("authSection").style.display = "none";
+        document.getElementById("dashboardSection").style.display = "block";
+
+        // Super Admin Check: if email contains 'ankur' or matches SUPER_ADMIN_EMAILS
+        const emailLower = (user.email || "").toLowerCase();
+        isSuperAdmin = SUPER_ADMIN_EMAILS.includes(emailLower) || emailLower.includes("ankur");
+
+        const devLabel = user.displayName || user.email.split("@")[0];
+        document.getElementById("welcomeText").innerText = `Logged in as: ${devLabel} (${user.email})`;
+
+        const badge = document.getElementById("roleBadge");
+        if (isSuperAdmin) {
+          badge.innerText = "👑 Super Admin";
+          badge.classList.add("admin");
+          document.getElementById("superAdminTools").style.display = "block";
+          document.getElementById("ghUploadBox").style.display = "block";
+          document.getElementById("tableHeading").innerText = "All Developers' Applications (Super Admin View)";
+          const savedToken = localStorage.getItem("zappora_gh_token");
+          if (savedToken) document.getElementById("ghToken").value = savedToken;
+        } else {
+          badge.innerText = "Developer";
+          badge.classList.remove("admin");
+          document.getElementById("superAdminTools").style.display = "none";
+          document.getElementById("ghUploadBox").style.display = "none";
+          document.getElementById("tableHeading").innerText = "Your Submitted Applications";
+        }
+
+        await loadAppsFromFirebase();
+      } else {
+        document.getElementById("authSection").style.display = "block";
+        document.getElementById("dashboardSection").style.display = "none";
+      }
     });
 
-    function sanitizeFileName(name) {
-      return name.replace(/[^a-zA-Z0-9._-]/g, "_");
-    }
-
-    function getRawGitHubUrl(appId, folder, filename) {
-      const cleanId = sanitizeFileName(appId || "app");
-      const cleanFile = sanitizeFileName(filename);
-      return `https://raw.githubusercontent.com/${GITHUB_REPO}/${GITHUB_BRANCH}/assets/${cleanId}/${folder}/${cleanFile}`;
-    }
-
-    function refreshGeneratedPaths() {
-      const appId = document.getElementById("appId").value.trim() || "app";
-      if (currentSelectedIcon) {
-        document.getElementById("appIcon").value = getRawGitHubUrl(appId, "icon", currentSelectedIcon.name);
-      }
-      if (currentSelectedApk) {
-        document.getElementById("appDownloadUrl").value = getRawGitHubUrl(appId, "apk", currentSelectedApk.name);
-      }
-      if (currentSelectedScreenshots.length > 0) {
-        const urls = currentSelectedScreenshots.map(f => getRawGitHubUrl(appId, "screenshots", f.name));
-        document.getElementById("appScreenshots").value = urls.join(", ");
-      }
-    }
-
-    function handleIconFile(event) {
-      const file = event.target.files[0];
-      if (!file) return;
-      currentSelectedIcon = file;
-
-      const preview = document.getElementById("iconPreview");
-      preview.src = URL.createObjectURL(file);
-      preview.style.display = "inline-block";
-      document.getElementById("iconFileName").innerText = file.name + " (Ready to upload)";
-      document.getElementById("iconUploadPrompt").style.display = "none";
-
-      refreshGeneratedPaths();
-    }
-
-    function handleApkFile(event) {
-      const file = event.target.files[0];
-      if (!file) return;
-      currentSelectedApk = file;
-
-      const sizeInMB = (file.size / (1024 * 1024)).toFixed(1) + "MB";
-      document.getElementById("appSize").value = sizeInMB;
-      document.getElementById("apkFileName").innerText = `${file.name} (${sizeInMB} - Ready to upload)`;
-      document.getElementById("apkUploadPrompt").style.display = "none";
-
-      refreshGeneratedPaths();
-    }
-
-    function handleScreenshotFiles(event) {
-      const files = Array.from(event.target.files);
-      if (files.length === 0) return;
-      currentSelectedScreenshots = files;
-
-      const previewBox = document.getElementById("ssPreviewBox");
-      previewBox.innerHTML = "";
-      document.getElementById("ssUploadPrompt").style.display = "none";
-
-      files.forEach(file => {
-        const img = document.createElement("img");
-        img.src = URL.createObjectURL(file);
-        img.className = "ss-thumb";
-        previewBox.appendChild(img);
-      });
-
-      refreshGeneratedPaths();
-    }
-
-    async function initAdmin() {
-      try {
-        const res = await fetch("./version.json?t=" + new Date().getTime(), { cache: "no-store" });
-        if (res.ok) {
-          memoryCatalog = await res.json();
-        } else {
-          memoryCatalog = [];
-        }
-      } catch (e) {
-        memoryCatalog = [];
-      }
-      renderAdminView();
-    }
-
-    function renderAdminView() {
-      document.getElementById("statTotal").innerText = memoryCatalog.length;
-      document.getElementById("statApps").innerText = memoryCatalog.filter(i => i.category === "App").length;
-      document.getElementById("statGames").innerText = memoryCatalog.filter(i => i.category === "Game").length;
-
-      const totalDl = memoryCatalog.reduce((sum, item) => sum + (parseInt(item.downloads, 10) || 0), 0);
-      document.getElementById("statDownloads").innerText = totalDl;
-
+    async function loadAppsFromFirebase() {
       const tbody = document.getElementById("catalogTableBody");
-      tbody.innerHTML = "";
+      try {
+        const snap = await getDocs(collection(db, "apps"));
+        allApps = [];
+        snap.forEach(d => allApps.push(d.data()));
 
-      if (memoryCatalog.length === 0) {
-        tbody.innerHTML = '<tr><td colspan="6" style="text-align: center; color: var(--text-muted);">No applications found. Add your first app below.</td></tr>';
-      } else {
-        memoryCatalog.forEach(app => {
-          const dlCount = parseInt(app.downloads, 10) || 0;
+        // Filter: Normal developer sees only their own apps; Super Admin sees all
+        const visibleApps = isSuperAdmin
+          ? allApps
+          : allApps.filter(a => a.developerUid === currentUser.uid);
+
+        // Update stats
+        document.getElementById("statTotal").innerText = visibleApps.length;
+        document.getElementById("statApproved").innerText = visibleApps.filter(a => a.status === "approved").length;
+        document.getElementById("statPending").innerText = visibleApps.filter(a => a.status !== "approved").length;
+        document.getElementById("statDownloads").innerText = visibleApps.reduce((s, a) => s + (parseInt(a.downloads, 10) || 0), 0);
+
+        tbody.innerHTML = "";
+        if (visibleApps.length === 0) {
+          tbody.innerHTML = '<tr><td colspan="6" style="text-align: center; color: var(--text-muted);">No apps submitted yet. Submit your first app below!</td></tr>';
+          return;
+        }
+
+        visibleApps.forEach(app => {
+          const isApproved = app.status === "approved";
+          const statusBadge = isApproved
+            ? '<span class="status-pill status-approved">✓ Approved</span>'
+            : '<span class="status-pill status-pending">⏳ Pending Review</span>';
+
+          const approveBtn = (isSuperAdmin && !isApproved)
+            ? `<button class="action-btn btn-approve" onclick="approveApp('${app.id}')">✅ Approve</button>`
+            : "";
+
           const row = document.createElement("tr");
           row.innerHTML = `
             <td>
               <div class="app-cell">
                 <img src="${app.icon}" class="table-icon" onerror="this.src='favicon.png'" />
-                <strong>${app.title}</strong>
+                <div>
+                  <strong>${app.title}</strong>
+                  <div style="font-size: 0.76rem; color: var(--text-muted);">by ${app.developerName || "Zappora"}</div>
+                </div>
               </div>
             </td>
-            <td><span class="table-badge">${app.category}</span></td>
-            <td>${app.versionName}</td>
-            <td>${app.size}</td>
-            <td><strong>⬇ ${dlCount}</strong></td>
+            <td>${app.category}</td>
+            <td>v${app.versionName}</td>
+            <td>${statusBadge}</td>
+            <td><strong>⬇ ${app.downloads || 0}</strong></td>
             <td>
+              ${approveBtn}
               <button class="action-btn btn-edit" onclick="populateEdit('${app.id}')">Edit</button>
               <button class="action-btn btn-delete" onclick="deleteApp('${app.id}')">Delete</button>
             </td>
           `;
           tbody.appendChild(row);
         });
+      } catch (err) {
+        tbody.innerHTML = `<tr><td colspan="6" style="color: var(--danger); text-align:center;">Error loading Firestore: ${err.message} (Make sure Firestore Database is enabled in Test Mode!)</td></tr>`;
       }
-
-      document.getElementById("jsonOutput").value = JSON.stringify(memoryCatalog, null, 2);
     }
 
-    function populateEdit(id) {
-      const item = memoryCatalog.find(i => i.id === id);
-      if (!item) return;
+    // Compress & convert selected Icon into lightweight DataURL so any developer can upload without external hosting
+    window.handleIconFile = (event) => {
+      const file = event.target.files[0];
+      if (!file) return;
 
-      currentSelectedIcon = null;
-      currentSelectedApk = null;
-      currentSelectedScreenshots = [];
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        const img = new Image();
+        img.onload = () => {
+          const canvas = document.createElement("canvas");
+          canvas.width = 128;
+          canvas.height = 128;
+          const ctx = canvas.getContext("2d");
+          ctx.drawImage(img, 0, 0, 128, 128);
+          const dataUrl = canvas.toDataURL("image/webp", 0.85);
+          document.getElementById("iconPreview").src = dataUrl;
+          document.getElementById("iconPreview").style.display = "inline-block";
+          document.getElementById("appIcon").value = dataUrl;
+        };
+        img.src = e.target.result;
+      };
+      reader.readAsDataURL(file);
+    };
+
+    window.handleApkFile = (event) => {
+      const file = event.target.files[0];
+      if (!file) return;
+      selectedApkFile = file;
+
+      const sizeInMB = (file.size / (1024 * 1024)).toFixed(1) + "MB";
+      document.getElementById("appSize").value = sizeInMB;
+      document.getElementById("apkFileName").innerText = `Selected: ${file.name} (${sizeInMB})`;
+
+      if (isSuperAdmin) {
+        const appId = document.getElementById("appId").value.trim() || "app";
+        const cleanFile = file.name.replace(/[^a-zA-Z0-9._-]/g, "_");
+        document.getElementById("appDownloadUrl").value = `https://raw.githubusercontent.com/${GITHUB_REPO}/main/assets/${appId}/apk/${cleanFile}`;
+      }
+    };
+
+    window.handleFormSubmit = async (e) => {
+      e.preventDefault();
+      const btn = document.getElementById("btnSubmit");
+      const log = document.getElementById("statusLog");
+      btn.disabled = true;
+
+      try {
+        const appId = document.getElementById("appId").value.trim().replace(/\s+/g, "_");
+        const token = document.getElementById("ghToken").value.trim();
+
+        // If Super Admin entered GitHub Token & selected an APK file, auto-upload APK to GitHub
+        if (isSuperAdmin && token && selectedApkFile) {
+          localStorage.setItem("zappora_gh_token", token);
+          log.style.display = "block";
+          log.innerText = "⏳ Uploading APK to GitHub repository...";
+
+          const cleanFile = selectedApkFile.name.replace(/[^a-zA-Z0-9._-]/g, "_");
+          const repoPath = `assets/${appId}/apk/${cleanFile}`;
+          const b64 = await new Promise((res, rej) => {
+            const r = new FileReader();
+            r.onload = () => res(r.result.split(",")[1]);
+            r.onerror = rej;
+            r.readAsDataURL(selectedApkFile);
+          });
+
+          const apiUrl = `https://api.github.com/repos/${GITHUB_REPO}/contents/${repoPath}`;
+          let sha = null;
+          const getR = await fetch(apiUrl, { headers: { Authorization: `Bearer ${token}` } });
+          if (getR.ok) sha = (await getR.json()).sha;
+
+          const body = { message: `Upload APK for ${appId}`, content: b64, branch: "main" };
+          if (sha) body.sha = sha;
+          await fetch(apiUrl, {
+            method: "PUT",
+            headers: { Authorization: `Bearer ${token}`, "Content-Type": "application/json" },
+            body: JSON.stringify(body)
+          });
+        }
+
+        const rawScreenshots = document.getElementById("appScreenshots").value.trim();
+        const screenshotsArray = rawScreenshots
+          ? rawScreenshots.split(",").map(s => s.trim()).filter(Boolean)
+          : [];
+
+        const existing = allApps.find(a => a.id === appId);
+        const appData = {
+          id: appId,
+          title: document.getElementById("appTitle").value.trim(),
+          category: document.getElementById("appCategory").value,
+          versionName: document.getElementById("appVersionName").value.trim(),
+          versionCode: 1,
+          size: document.getElementById("appSize").value.trim(),
+          downloads: existing ? (existing.downloads || 0) : 0,
+          desc: document.getElementById("appDesc").value.trim(),
+          icon: document.getElementById("appIcon").value.trim(),
+          downloadUrl: document.getElementById("appDownloadUrl").value.trim(),
+          screenshots: screenshotsArray,
+          releaseNotes: document.getElementById("appNotes").value.trim(),
+          developerUid: existing ? existing.developerUid : currentUser.uid,
+          developerName: existing ? existing.developerName : (currentUser.displayName || currentUser.email.split("@")[0]),
+          status: isSuperAdmin ? "approved" : "pending",
+          updatedAt: Date.now()
+        };
+
+        await setDoc(doc(db, "apps", appId), appData);
+
+        document.getElementById("appForm").reset();
+        document.getElementById("iconPreview").style.display = "none";
+        document.getElementById("apkFileName").innerText = "";
+        selectedApkFile = null;
+
+        log.style.display = "block";
+        log.innerText = isSuperAdmin
+          ? "✅ Application published LIVE on Zappora Store!"
+          : "✅ Submitted! Your app is Pending Admin Approval and will go live once verified.";
+
+        await loadAppsFromFirebase();
+      } catch (err) {
+        alert("Submit Error: " + err.message);
+      } finally {
+        btn.disabled = false;
+      }
+    };
+
+    window.approveApp = async (id) => {
+      if (!isSuperAdmin) return;
+      await updateDoc(doc(db, "apps", id), { status: "approved" });
+      await loadAppsFromFirebase();
+    };
+
+    window.deleteApp = async (id) => {
+      if (confirm("Are you sure you want to delete this app?")) {
+        await deleteDoc(doc(db, "apps", id));
+        await loadAppsFromFirebase();
+      }
+    };
+
+    window.populateEdit = (id) => {
+      const item = allApps.find(a => a.id === id);
+      if (!item) return;
 
       document.getElementById("appId").value = item.id;
       document.getElementById("appTitle").value = item.title;
       document.getElementById("appCategory").value = item.category;
       document.getElementById("appVersionName").value = item.versionName;
-      document.getElementById("appVersionCode").value = item.versionCode || 1;
       document.getElementById("appSize").value = item.size;
-      document.getElementById("appDownloads").value = item.downloads || 0;
       document.getElementById("appIcon").value = item.icon;
       document.getElementById("appDownloadUrl").value = item.downloadUrl;
       document.getElementById("appScreenshots").value = Array.isArray(item.screenshots) ? item.screenshots.join(", ") : "";
       document.getElementById("appDesc").value = item.desc;
       document.getElementById("appNotes").value = item.releaseNotes || "";
 
-      const preview = document.getElementById("iconPreview");
-      preview.src = item.icon;
-      preview.style.display = "inline-block";
-
-      const ssPreviewBox = document.getElementById("ssPreviewBox");
-      ssPreviewBox.innerHTML = "";
-      if (Array.isArray(item.screenshots) && item.screenshots.length > 0) {
-        document.getElementById("ssUploadPrompt").style.display = "none";
-        item.screenshots.forEach(url => {
-          const img = document.createElement("img");
-          img.src = url;
-          img.className = "ss-thumb";
-          ssPreviewBox.appendChild(img);
-        });
-      }
-
       document.getElementById("formHeading").innerText = "Editing: " + item.title;
-      document.getElementById("btnSubmit").innerText = "1. Update in Catalog Queue";
       document.getElementById("formCard").scrollIntoView({ behavior: "smooth" });
-    }
+    };
 
-    function deleteApp(id) {
-      if (confirm("Are you sure you want to remove this app?")) {
-        memoryCatalog = memoryCatalog.filter(i => i.id !== id);
-        delete pendingUploads[id];
-        renderAdminView();
-      }
-    }
-
-    function handleFormSubmit(e) {
-      e.preventDefault();
-
-      const appId = document.getElementById("appId").value.trim();
-      const rawScreenshots = document.getElementById("appScreenshots").value.trim();
-      const screenshotsArray = rawScreenshots
-        ? rawScreenshots.split(",").map(s => s.trim()).filter(Boolean)
-        : [];
-
-      // Save selected files in memory queue for GitHub upload
-      pendingUploads[appId] = {
-        iconFile: currentSelectedIcon,
-        apkFile: currentSelectedApk,
-        ssFiles: [...currentSelectedScreenshots]
-      };
-
-      const newEntry = {
-        id: appId,
-        title: document.getElementById("appTitle").value.trim(),
-        category: document.getElementById("appCategory").value,
-        versionName: document.getElementById("appVersionName").value.trim(),
-        versionCode: parseInt(document.getElementById("appVersionCode").value.trim(), 10) || 1,
-        size: document.getElementById("appSize").value.trim(),
-        downloads: parseInt(document.getElementById("appDownloads").value, 10) || 0,
-        desc: document.getElementById("appDesc").value.trim(),
-        icon: document.getElementById("appIcon").value.trim(),
-        downloadUrl: document.getElementById("appDownloadUrl").value.trim(),
-        screenshots: screenshotsArray,
-        forceUpdate: false,
-        releaseNotes: document.getElementById("appNotes").value.trim()
-      };
-
-      const existingIndex = memoryCatalog.findIndex(i => i.id === newEntry.id);
-      if (existingIndex !== -1) {
-        memoryCatalog[existingIndex] = newEntry;
-      } else {
-        memoryCatalog.unshift(newEntry);
-      }
-
-      renderAdminView();
-
-      currentSelectedIcon = null;
-      currentSelectedApk = null;
-      currentSelectedScreenshots = [];
-
-      document.getElementById("formHeading").innerText = "Add or Update Application";
-      document.getElementById("btnSubmit").innerText = "1. Save to Catalog Queue";
-      document.getElementById("appForm").reset();
-      document.getElementById("apkFileName").innerText = "";
-      document.getElementById("iconFileName").innerText = "";
-      document.getElementById("ssPreviewBox").innerHTML = "";
-      document.getElementById("apkUploadPrompt").style.display = "block";
-      document.getElementById("iconUploadPrompt").style.display = "block";
-      document.getElementById("ssUploadPrompt").style.display = "block";
-      document.getElementById("iconPreview").style.display = "none";
-
-      showLog("✅ Step 1 Complete! Now click '🚀 Upload Files & Publish to GitHub' below to upload your APK, Icon, and Screenshots.");
-    }
-
-    function fileToBase64(file) {
-      return new Promise((resolve, reject) => {
-        const reader = new FileReader();
-        reader.onload = () => {
-          const base64 = reader.result.split(",")[1];
-          resolve(base64);
-        };
-        reader.onerror = reject;
-        reader.readAsDataURL(file);
-      });
-    }
-
-    async function uploadFileToGitHubRepo(token, repoPath, base64Content, commitMsg) {
-      const apiUrl = `https://api.github.com/repos/${GITHUB_REPO}/contents/${repoPath}`;
-      let existingSha = null;
-
-      const getRes = await fetch(apiUrl, {
-        headers: { Authorization: `Bearer ${token}` }
-      });
-      if (getRes.ok) {
-        const data = await getRes.json();
-        existingSha = data.sha;
-      }
-
-      const bodyData = {
-        message: commitMsg,
-        content: base64Content,
-        branch: GITHUB_BRANCH
-      };
-      if (existingSha) bodyData.sha = existingSha;
-
-      const putRes = await fetch(apiUrl, {
-        method: "PUT",
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify(bodyData)
-      });
-
-      if (!putRes.ok) {
-        const errData = await putRes.json();
-        throw new Error(errData.message || `Failed to upload ${repoPath}`);
-      }
-    }
-
-    async function pushToGitHub() {
-      const token = document.getElementById("ghToken").value.trim();
-      if (!token) {
-        alert("Please enter your GitHub Personal Access Token (ghp_...) first!");
-        return;
-      }
-      localStorage.setItem("zappora_gh_token", token);
-
-      const pushBtn = document.getElementById("btnPushGithub");
-      pushBtn.disabled = true;
-
+    // 1-Click Import of existing version.json apps into Firebase
+    window.importVersionJsonToFirebase = async () => {
       try {
-        // 1. Upload any pending Icon, APK, and Screenshot files first
-        for (const appId of Object.keys(pendingUploads)) {
-          const bundle = pendingUploads[appId];
-          const cleanId = sanitizeFileName(appId);
+        const res = await fetch("./version.json?t=" + Date.now());
+        if (!res.ok) throw new Error("Could not fetch version.json");
+        const list = await res.json();
 
-          if (bundle.iconFile) {
-            const cleanName = sanitizeFileName(bundle.iconFile.name);
-            showLog(`⏳ Uploading Icon (${cleanName}) for ${appId}...`);
-            const b64 = await fileToBase64(bundle.iconFile);
-            await uploadFileToGitHubRepo(token, `assets/${cleanId}/icon/${cleanName}`, b64, `Upload icon for ${appId}`);
-          }
-
-          if (bundle.apkFile) {
-            const cleanName = sanitizeFileName(bundle.apkFile.name);
-            showLog(`⏳ Uploading APK (${cleanName}) for ${appId}... Please wait, this may take 10-30 seconds.`);
-            const b64 = await fileToBase64(bundle.apkFile);
-            await uploadFileToGitHubRepo(token, `assets/${cleanId}/apk/${cleanName}`, b64, `Upload APK for ${appId}`);
-          }
-
-          if (bundle.ssFiles && bundle.ssFiles.length > 0) {
-            for (let i = 0; i < bundle.ssFiles.length; i++) {
-              const ssFile = bundle.ssFiles[i];
-              const cleanName = sanitizeFileName(ssFile.name);
-              showLog(`⏳ Uploading Screenshot ${i + 1}/${bundle.ssFiles.length} (${cleanName})...`);
-              const b64 = await fileToBase64(ssFile);
-              await uploadFileToGitHubRepo(token, `assets/${cleanId}/screenshots/${cleanName}`, b64, `Upload screenshot for ${appId}`);
-            }
-          }
+        for (const item of list) {
+          const cleanId = (item.id || item.title).replace(/\s+/g, "_");
+          await setDoc(doc(db, "apps", cleanId), {
+            ...item,
+            id: cleanId,
+            developerUid: currentUser.uid,
+            developerName: "Zappora Official",
+            status: "approved",
+            downloads: parseInt(item.downloads, 10) || 0,
+            updatedAt: Date.now()
+          });
         }
-
-        // 2. Upload updated version.json
-        showLog("⏳ Updating version.json on GitHub...");
-        const jsonBase64 = btoa(unescape(encodeURIComponent(document.getElementById("jsonOutput").value)));
-        await uploadFileToGitHubRepo(token, "version.json", jsonBase64, "Update version.json via Zappora Admin");
-
-        pendingUploads = {};
-        showLog("🎉 All files (Icon, APK, Screenshots) and version.json are now LIVE on GitHub!");
+        alert(`🎉 Successfully imported ${list.length} apps from version.json to Firebase!`);
+        await loadAppsFromFirebase();
       } catch (err) {
-        alert("GitHub Upload Error: " + err.message);
-        showLog("❌ Upload failed: " + err.message);
-      } finally {
-        pushBtn.disabled = false;
+        alert("Import failed: " + err.message);
       }
-    }
-
-    function copyJson() {
-      const textarea = document.getElementById("jsonOutput");
-      textarea.select();
-      navigator.clipboard.writeText(textarea.value);
-      showLog("✓ Copied JSON to clipboard!");
-    }
-
-    function showLog(msg) {
-      const logBox = document.getElementById("statusLog");
-      logBox.innerText = msg;
-      logBox.style.display = "block";
-    }
+    };
   </script>
 </body>
 </html>
