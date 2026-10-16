@@ -6,18 +6,8 @@
   <meta name="google-site-verification" content="6jiXl6s2IAC-aG8T4irxKVlaAU4hgpy3pNOG39xYv3U" />
   <title>Zappora | Official Android App & Game Directory</title>
   <link rel="icon" type="image/png" href="favicon.png" />
-  <!-- SEO & Keywords -->
   <meta name="description" content="Download official Android APK games and apps directly from Zappora. Fast, verified, and secure downloads without third-party installers." />
   <meta name="keywords" content="Zappora, download apk, android apps download, apk store, deca chat apk, download android games, free apk portal" />
-  <meta name="author" content="Zappora" />
-  <meta name="robots" content="index, follow" />
-
-  <!-- Social Media Preview -->
-  <meta property="og:title" content="Zappora App Store | Official Android App & Game Directory" />
-  <meta property="og:description" content="Download official Android APK games and apps directly from Zappora." />
-  <meta property="og:image" content="favicon.png" />
-  <meta property="og:type" content="website" />
-
   <style>
     :root {
       --bg-main: #f8fafc;
@@ -72,7 +62,6 @@
       margin: 0 auto;
     }
 
-    /* Navbar */
     .navbar {
       display: flex;
       justify-content: space-between;
@@ -106,16 +95,23 @@
     .nav-right {
       display: flex;
       align-items: center;
-      gap: 12px;
+      gap: 10px;
     }
 
-    .nav-tag {
-      font-size: 0.82rem;
-      color: var(--text-muted);
-      font-weight: 600;
-      display: flex;
-      align-items: center;
-      gap: 5px;
+    .btn-publish {
+      background: var(--primary-light);
+      color: var(--primary);
+      text-decoration: none;
+      font-size: 0.84rem;
+      font-weight: 700;
+      padding: 8px 14px;
+      border-radius: 10px;
+      transition: 0.2s;
+    }
+
+    .btn-publish:hover {
+      background: var(--primary);
+      color: #fff;
     }
 
     .theme-btn {
@@ -130,14 +126,8 @@
       align-items: center;
       justify-content: center;
       font-size: 1.1rem;
-      transition: 0.2s;
     }
 
-    .theme-btn:hover {
-      border-color: var(--primary);
-    }
-
-    /* Hero Section */
     .hero {
       text-align: center;
       margin-bottom: 30px;
@@ -148,7 +138,6 @@
       color: var(--text-main);
       margin-bottom: 8px;
       font-weight: 800;
-      letter-spacing: -0.5px;
     }
 
     .hero h1 span {
@@ -162,7 +151,6 @@
       margin: 0 auto;
     }
 
-    /* Search & Filter */
     .controls {
       display: flex;
       gap: 12px;
@@ -173,7 +161,6 @@
     .search-box {
       flex: 1;
       min-width: 250px;
-      position: relative;
     }
 
     .search-box input {
@@ -185,13 +172,6 @@
       color: var(--text-main);
       font-size: 0.95rem;
       outline: none;
-      box-shadow: var(--shadow-card);
-      transition: border-color 0.2s, box-shadow 0.2s;
-    }
-
-    .search-box input:focus {
-      border-color: var(--primary);
-      box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.15);
     }
 
     .filter-select {
@@ -204,10 +184,8 @@
       font-weight: 600;
       outline: none;
       cursor: pointer;
-      box-shadow: var(--shadow-card);
     }
 
-    /* Category Pills */
     .category-pills {
       display: flex;
       gap: 10px;
@@ -225,7 +203,6 @@
       border: 1px solid var(--border-color);
       background: var(--surface);
       color: var(--text-muted);
-      transition: 0.2s;
       white-space: nowrap;
     }
 
@@ -235,7 +212,6 @@
       border-color: var(--primary);
     }
 
-    /* Apps Grid */
     .grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
@@ -282,8 +258,14 @@
       font-size: 1.12rem;
       font-weight: 700;
       color: var(--text-main);
+      margin-bottom: 3px;
+    }
+
+    .dev-label {
+      font-size: 0.75rem;
+      color: var(--text-muted);
       margin-bottom: 5px;
-      line-height: 1.25;
+      font-weight: 500;
     }
 
     .badge-row {
@@ -295,12 +277,11 @@
 
     .badge {
       display: inline-block;
-      font-size: 0.7rem;
+      font-size: 0.68rem;
       font-weight: 700;
       padding: 3px 8px;
       border-radius: 5px;
       text-transform: uppercase;
-      letter-spacing: 0.5px;
     }
 
     .badge-game {
@@ -320,9 +301,6 @@
       background: var(--surface-hover);
       padding: 3px 8px;
       border-radius: 5px;
-      display: inline-flex;
-      align-items: center;
-      gap: 3px;
     }
 
     .app-desc {
@@ -367,13 +345,8 @@
       font-size: 0.92rem;
       padding: 11px;
       border-radius: 9px;
-      transition: background-color 0.2s;
       border: none;
       cursor: pointer;
-    }
-
-    .btn-download:hover {
-      background: #0369a1;
     }
 
     .btn-info {
@@ -387,7 +360,7 @@
       cursor: pointer;
     }
 
-    /* Modal Popup (App Details + Screenshots Slider) */
+    /* Modal Popup */
     .modal-overlay {
       position: fixed;
       inset: 0;
@@ -414,7 +387,6 @@
       max-height: 90vh;
       overflow-y: auto;
       position: relative;
-      box-shadow: 0 20px 40px rgba(0,0,0,0.35);
     }
 
     .modal-close {
@@ -465,7 +437,6 @@
       color: var(--text-muted);
       text-transform: uppercase;
       font-weight: 600;
-      margin-bottom: 2px;
     }
 
     .modal-stats div strong {
@@ -473,7 +444,6 @@
       color: var(--text-main);
     }
 
-    /* Screenshots Slider */
     .screenshots-wrapper {
       margin-bottom: 20px;
     }
@@ -483,7 +453,6 @@
       color: var(--primary);
       margin-bottom: 10px;
       text-transform: uppercase;
-      letter-spacing: 0.5px;
     }
 
     .screenshots-slider {
@@ -491,37 +460,17 @@
       gap: 12px;
       overflow-x: auto;
       padding-bottom: 8px;
-      scroll-snap-type: x mandatory;
-      scrollbar-width: thin;
-    }
-
-    .screenshots-slider::-webkit-scrollbar {
-      height: 6px;
-    }
-
-    .screenshots-slider::-webkit-scrollbar-thumb {
-      background: var(--border-color);
-      border-radius: 10px;
     }
 
     .screenshot-item {
       height: 210px;
       width: auto;
-      min-width: 115px;
       border-radius: 12px;
       object-fit: cover;
       border: 1px solid var(--border-color);
-      scroll-snap-align: start;
       cursor: zoom-in;
-      transition: transform 0.2s;
-      background: var(--surface-hover);
     }
 
-    .screenshot-item:hover {
-      transform: scale(1.02);
-    }
-
-    /* Fullscreen Lightbox for Screenshots */
     .lightbox-overlay {
       position: fixed;
       inset: 0;
@@ -531,7 +480,6 @@
       justify-content: center;
       z-index: 20000;
       padding: 20px;
-      cursor: zoom-out;
     }
 
     .lightbox-overlay.open {
@@ -542,7 +490,6 @@
       max-width: 95%;
       max-height: 92vh;
       border-radius: 12px;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
     }
 
     .modal-section {
@@ -554,7 +501,6 @@
       color: var(--primary);
       margin-bottom: 6px;
       text-transform: uppercase;
-      letter-spacing: 0.5px;
     }
 
     .modal-section p {
@@ -572,72 +518,11 @@
       border: 1px solid var(--border-color);
     }
 
-    .info-box h3 {
-      color: var(--primary);
-      margin-bottom: 10px;
-      font-size: 1.05rem;
-      font-weight: 700;
-    }
-
-    .info-box ol {
-      margin-left: 20px;
-      color: var(--text-muted);
-      font-size: 0.92rem;
-      line-height: 1.6;
-    }
-
     footer {
       text-align: center;
       margin-top: 40px;
       color: var(--text-muted);
       font-size: 0.85rem;
-    }
-
-    /* Sticky Bottom Navigation Bar (Mobile) */
-    .mobile-bottom-nav {
-      display: none;
-    }
-
-    @media (max-width: 768px) {
-      .hero h1 {
-        font-size: 1.65rem;
-      }
-      .nav-tag {
-        display: none;
-      }
-      .modal-stats {
-        grid-template-columns: repeat(2, 1fr);
-      }
-      .mobile-bottom-nav {
-        display: flex;
-        position: fixed;
-        bottom: 0;
-        left: 0;
-        right: 0;
-        height: 62px;
-        background: var(--surface);
-        border-top: 1px solid var(--border-color);
-        justify-content: space-around;
-        align-items: center;
-        z-index: 9999;
-      }
-
-      .nav-item {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        gap: 3px;
-        color: var(--text-muted);
-        font-size: 0.75rem;
-        font-weight: 600;
-        cursor: pointer;
-      }
-
-      .nav-item.active {
-        color: var(--primary);
-        font-weight: 700;
-      }
     }
   </style>
 </head>
@@ -650,14 +535,14 @@
         <span>ZAPPORA</span>
       </a>
       <div class="nav-right">
-        <div class="nav-tag">✓ Verified Android Builds</div>
+        <a href="admin.html" class="btn-publish">+ Publish App</a>
         <button class="theme-btn" id="themeToggle" onclick="toggleTheme()" title="Toggle Dark/Light Mode">🌙</button>
       </div>
     </header>
 
     <section class="hero">
       <h1>Direct <span>APK Download</span> Portal</h1>
-      <p>Download official game and app releases directly to your device without third-party installers.</p>
+      <p>Download official game and app releases directly to your device, or publish your own Android creations.</p>
     </section>
 
     <section class="controls">
@@ -680,11 +565,11 @@
     <main class="grid" id="appsContainer"></main>
 
     <section class="info-box">
-      <h3>Installation Guide</h3>
-      <ol>
+      <h3 style="color: var(--primary); margin-bottom: 8px;">Installation Guide</h3>
+      <ol style="margin-left: 20px; color: var(--text-muted); font-size: 0.92rem; line-height: 1.6;">
         <li>Click the <strong>Download APK</strong> button on the required application card.</li>
-        <li>If your mobile browser prompts with a security warning regarding unknown packages, select <strong>Download anyway</strong>.</li>
-        <li>Open the downloaded package and enable <strong>Allow from this source</strong> within Android settings to complete the installation.</li>
+        <li>If your mobile browser prompts with a security warning, select <strong>Download anyway</strong>.</li>
+        <li>Open the downloaded package and enable <strong>Allow from this source</strong> to complete installation.</li>
       </ol>
     </section>
 
@@ -693,14 +578,15 @@
     </footer>
   </div>
 
-  <!-- App Details & Screenshots Modal -->
+  <!-- App Details Modal -->
   <div class="modal-overlay" id="appModal" onclick="closeModal()">
     <div class="modal-box" onclick="event.stopPropagation()">
       <button class="modal-close" onclick="closeModal()">✕</button>
       <div class="modal-header">
         <img id="mIcon" src="" alt="App Icon" class="modal-icon" onerror="this.src='favicon.png'" />
         <div>
-          <h2 id="mTitle" style="font-size: 1.3rem; margin-bottom: 6px;"></h2>
+          <h2 id="mTitle" style="font-size: 1.3rem; margin-bottom: 2px;"></h2>
+          <div id="mDeveloper" style="font-size: 0.82rem; color: var(--text-muted); margin-bottom: 6px;"></div>
           <span id="mBadge" class="badge"></span>
         </div>
       </div>
@@ -724,7 +610,6 @@
         </div>
       </div>
 
-      <!-- Screenshots Slider Section -->
       <div class="screenshots-wrapper" id="mScreenshotsWrapper" style="display: none;">
         <h4>Preview Screenshots</h4>
         <div class="screenshots-slider" id="mScreenshotsList"></div>
@@ -747,98 +632,106 @@
     </div>
   </div>
 
-  <!-- Fullscreen Screenshot Zoom Lightbox -->
   <div class="lightbox-overlay" id="lightbox" onclick="closeLightbox()">
     <img id="lightboxImg" src="" alt="Screenshot Fullscreen" />
   </div>
 
-  <!-- Mobile Bottom Navigation -->
-  <nav class="mobile-bottom-nav">
-    <div class="nav-item active" id="nav-ALL" onclick="setCategory('ALL')">
-      <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M4 8h4V4H4v4zm6 12h4v-4h-4v4zm-6 0h4v-4H4v4zm0-6h4v-4H4v4zm6 0h4v-4h-4v4zm6-10v4h4V4h-4zm-6 4h4V4h-4v4zm6 6h4v-4h-4v4zm0 6h4v-4h-4v4z"/></svg>
-      <span>All</span>
-    </div>
-    <div class="nav-item" id="nav-Game" onclick="setCategory('Game')">
-      <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M21 6H3c-1.1 0-2 .9-2 2v8c0 1.1.9 2 2 2h18c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2zm-10 7H8v3H6v-3H3v-2h3V8h2v3h3v2zm4.5 2c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5zm4-3c-.83 0-1.5-.67-1.5-1.5S18.67 9 19.5 9s1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/></svg>
-      <span>Games</span>
-    </div>
-    <div class="nav-item" id="nav-App" onclick="setCategory('App')">
-      <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M17 1.01L7 1c-1.1 0-2 .9-2 2v18c0 1.1.9 2 2 2h10c1.1 0 2-.9 2-2V3c0-1.1-.9-1.99-2-1.99zM17 19H7V5h10v14z"/></svg>
-      <span>Apps</span>
-    </div>
-    <div class="nav-item" onclick="document.getElementById('searchInput').focus(); window.scrollTo({top: 0, behavior: 'smooth'});">
-      <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
-      <span>Search</span>
-    </div>
-  </nav>
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
+    import {
+      getFirestore,
+      collection,
+      getDocs,
+      doc,
+      updateDoc,
+      increment
+    } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
 
-  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyDRsTWsXM7NB2EyL6RYOQ6OFL5mAnzaicc",
+      authDomain: "zappora-store.firebaseapp.com",
+      projectId: "zappora-store",
+      storageBucket: "zappora-store.firebasestorage.app",
+      messagingSenderId: "461582949255",
+      appId: "1:461582949255:web:cb7ee3bbf8d54b24879122",
+      measurementId: "G-ZH4T3SV0NE"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
     let activeCatalog = [];
     let currentModalApp = null;
 
-    // Theme Setup
     if (localStorage.getItem("zappora_theme") === "dark") {
       document.body.classList.add("dark-mode");
       document.getElementById("themeToggle").innerText = "☀️";
     }
 
-    function toggleTheme() {
+    window.toggleTheme = () => {
       document.body.classList.toggle("dark-mode");
       const isDark = document.body.classList.contains("dark-mode");
       localStorage.setItem("zappora_theme", isDark ? "dark" : "light");
       document.getElementById("themeToggle").innerText = isDark ? "☀️" : "🌙";
-    }
+    };
 
-    // Get Total Download Count (Base from version.json + Local Clicks)
-    function getDownloadCount(app) {
-      const base = parseInt(app.downloads, 10) || 0;
-      const localBoost = parseInt(localStorage.getItem("zappora_dl_" + app.id), 10) || 0;
-      return base + localBoost;
-    }
+    // Load approved apps from Firebase (with automatic fallback to version.json)
+    async function loadCatalog() {
+      const container = document.getElementById("appsContainer");
+      try {
+        const snap = await getDocs(collection(db, "apps"));
+        const fbApps = [];
+        snap.forEach(d => {
+          const data = d.data();
+          if (data.status === "approved") fbApps.push(data);
+        });
 
-    function recordDownload(appId) {
-      const currentBoost = parseInt(localStorage.getItem("zappora_dl_" + appId), 10) || 0;
-      localStorage.setItem("zappora_dl_" + appId, currentBoost + 1);
-
-      const app = activeCatalog.find(i => i.id === appId);
-      if (app) {
-        const updatedTotal = getDownloadCount(app);
-        const cardCounter = document.getElementById("dl-count-" + appId);
-        if (cardCounter) cardCounter.innerText = `⬇ ${updatedTotal}`;
-        if (currentModalApp && currentModalApp.id === appId) {
-          document.getElementById("mDownloads").innerText = updatedTotal;
+        if (fbApps.length > 0) {
+          activeCatalog = fbApps;
+        } else {
+          const response = await fetch("./version.json?cache_bust=" + Date.now());
+          if (response.ok) activeCatalog = await response.json();
+        }
+        renderApps(activeCatalog);
+      } catch (err) {
+        const response = await fetch("./version.json?cache_bust=" + Date.now());
+        if (response.ok) {
+          activeCatalog = await response.json();
+          renderApps(activeCatalog);
         }
       }
     }
 
-    // Load version.json
-    async function loadCatalog() {
-      const container = document.getElementById("appsContainer");
-      try {
-        const response = await fetch("./version.json?cache_bust=" + Date.now(), { cache: "no-store" });
-        if (!response.ok) throw new Error("Could not load version.json");
-        activeCatalog = await response.json();
-        renderApps(activeCatalog);
-      } catch (err) {
-        container.innerHTML = '<p style="grid-column: 1/-1; text-align: center; color: var(--text-muted); padding: 40px;">Unable to load apps repository. Please verify version.json.</p>';
+    window.recordDownload = async (appId) => {
+      const appItem = activeCatalog.find(i => i.id === appId);
+      if (appItem) {
+        appItem.downloads = (parseInt(appItem.downloads, 10) || 0) + 1;
+        const badgeEl = document.getElementById("dl-count-" + appId);
+        if (badgeEl) badgeEl.innerText = `⬇ ${appItem.downloads}`;
+        if (currentModalApp && currentModalApp.id === appId) {
+          document.getElementById("mDownloads").innerText = appItem.downloads;
+        }
       }
-    }
+      try {
+        await updateDoc(doc(db, "apps", appId), { downloads: increment(1) });
+      } catch (e) {}
+    };
 
     function renderApps(items) {
       const container = document.getElementById("appsContainer");
       container.innerHTML = "";
 
       if (items.length === 0) {
-        container.innerHTML = '<p style="grid-column: 1/-1; text-align: center; color: var(--text-muted); padding: 40px;">No results found matching your search query.</p>';
+        container.innerHTML = '<p style="grid-column: 1/-1; text-align: center; color: var(--text-muted); padding: 40px;">No results found.</p>';
         return;
       }
 
       items.forEach(app => {
         const badgeClass = app.category === "Game" ? "badge-game" : "badge-app";
-        const totalDl = getDownloadCount(app);
+        const totalDl = parseInt(app.downloads, 10) || 0;
         const card = document.createElement("article");
         card.className = "card";
-        card.onclick = () => openModal(app.id);
+        card.onclick = () => window.openModal(app.id);
 
         card.innerHTML = `
           <div>
@@ -846,6 +739,7 @@
               <img src="${app.icon}" alt="${app.title}" class="app-icon" onerror="this.src='favicon.png'" />
               <div class="app-title-block">
                 <h2>${app.title}</h2>
+                <div class="dev-label">by ${app.developerName || "Zappora Official"}</div>
                 <div class="badge-row">
                   <span class="badge ${badgeClass}">${app.category}</span>
                   <span class="dl-pill" id="dl-count-${app.id}">⬇ ${totalDl}</span>
@@ -861,7 +755,7 @@
             </div>
             <div class="card-actions" onclick="event.stopPropagation()">
               <a href="${app.downloadUrl}" class="btn-download" target="_blank" rel="noopener noreferrer" onclick="recordDownload('${app.id}')">Download APK</a>
-              <button class="btn-info" onclick="openModal('${app.id}')" title="View Screenshots & Details">ⓘ</button>
+              <button class="btn-info" onclick="openModal('${app.id}')">ⓘ</button>
             </div>
           </div>
         `;
@@ -869,21 +763,15 @@
       });
     }
 
-    function setCategory(cat) {
+    window.setCategory = (cat) => {
       document.getElementById("categoryFilter").value = cat;
-
       document.querySelectorAll(".pill").forEach(p => p.classList.remove("active"));
       const activePill = document.getElementById("pill-" + cat);
       if (activePill) activePill.classList.add("active");
+      window.filterCatalog();
+    };
 
-      document.querySelectorAll(".mobile-bottom-nav .nav-item").forEach(n => n.classList.remove("active"));
-      const activeNav = document.getElementById("nav-" + cat);
-      if (activeNav) activeNav.classList.add("active");
-
-      filterCatalog();
-    }
-
-    function filterCatalog() {
+    window.filterCatalog = () => {
       const query = document.getElementById("searchInput").value.toLowerCase().trim();
       const selectedCategory = document.getElementById("categoryFilter").value;
 
@@ -892,27 +780,26 @@
         const matchesCategory = selectedCategory === "ALL" || item.category === selectedCategory;
         return matchesText && matchesCategory;
       });
-
       renderApps(filtered);
-    }
+    };
 
-    function openModal(id) {
+    window.openModal = (id) => {
       const app = activeCatalog.find(item => item.id === id);
       if (!app) return;
       currentModalApp = app;
 
       document.getElementById("mIcon").src = app.icon;
       document.getElementById("mTitle").innerText = app.title;
+      document.getElementById("mDeveloper").innerText = "Developed by " + (app.developerName || "Zappora Official");
       const badge = document.getElementById("mBadge");
       badge.innerText = app.category;
       badge.className = "badge " + (app.category === "Game" ? "badge-game" : "badge-app");
 
       document.getElementById("mVersion").innerText = "v" + app.versionName;
       document.getElementById("mSize").innerText = app.size;
-      document.getElementById("mDownloads").innerText = getDownloadCount(app);
+      document.getElementById("mDownloads").innerText = parseInt(app.downloads, 10) || 0;
       document.getElementById("mDesc").innerText = app.desc;
 
-      // Render Screenshots Slider if available
       const ssWrapper = document.getElementById("mScreenshotsWrapper");
       const ssList = document.getElementById("mScreenshotsList");
       ssList.innerHTML = "";
@@ -924,8 +811,7 @@
           const img = document.createElement("img");
           img.src = url.trim();
           img.className = "screenshot-item";
-          img.alt = app.title + " screenshot";
-          img.onclick = () => openLightbox(url.trim());
+          img.onclick = () => window.openLightbox(url.trim());
           ssList.appendChild(img);
         });
       } else {
@@ -942,40 +828,33 @@
 
       const dlBtn = document.getElementById("mDownloadBtn");
       dlBtn.href = app.downloadUrl;
-      dlBtn.onclick = () => recordDownload(app.id);
+      dlBtn.onclick = () => window.recordDownload(app.id);
 
       document.getElementById("appModal").classList.add("open");
-    }
+    };
 
-    function closeModal() {
-      document.getElementById("appModal").classList.remove("open");
-    }
-
-    function openLightbox(imgUrl) {
-      document.getElementById("lightboxImg").src = imgUrl;
+    window.closeModal = () => document.getElementById("appModal").classList.remove("open");
+    window.openLightbox = (url) => {
+      document.getElementById("lightboxImg").src = url;
       document.getElementById("lightbox").classList.add("open");
-    }
+    };
+    window.closeLightbox = () => document.getElementById("lightbox").classList.remove("open");
 
-    function closeLightbox() {
-      document.getElementById("lightbox").classList.remove("open");
-    }
-
-    function shareCurrentApp() {
+    window.shareCurrentApp = () => {
       if (!currentModalApp) return;
-      const shareData = {
-        title: currentModalApp.title + " - Zappora Store",
-        text: `Download ${currentModalApp.title} (v${currentModalApp.versionName}) directly from Zappora Store!`,
-        url: window.location.href
-      };
       if (navigator.share) {
-        navigator.share(shareData);
+        navigator.share({
+          title: currentModalApp.title,
+          text: `Download ${currentModalApp.title} from Zappora Store!`,
+          url: window.location.href
+        });
       } else {
         navigator.clipboard.writeText(currentModalApp.downloadUrl);
-        alert("Download link copied to clipboard!");
+        alert("Download link copied!");
       }
-    }
+    };
 
-    window.addEventListener("DOMContentLoaded", loadCatalog);
+    loadCatalog();
   </script>
 </body>
 </html>
