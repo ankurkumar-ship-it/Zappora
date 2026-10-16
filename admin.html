@@ -1096,6 +1096,11 @@
         document.getElementById("dashboardSection").style.display = "block";
 
         await ensureDeveloperProfile(user);
+        if (currentDeveloperDoc.banned === true) {
+         alert("Your developer account has been suspended by the administrator.");
+         await signOut(auth);
+         return;
+        }
         isSuperAdmin = await verifyStrictSuperAdmin(user);
 
         document.getElementById("welcomeText").innerText = `${currentDeveloperDoc.studioName} (@${currentDeveloperDoc.username}) | ${user.email}`;
