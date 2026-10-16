@@ -7,10 +7,11 @@
   <link rel="icon" type="image/png" href="favicon.png" />
   <style>
     :root {
-      --bg-main: #f8fafc;
+      --bg-main: #f1f5f9;
       --surface: #ffffff;
       --primary: #0284c7;
       --primary-dark: #0369a1;
+      --primary-light: #e0f2fe;
       --border-color: #e2e8f0;
       --text-main: #0f172a;
       --text-muted: #64748b;
@@ -29,48 +30,106 @@
     body {
       background-color: var(--bg-main);
       color: var(--text-main);
-      padding: 24px 16px 80px;
+      padding: 20px 16px 80px;
     }
 
     .container {
-      max-width: 1060px;
+      max-width: 1100px;
       margin: 0 auto;
     }
 
-    /* Auth Screen (Login / Sign Up) */
+    /* ==========================================
+       REAL SECURE AUTH SCREEN (LOGIN / SIGNUP)
+       ========================================== */
     .auth-wrapper {
-      max-width: 420px;
-      margin: 50px auto;
+      max-width: 440px;
+      margin: 36px auto;
       background: var(--surface);
       border: 1px solid var(--border-color);
-      border-radius: 16px;
-      padding: 30px 26px;
-      box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+      border-radius: 20px;
+      padding: 32px 28px;
+      box-shadow: 0 20px 40px -15px rgba(15, 23, 42, 0.1);
     }
 
     .auth-logo {
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 10px;
-      margin-bottom: 20px;
+      gap: 12px;
+      margin-bottom: 8px;
     }
 
     .auth-logo img {
-      width: 44px;
-      height: 44px;
-      border-radius: 10px;
+      width: 46px;
+      height: 46px;
+      border-radius: 12px;
+      box-shadow: 0 4px 10px rgba(2, 132, 199, 0.2);
     }
 
     .auth-logo h2 {
-      font-size: 1.5rem;
-      color: var(--primary);
+      font-size: 1.55rem;
+      color: var(--text-main);
       font-weight: 800;
+      letter-spacing: -0.5px;
     }
+
+    .auth-logo h2 span {
+      color: var(--primary);
+    }
+
+    .auth-sub {
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 0.88rem;
+      margin-bottom: 22px;
+    }
+
+    .btn-google {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      padding: 12px;
+      border-radius: 10px;
+      border: 1px solid var(--border-color);
+      background: #ffffff;
+      color: var(--text-main);
+      font-size: 0.94rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.2s;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.04);
+    }
+
+    .btn-google:hover {
+      background: #f8fafc;
+      border-color: #cbd5e1;
+    }
+
+    .divider {
+      display: flex;
+      align-items: center;
+      text-align: center;
+      margin: 18px 0;
+      color: var(--text-muted);
+      font-size: 0.78rem;
+      font-weight: 600;
+      text-transform: uppercase;
+    }
+
+    .divider::before, .divider::after {
+      content: "";
+      flex: 1;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .divider:not(:empty)::before { margin-right: 10px; }
+    .divider:not(:empty)::after { margin-left: 10px; }
 
     .auth-tabs {
       display: flex;
-      margin-bottom: 20px;
+      margin-bottom: 18px;
       background: #f1f5f9;
       border-radius: 10px;
       padding: 4px;
@@ -81,23 +140,103 @@
       text-align: center;
       padding: 9px;
       font-weight: 700;
-      font-size: 0.9rem;
+      font-size: 0.88rem;
       cursor: pointer;
       border-radius: 8px;
       color: var(--text-muted);
+      transition: 0.2s;
     }
 
     .auth-tab.active {
       background: var(--surface);
       color: var(--primary);
-      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+      box-shadow: 0 2px 4px rgba(0,0,0,0.06);
     }
 
-    /* Dashboard Header */
+    .input-wrap {
+      position: relative;
+    }
+
+    .toggle-pass {
+      position: absolute;
+      right: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-size: 0.95rem;
+      color: var(--text-muted);
+    }
+
+    .strength-bar {
+      height: 4px;
+      border-radius: 4px;
+      background: #e2e8f0;
+      margin-top: 6px;
+      overflow: hidden;
+      display: none;
+    }
+
+    .strength-fill {
+      height: 100%;
+      width: 0%;
+      transition: width 0.3s, background 0.3s;
+    }
+
+    .forgot-row {
+      display: flex;
+      justify-content: flex-end;
+      margin-top: -8px;
+      margin-bottom: 14px;
+    }
+
+    .forgot-link {
+      font-size: 0.82rem;
+      color: var(--primary);
+      font-weight: 600;
+      cursor: pointer;
+      background: none;
+      border: none;
+    }
+
+    .forgot-link:hover {
+      text-decoration: underline;
+    }
+
+    .auth-msg {
+      font-size: 0.85rem;
+      margin-top: 14px;
+      text-align: center;
+      padding: 10px;
+      border-radius: 8px;
+      display: none;
+      font-weight: 600;
+    }
+
+    .auth-msg.err {
+      display: block;
+      background: #fef2f2;
+      color: var(--danger);
+      border: 1px solid #fecaca;
+    }
+
+    .auth-msg.ok {
+      display: block;
+      background: #f0fdf4;
+      color: #15803d;
+      border: 1px solid #bbf7d0;
+    }
+
+    /* ==========================================
+       DASHBOARD & DEVELOPER TOOLS
+       ========================================== */
     .header {
-      padding-bottom: 20px;
-      border-bottom: 1px solid var(--border-color);
-      margin-bottom: 25px;
+      background: var(--surface);
+      padding: 16px 22px;
+      border-radius: 14px;
+      border: 1px solid var(--border-color);
+      margin-bottom: 22px;
       display: flex;
       justify-content: space-between;
       align-items: center;
@@ -112,15 +251,15 @@
     }
 
     .brand-logo {
-      width: 40px;
-      height: 40px;
+      width: 42px;
+      height: 42px;
       border-radius: 10px;
       object-fit: cover;
       border: 1px solid var(--border-color);
     }
 
     .header h1 {
-      font-size: 1.5rem;
+      font-size: 1.35rem;
       font-weight: 800;
       color: var(--primary);
     }
@@ -128,22 +267,23 @@
     .user-bar {
       display: flex;
       align-items: center;
-      gap: 12px;
+      gap: 10px;
       flex-wrap: wrap;
     }
 
     .role-badge {
       font-size: 0.75rem;
       font-weight: 700;
-      padding: 4px 10px;
+      padding: 5px 12px;
       border-radius: 20px;
-      background: #e0f2fe;
+      background: var(--primary-light);
       color: var(--primary-dark);
     }
 
     .role-badge.admin {
       background: #fef3c7;
       color: #b45309;
+      border: 1px solid #fde68a;
     }
 
     .btn-logout {
@@ -162,7 +302,7 @@
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
       gap: 16px;
-      margin-bottom: 25px;
+      margin-bottom: 22px;
     }
 
     .stat-card {
@@ -173,7 +313,7 @@
     }
 
     .stat-card span {
-      font-size: 0.8rem;
+      font-size: 0.78rem;
       color: var(--text-muted);
       font-weight: 700;
       text-transform: uppercase;
@@ -188,22 +328,21 @@
     .card {
       background: var(--surface);
       border: 1px solid var(--border-color);
-      border-radius: 12px;
-      padding: 24px;
-      margin-bottom: 25px;
+      border-radius: 14px;
+      padding: 22px;
+      margin-bottom: 22px;
       box-shadow: 0 1px 3px rgba(0,0,0,0.03);
     }
 
     .card h2 {
-      font-size: 1.22rem;
-      margin-bottom: 16px;
+      font-size: 1.18rem;
+      margin-bottom: 14px;
       color: var(--text-main);
     }
 
     /* Table Styles */
     .table-responsive {
       overflow-x: auto;
-      margin-top: 10px;
     }
 
     table {
@@ -220,10 +359,10 @@
     }
 
     th {
-      background: #f1f5f9;
+      background: #f8fafc;
       color: var(--text-muted);
       font-weight: 700;
-      font-size: 0.78rem;
+      font-size: 0.76rem;
       text-transform: uppercase;
     }
 
@@ -234,9 +373,9 @@
     }
 
     .table-icon {
-      width: 42px;
-      height: 42px;
-      min-width: 42px;
+      width: 44px;
+      height: 44px;
+      min-width: 44px;
       border-radius: 10px;
       object-fit: cover;
       border: 1px solid var(--border-color);
@@ -244,26 +383,20 @@
 
     .status-pill {
       display: inline-block;
-      font-size: 0.74rem;
+      font-size: 0.73rem;
       font-weight: 700;
       padding: 3px 9px;
       border-radius: 20px;
     }
 
-    .status-approved {
-      background: #dcfce7;
-      color: #15803d;
-    }
-
-    .status-pending {
-      background: #fef3c7;
-      color: #b45309;
-    }
+    .status-approved { background: #dcfce7; color: #15803d; }
+    .status-pending { background: #fef3c7; color: #b45309; }
+    .status-rejected { background: #fee2e2; color: #b91c1c; }
 
     .action-btn {
-      padding: 6px 11px;
+      padding: 6px 10px;
       border-radius: 6px;
-      font-size: 0.78rem;
+      font-size: 0.76rem;
       font-weight: 700;
       cursor: pointer;
       border: none;
@@ -271,40 +404,32 @@
       margin-bottom: 4px;
     }
 
-    .btn-approve {
-      background: #dcfce7;
-      color: #15803d;
-    }
-
-    .btn-edit {
-      background: #e0f2fe;
-      color: var(--primary-dark);
-    }
-
-    .btn-delete {
-      background: #fee2e2;
-      color: var(--danger);
-    }
+    .btn-approve { background: #dcfce7; color: #15803d; }
+    .btn-reject { background: #ffedd5; color: #c2410c; }
+    .btn-edit { background: #e0f2fe; color: var(--primary-dark); }
+    .btn-delete { background: #fee2e2; color: var(--danger); }
 
     /* Form Design */
     .form-group {
-      margin-bottom: 16px;
+      margin-bottom: 15px;
     }
 
     .form-group label {
       display: block;
-      font-size: 0.86rem;
+      font-size: 0.84rem;
       font-weight: 600;
-      margin-bottom: 6px;
+      margin-bottom: 5px;
+      color: var(--text-main);
     }
 
     .form-group input, .form-group select, .form-group textarea {
       width: 100%;
       padding: 10px 14px;
-      border-radius: 8px;
+      border-radius: 9px;
       border: 1px solid var(--border-color);
-      font-size: 0.94rem;
+      font-size: 0.93rem;
       outline: none;
+      transition: border-color 0.2s;
     }
 
     .form-group input:focus, .form-group textarea:focus {
@@ -360,11 +485,12 @@
       background: var(--primary);
       color: #fff;
       border: none;
-      border-radius: 8px;
+      border-radius: 10px;
       font-size: 0.95rem;
       font-weight: 700;
       cursor: pointer;
       width: 100%;
+      transition: background 0.2s;
     }
 
     .btn-submit:hover {
@@ -386,65 +512,123 @@
 </head>
 <body>
 
-  <!-- 1. LOGIN / SIGN UP VIEW -->
+  <!-- ==========================================
+       1. REAL SECURE LOGIN / SIGN UP VIEW
+       ========================================== -->
   <div id="authSection" class="auth-wrapper">
     <div class="auth-logo">
       <img src="favicon.png" alt="Zappora" onerror="this.src='logo.png'" />
-      <h2>Zappora Console</h2>
+      <h2>Zappora <span>Console</span></h2>
     </div>
-    <p style="text-align: center; color: var(--text-muted); font-size: 0.88rem; margin-bottom: 18px;">
-      Publish and manage your Android Apps & Games on Zappora Store.
-    </p>
+    <p class="auth-sub">Official Developer Portal — Publish & manage Android apps</p>
+
+    <!-- Google Sign In Button -->
+    <button type="button" class="btn-google" onclick="loginWithGoogle()">
+      <svg width="20" height="20" viewBox="0 0 48 48">
+        <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/>
+        <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/>
+        <path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/>
+        <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/>
+      </svg>
+      Continue with Google
+    </button>
+
+    <div class="divider">or continue with email</div>
 
     <div class="auth-tabs">
-      <div class="auth-tab active" id="tabLogin" onclick="switchAuthTab('login')">Login</div>
-      <div class="auth-tab" id="tabSignup" onclick="switchAuthTab('signup')">Developer Sign Up</div>
+      <div class="auth-tab active" id="tabLogin" onclick="switchAuthTab('login')">Sign In</div>
+      <div class="auth-tab" id="tabSignup" onclick="switchAuthTab('signup')">Create Account</div>
     </div>
 
     <form id="authForm" onsubmit="handleAuth(event)">
-      <div class="form-group" id="devNameGroup" style="display: none;">
-        <label>Developer / Studio Name</label>
-        <input type="text" id="authDevName" placeholder="e.g. Ankur Studios" />
+      <!-- Extra Fields for Developer Sign Up -->
+      <div id="signupExtraFields" style="display: none;">
+        <div class="form-group">
+          <label>Unique Developer Username (@handle)</label>
+          <input type="text" id="authUsername" placeholder="e.g. ankur_dev (lowercase, no spaces)" oninput="this.value = this.value.toLowerCase().replace(/[^a-z0-9_]/g, '')" />
+        </div>
+        <div class="form-group">
+          <label>Studio / Publisher Name</label>
+          <input type="text" id="authDevName" placeholder="e.g. Ankur Studios" />
+        </div>
       </div>
+
       <div class="form-group">
         <label>Email Address</label>
         <input type="email" id="authEmail" placeholder="developer@example.com" required />
       </div>
+
       <div class="form-group">
         <label>Password</label>
-        <input type="password" id="authPassword" placeholder="Minimum 6 characters" required />
+        <div class="input-wrap">
+          <input type="password" id="authPassword" placeholder="Minimum 6 characters" oninput="checkPassStrength(this.value)" required />
+          <button type="button" class="toggle-pass" onclick="togglePasswordVisibility()">👁️</button>
+        </div>
+        <div class="strength-bar" id="strengthBar">
+          <div class="strength-fill" id="strengthFill"></div>
+        </div>
       </div>
-      <button type="submit" class="btn-submit" id="authSubmitBtn">Login to Console</button>
+
+      <div class="forgot-row" id="forgotRow">
+        <button type="button" class="forgot-link" onclick="handleForgotPassword()">Forgot Password?</button>
+      </div>
+
+      <button type="submit" class="btn-submit" id="authSubmitBtn">Sign In to Console</button>
     </form>
-    <p id="authError" style="color: var(--danger); font-size: 0.85rem; margin-top: 12px; text-align: center;"></p>
-    <div style="text-align: center; margin-top: 18px;">
-      <a href="index.html" style="font-size: 0.85rem; color: var(--primary); text-decoration: none; font-weight: 600;">← Back to Zappora Store</a>
+
+    <div id="authMsg" class="auth-msg"></div>
+
+    <div style="text-align: center; margin-top: 20px;">
+      <a href="index.html" style="font-size: 0.85rem; color: var(--primary); text-decoration: none; font-weight: 700;">← Back to Zappora Store</a>
     </div>
   </div>
 
-  <!-- 2. DEVELOPER & ADMIN DASHBOARD VIEW -->
+  <!-- ==========================================
+       2. DEVELOPER & SUPER ADMIN DASHBOARD
+       ========================================== -->
   <div id="dashboardSection" class="container" style="display: none;">
     <div class="header">
       <div class="brand-header">
         <img src="favicon.png" alt="Zappora Logo" class="brand-logo" onerror="this.src='logo.png'" />
         <div>
           <h1>Zappora Developer Console</h1>
-          <span id="welcomeText" style="font-size: 0.82rem; color: var(--text-muted);"></span>
+          <span id="welcomeText" style="font-size: 0.82rem; color: var(--text-muted); font-weight: 600;"></span>
         </div>
       </div>
       <div class="user-bar">
         <span id="roleBadge" class="role-badge">Developer</span>
-        <a href="index.html" target="_blank" style="font-size: 0.88rem; color: var(--primary); font-weight: 700; text-decoration: none;">Live Store ↗</a>
+        <button onclick="toggleProfileCard()" style="padding: 7px 12px; border-radius: 8px; border: 1px solid var(--border-color); background: #f8fafc; font-weight: 700; font-size: 0.82rem; cursor: pointer;">⚙️ Profile</button>
+        <a href="index.html" target="_blank" style="font-size: 0.85rem; color: var(--primary); font-weight: 700; text-decoration: none; padding: 7px 10px;">Live Store ↗</a>
         <button class="btn-logout" onclick="logoutUser()">Logout</button>
       </div>
     </div>
 
-    <!-- Super Admin Quick Tools -->
+    <!-- Developer Profile Settings Modal/Card -->
+    <div id="profileCard" class="card" style="display: none; background: #f8fafc; border-color: #bae6fd;">
+      <h2>👤 Developer Profile & Username Settings</h2>
+      <div class="form-row">
+        <div class="form-group" style="flex: 1; min-width: 200px;">
+          <label>Unique Username (@handle)</label>
+          <input type="text" id="profUsername" oninput="this.value = this.value.toLowerCase().replace(/[^a-z0-9_]/g, '')" placeholder="ankur_dev" />
+        </div>
+        <div class="form-group" style="flex: 1; min-width: 200px;">
+          <label>Studio / Display Name</label>
+          <input type="text" id="profStudioName" placeholder="Ankur Studios" />
+        </div>
+        <div class="form-group" style="flex: 1; min-width: 200px;">
+          <label>Developer Website / GitHub Link (Optional)</label>
+          <input type="url" id="profWebsite" placeholder="https://github.com/..." />
+        </div>
+      </div>
+      <button onclick="saveDeveloperProfile()" class="btn-submit" style="width: auto; padding: 10px 20px;">Save Profile</button>
+    </div>
+
+    <!-- Super Admin Quick Tools (ONLY visible to the verified Owner UID) -->
     <div id="superAdminTools" class="card" style="display: none; background: #fffbeb; border-color: #fde68a;">
       <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
         <div>
-          <h2 style="color: #92400e; margin-bottom: 4px; font-size: 1.05rem;">👑 Super Admin Controls</h2>
-          <p style="font-size: 0.84rem; color: #b45309;">You can approve/delete any developer's app, or import your old <code>version.json</code> apps into Firebase.</p>
+          <h2 style="color: #92400e; margin-bottom: 4px; font-size: 1.05rem;">👑 Verified Super Admin Controls (UID Locked)</h2>
+          <p style="font-size: 0.83rem; color: #b45309;">Only your locked Firebase UID has access to this panel. Nobody else can fake your name or email.</p>
         </div>
         <button onclick="importVersionJsonToFirebase()" style="padding: 9px 14px; background: #d97706; color: #fff; border: none; border-radius: 8px; font-weight: 700; cursor: pointer; font-size: 0.84rem;">
           🔄 Import Old version.json Apps
@@ -455,7 +639,7 @@
     <!-- Live Counters -->
     <div class="stats-row">
       <div class="stat-card">
-        <span>Total Apps</span>
+        <span>Total Submitted</span>
         <h3 id="statTotal">0</h3>
       </div>
       <div class="stat-card">
@@ -489,7 +673,7 @@
           </thead>
           <tbody id="catalogTableBody">
             <tr>
-              <td colspan="6" style="text-align: center; color: var(--text-muted);">Loading applications from Firebase...</td>
+              <td colspan="6" style="text-align: center; color: var(--text-muted);">Loading applications...</td>
             </tr>
           </tbody>
         </table>
@@ -525,44 +709,49 @@
           </div>
           <div class="form-group" style="flex: 1; min-width: 140px;">
             <label>Package Size</label>
-            <input type="text" id="appSize" placeholder="e.g. 12.4MB" required />
+            <input type="text" id="appSize" placeholder="Select APK or type size" required />
           </div>
         </div>
 
-        <!-- App Icon Picker (Auto converts to fast DataURL or accepts direct link) -->
+        <!-- App Icon Picker -->
         <div class="form-group">
-          <label>App Icon (Select PNG/JPG from PC OR Paste Direct Image URL)</label>
+          <label>App Icon (Select PNG/JPG from PC OR Paste Direct URL)</label>
           <div class="file-dropzone" onclick="document.getElementById('iconFileInput').click()">
             <input type="file" id="iconFileInput" accept="image/*" onchange="handleIconFile(event)" />
-            <span id="iconUploadPrompt">📁 Click to Select App Icon from PC</span>
+            <span id="iconUploadPrompt">📁 Click to Select App Icon from PC (Auto-compressed)</span>
             <div class="preview-box">
               <img id="iconPreview" alt="Icon Preview" />
             </div>
           </div>
-          <input type="text" id="appIcon" placeholder="Or paste direct Icon URL (https://...)" required />
+          <input type="text" id="appIcon" placeholder="Icon URL or DataURL" required />
         </div>
 
-        <!-- Direct APK File Picker (Auto calculates size) + Link Input -->
+        <!-- Direct APK File Picker -->
         <div class="form-group">
           <label>APK File (Select .apk from PC to auto-read size & enter Download Link)</label>
           <div class="file-dropzone" onclick="document.getElementById('apkFileInput').click()">
             <input type="file" id="apkFileInput" accept=".apk" onchange="handleApkFile(event)" />
-            <span id="apkUploadPrompt">📦 Optional: Select .apk from PC to Auto-Calculate Size</span>
+            <span id="apkUploadPrompt">📦 Click to Select .apk from PC to Auto-Calculate Size</span>
             <div id="apkFileName" style="font-size: 0.84rem; color: var(--primary-dark); font-weight: 600; margin-top: 4px;"></div>
           </div>
-          <input type="url" id="appDownloadUrl" placeholder="Paste Direct APK Download URL (GitHub Release / Google Drive / Direct Link)" required />
+          <input type="url" id="appDownloadUrl" placeholder="Paste Direct APK Download URL (GitHub Release / Drive / MediaFire)" required />
         </div>
 
         <!-- Super Admin Optional GitHub Auto-Upload Token -->
         <div class="form-group" id="ghUploadBox" style="display: none; background: #f0f9ff; padding: 12px; border-radius: 8px; border: 1px solid #bae6fd;">
           <label style="color: #0369a1;">⚡ Super Admin GitHub Auto-Uploader (Optional Token)</label>
-          <input type="password" id="ghToken" placeholder="Enter GitHub Personal Access Token (ghp_...) to auto-host selected APK on GitHub" />
+          <input type="password" id="ghToken" placeholder="Enter GitHub Personal Access Token (ghp_...) to auto-upload selected APK & Screenshots to GitHub" />
         </div>
 
-        <!-- Screenshots -->
+        <!-- Screenshots Picker -->
         <div class="form-group">
-          <label>Screenshots URLs (Comma-separated image links)</label>
-          <textarea id="appScreenshots" rows="2" placeholder="https://.../screen1.png, https://.../screen2.png"></textarea>
+          <label>Game / App Screenshots (Select Images from PC OR Paste Comma-Separated URLs)</label>
+          <div class="file-dropzone" onclick="document.getElementById('ssFileInput').click()">
+            <input type="file" id="ssFileInput" accept="image/*" multiple onchange="handleScreenshotFiles(event)" />
+            <span id="ssUploadPrompt">🖼️ Click to Select 2-4 Screenshots from PC</span>
+            <div class="preview-box" id="ssPreviewBox"></div>
+          </div>
+          <textarea id="appScreenshots" rows="2" placeholder="Screenshot URLs separated by commas"></textarea>
         </div>
 
         <div class="form-group">
@@ -581,13 +770,16 @@
     </div>
   </div>
 
-  <!-- FIREBASE SDK & LOGIC -->
+  <!-- FIREBASE SDK & HIGH-SECURITY LOGIC -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
     import {
       getAuth,
       createUserWithEmailAndPassword,
       signInWithEmailAndPassword,
+      GoogleAuthProvider,
+      signInWithPopup,
+      sendPasswordResetEmail,
       signOut,
       onAuthStateChanged,
       updateProfile
@@ -596,10 +788,13 @@
       getFirestore,
       collection,
       doc,
+      getDoc,
       setDoc,
       getDocs,
       deleteDoc,
-      updateDoc
+      updateDoc,
+      query,
+      where
     } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
 
     const firebaseConfig = {
@@ -615,51 +810,212 @@
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
     const db = getFirestore(app);
+    const googleProvider = new GoogleAuthProvider();
 
-    // Put your main admin email here (or any email containing 'ankur' automatically gets Super Admin)
-    const SUPER_ADMIN_EMAILS = ["ankur@zappora.com"];
     const GITHUB_REPO = "ankurkumar-ship-it/Zappora";
 
     let authMode = "login";
     let currentUser = null;
+    let currentDeveloperDoc = null;
     let isSuperAdmin = false;
     let allApps = [];
     let selectedApkFile = null;
 
-    // Expose functions to global window for HTML onclick handlers
+    // UI Helpers
+    function showAuthMessage(text, isError = true) {
+      const box = document.getElementById("authMsg");
+      box.innerText = text;
+      box.className = "auth-msg " + (isError ? "err" : "ok");
+    }
+
+    window.togglePasswordVisibility = () => {
+      const passInput = document.getElementById("authPassword");
+      passInput.type = passInput.type === "password" ? "text" : "password";
+    };
+
+    window.checkPassStrength = (val) => {
+      const bar = document.getElementById("strengthBar");
+      const fill = document.getElementById("strengthFill");
+      if (authMode !== "signup" || !val) {
+        bar.style.display = "none";
+        return;
+      }
+      bar.style.display = "block";
+      let score = 0;
+      if (val.length >= 6) score += 35;
+      if (val.length >= 10) score += 25;
+      if (/[A-Z0-9!@#$%^&*]/.test(val)) score += 40;
+
+      fill.style.width = Math.min(score, 100) + "%";
+      fill.style.background = score < 50 ? "#ef4444" : score < 80 ? "#f59e0b" : "#10b981";
+    };
+
     window.switchAuthTab = (mode) => {
       authMode = mode;
       document.getElementById("tabLogin").classList.toggle("active", mode === "login");
       document.getElementById("tabSignup").classList.toggle("active", mode === "signup");
-      document.getElementById("devNameGroup").style.display = mode === "signup" ? "block" : "none";
-      document.getElementById("authSubmitBtn").innerText = mode === "login" ? "Login to Console" : "Create Developer Account";
-      document.getElementById("authError").innerText = "";
+      document.getElementById("signupExtraFields").style.display = mode === "signup" ? "block" : "none";
+      document.getElementById("forgotRow").style.display = mode === "login" ? "flex" : "none";
+      document.getElementById("authSubmitBtn").innerText = mode === "login" ? "Sign In to Console" : "Create Developer Account";
+      document.getElementById("authMsg").style.display = "none";
+      document.getElementById("strengthBar").style.display = "none";
     };
 
+    // Forgot Password Handler
+    window.handleForgotPassword = async () => {
+      const email = document.getElementById("authEmail").value.trim();
+      if (!email) {
+        showAuthMessage("Please enter your registered Email Address in the box above first!", true);
+        return;
+      }
+      try {
+        await sendPasswordResetEmail(auth, email);
+        showAuthMessage(`✅ Password reset link sent to ${email}! Check your inbox or spam folder.`, false);
+      } catch (err) {
+        showAuthMessage(err.message.replace("Firebase:", ""), true);
+      }
+    };
+
+    // Google Login Handler
+    window.loginWithGoogle = async () => {
+      try {
+        showAuthMessage("Connecting to Google...", false);
+        await signInWithPopup(auth, googleProvider);
+      } catch (err) {
+        showAuthMessage("Google Sign-In failed: " + err.message.replace("Firebase:", ""), true);
+      }
+    };
+
+    // Email/Password Auth Handler with Unique Username Validation
     window.handleAuth = async (e) => {
       e.preventDefault();
       const email = document.getElementById("authEmail").value.trim();
       const pass = document.getElementById("authPassword").value;
+      const username = document.getElementById("authUsername").value.trim().toLowerCase();
       const devName = document.getElementById("authDevName").value.trim();
-      const errBox = document.getElementById("authError");
-      errBox.innerText = "Processing...";
 
       try {
         if (authMode === "signup") {
-          const cred = await createUserWithEmailAndPassword(auth, email, pass);
-          if (devName) {
-            await updateProfile(cred.user, { displayName: devName });
+          if (!username || username.length < 3) {
+            showAuthMessage("Please choose a unique username (at least 3 characters).", true);
+            return;
           }
+          // Check if username is already taken
+          const q = query(collection(db, "developers"), where("username", "==", username));
+          const existingSnap = await getDocs(q);
+          if (!existingSnap.empty) {
+            showAuthMessage(`Username @${username} is already taken! Please choose another.`, true);
+            return;
+          }
+
+          showAuthMessage("Creating your developer account...", false);
+          const cred = await createUserWithEmailAndPassword(auth, email, pass);
+          const finalStudio = devName || username;
+          await updateProfile(cred.user, { displayName: finalStudio });
+
+          await setDoc(doc(db, "developers", cred.user.uid), {
+            uid: cred.user.uid,
+            username: username,
+            studioName: finalStudio,
+            email: email,
+            createdAt: Date.now()
+          });
         } else {
+          showAuthMessage("Signing in...", false);
           await signInWithEmailAndPassword(auth, email, pass);
         }
       } catch (err) {
-        errBox.innerText = err.message.replace("Firebase:", "");
+        showAuthMessage(err.message.replace("Firebase:", ""), true);
       }
     };
 
     window.logoutUser = async () => {
       await signOut(auth);
+    };
+
+    // Verify Super Admin strictly by First-Registered Owner UID stored in Firestore settings/admin_config
+    async function verifyStrictSuperAdmin(user) {
+      const configRef = doc(db, "settings", "admin_config");
+      const configSnap = await getDoc(configRef);
+
+      if (!configSnap.exists()) {
+        // The very first user to log in claims permanent Super Admin UID ownership
+        await setDoc(configRef, {
+          superAdminUid: user.uid,
+          superAdminEmail: user.email,
+          lockedAt: Date.now()
+        });
+        return true;
+      } else {
+        const data = configSnap.data();
+        return data.superAdminUid === user.uid;
+      }
+    }
+
+    // Ensure Developer Profile exists (especially for first-time Google Sign-In users)
+    async function ensureDeveloperProfile(user) {
+      const devRef = doc(db, "developers", user.uid);
+      const devSnap = await getDoc(devRef);
+      if (devSnap.exists()) {
+        currentDeveloperDoc = devSnap.data();
+      } else {
+        const baseHandle = (user.email ? user.email.split("@")[0] : "dev").toLowerCase().replace(/[^a-z0-9_]/g, "") + "_" + Math.floor(100 + Math.random() * 899);
+        const newDoc = {
+          uid: user.uid,
+          username: baseHandle,
+          studioName: user.displayName || baseHandle,
+          email: user.email || "",
+          website: "",
+          createdAt: Date.now()
+        };
+        await setDoc(devRef, newDoc);
+        currentDeveloperDoc = newDoc;
+      }
+
+      document.getElementById("profUsername").value = currentDeveloperDoc.username || "";
+      document.getElementById("profStudioName").value = currentDeveloperDoc.studioName || "";
+      document.getElementById("profWebsite").value = currentDeveloperDoc.website || "";
+    }
+
+    window.toggleProfileCard = () => {
+      const card = document.getElementById("profileCard");
+      card.style.display = card.style.display === "none" ? "block" : "none";
+    };
+
+    window.saveDeveloperProfile = async () => {
+      const newHandle = document.getElementById("profUsername").value.trim().toLowerCase();
+      const newStudio = document.getElementById("profStudioName").value.trim();
+      const newWeb = document.getElementById("profWebsite").value.trim();
+
+      if (!newHandle || newHandle.length < 3) {
+        alert("Username must be at least 3 characters.");
+        return;
+      }
+
+      // Check uniqueness if changed
+      if (newHandle !== currentDeveloperDoc.username) {
+        const q = query(collection(db, "developers"), where("username", "==", newHandle));
+        const snap = await getDocs(q);
+        if (!snap.empty) {
+          alert(`@${newHandle} is already taken by another developer!`);
+          return;
+        }
+      }
+
+      await setDoc(doc(db, "developers", currentUser.uid), {
+        ...currentDeveloperDoc,
+        username: newHandle,
+        studioName: newStudio || newHandle,
+        website: newWeb
+      });
+
+      currentDeveloperDoc.username = newHandle;
+      currentDeveloperDoc.studioName = newStudio || newHandle;
+      currentDeveloperDoc.website = newWeb;
+
+      document.getElementById("welcomeText").innerText = `${currentDeveloperDoc.studioName} (@${currentDeveloperDoc.username}) • ${currentUser.email}`;
+      document.getElementById("profileCard").style.display = "none";
+      alert("✅ Developer Profile Updated!");
     };
 
     onAuthStateChanged(auth, async (user) => {
@@ -668,16 +1024,14 @@
         document.getElementById("authSection").style.display = "none";
         document.getElementById("dashboardSection").style.display = "block";
 
-        // Super Admin Check: if email contains 'ankur' or matches SUPER_ADMIN_EMAILS
-        const emailLower = (user.email || "").toLowerCase();
-        isSuperAdmin = SUPER_ADMIN_EMAILS.includes(emailLower) || emailLower.includes("ankur");
+        await ensureDeveloperProfile(user);
+        isSuperAdmin = await verifyStrictSuperAdmin(user);
 
-        const devLabel = user.displayName || user.email.split("@")[0];
-        document.getElementById("welcomeText").innerText = `Logged in as: ${devLabel} (${user.email})`;
+        document.getElementById("welcomeText").innerText = `${currentDeveloperDoc.studioName} (@${currentDeveloperDoc.username}) • ${user.email}`;
 
         const badge = document.getElementById("roleBadge");
         if (isSuperAdmin) {
-          badge.innerText = "👑 Super Admin";
+          badge.innerText = "👑 Super Admin (Owner)";
           badge.classList.add("admin");
           document.getElementById("superAdminTools").style.display = "block";
           document.getElementById("ghUploadBox").style.display = "block";
@@ -685,7 +1039,7 @@
           const savedToken = localStorage.getItem("zappora_gh_token");
           if (savedToken) document.getElementById("ghToken").value = savedToken;
         } else {
-          badge.innerText = "Developer";
+          badge.innerText = "Verified Developer";
           badge.classList.remove("admin");
           document.getElementById("superAdminTools").style.display = "none";
           document.getElementById("ghUploadBox").style.display = "none";
@@ -706,12 +1060,10 @@
         allApps = [];
         snap.forEach(d => allApps.push(d.data()));
 
-        // Filter: Normal developer sees only their own apps; Super Admin sees all
         const visibleApps = isSuperAdmin
           ? allApps
           : allApps.filter(a => a.developerUid === currentUser.uid);
 
-        // Update stats
         document.getElementById("statTotal").innerText = visibleApps.length;
         document.getElementById("statApproved").innerText = visibleApps.filter(a => a.status === "approved").length;
         document.getElementById("statPending").innerText = visibleApps.filter(a => a.status !== "approved").length;
@@ -724,14 +1076,18 @@
         }
 
         visibleApps.forEach(app => {
-          const isApproved = app.status === "approved";
-          const statusBadge = isApproved
-            ? '<span class="status-pill status-approved">✓ Approved</span>'
-            : '<span class="status-pill status-pending">⏳ Pending Review</span>';
+          let statusBadge = '<span class="status-pill status-pending">⏳ Pending Review</span>';
+          if (app.status === "approved") statusBadge = '<span class="status-pill status-approved">✓ Approved</span>';
+          if (app.status === "rejected") statusBadge = `<span class="status-pill status-rejected" title="${app.rejectReason || ''}">✕ Rejected</span>`;
 
-          const approveBtn = (isSuperAdmin && !isApproved)
-            ? `<button class="action-btn btn-approve" onclick="approveApp('${app.id}')">✅ Approve</button>`
+          const adminActions = isSuperAdmin
+            ? `
+              ${app.status !== "approved" ? `<button class="action-btn btn-approve" onclick="approveApp('${app.id}')">✅ Approve</button>` : ""}
+              ${app.status !== "rejected" ? `<button class="action-btn btn-reject" onclick="rejectApp('${app.id}')">✕ Reject</button>` : ""}
+            `
             : "";
+
+          const handleText = app.developerUsername ? `(@${app.developerUsername})` : "";
 
           const row = document.createElement("tr");
           row.innerHTML = `
@@ -740,7 +1096,7 @@
                 <img src="${app.icon}" class="table-icon" onerror="this.src='favicon.png'" />
                 <div>
                   <strong>${app.title}</strong>
-                  <div style="font-size: 0.76rem; color: var(--text-muted);">by ${app.developerName || "Zappora"}</div>
+                  <div style="font-size: 0.75rem; color: var(--text-muted);">by ${app.developerName || "Zappora"} ${handleText}</div>
                 </div>
               </div>
             </td>
@@ -749,7 +1105,7 @@
             <td>${statusBadge}</td>
             <td><strong>⬇ ${app.downloads || 0}</strong></td>
             <td>
-              ${approveBtn}
+              ${adminActions}
               <button class="action-btn btn-edit" onclick="populateEdit('${app.id}')">Edit</button>
               <button class="action-btn btn-delete" onclick="deleteApp('${app.id}')">Delete</button>
             </td>
@@ -757,15 +1113,14 @@
           tbody.appendChild(row);
         });
       } catch (err) {
-        tbody.innerHTML = `<tr><td colspan="6" style="color: var(--danger); text-align:center;">Error loading Firestore: ${err.message} (Make sure Firestore Database is enabled in Test Mode!)</td></tr>`;
+        tbody.innerHTML = `<tr><td colspan="6" style="color: var(--danger); text-align:center;">Error loading Firestore: ${err.message}</td></tr>`;
       }
     }
 
-    // Compress & convert selected Icon into lightweight DataURL so any developer can upload without external hosting
+    // Compress Icon to WebP DataURL
     window.handleIconFile = (event) => {
       const file = event.target.files[0];
       if (!file) return;
-
       const reader = new FileReader();
       reader.onload = (e) => {
         const img = new Image();
@@ -773,8 +1128,7 @@
           const canvas = document.createElement("canvas");
           canvas.width = 128;
           canvas.height = 128;
-          const ctx = canvas.getContext("2d");
-          ctx.drawImage(img, 0, 0, 128, 128);
+          canvas.getContext("2d").drawImage(img, 0, 0, 128, 128);
           const dataUrl = canvas.toDataURL("image/webp", 0.85);
           document.getElementById("iconPreview").src = dataUrl;
           document.getElementById("iconPreview").style.display = "inline-block";
@@ -783,6 +1137,42 @@
         img.src = e.target.result;
       };
       reader.readAsDataURL(file);
+    };
+
+    // Compress Screenshots so any developer can pick images directly from PC
+    window.handleScreenshotFiles = (event) => {
+      const files = Array.from(event.target.files).slice(0, 4);
+      if (files.length === 0) return;
+
+      const previewBox = document.getElementById("ssPreviewBox");
+      previewBox.innerHTML = "";
+      const dataUrls = [];
+
+      files.forEach(file => {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          const img = new Image();
+          img.onload = () => {
+            const canvas = document.createElement("canvas");
+            const maxH = 420;
+            const scale = maxH / img.height;
+            canvas.height = maxH;
+            canvas.width = img.width * scale;
+            canvas.getContext("2d").drawImage(img, 0, 0, canvas.width, canvas.height);
+            const compressed = canvas.toDataURL("image/webp", 0.75);
+            dataUrls.push(compressed);
+
+            const thumb = document.createElement("img");
+            thumb.src = compressed;
+            thumb.className = "ss-thumb";
+            previewBox.appendChild(thumb);
+
+            document.getElementById("appScreenshots").value = dataUrls.join(" | ");
+          };
+          img.src = e.target.result;
+        };
+        reader.readAsDataURL(file);
+      });
     };
 
     window.handleApkFile = (event) => {
@@ -811,7 +1201,6 @@
         const appId = document.getElementById("appId").value.trim().replace(/\s+/g, "_");
         const token = document.getElementById("ghToken").value.trim();
 
-        // If Super Admin entered GitHub Token & selected an APK file, auto-upload APK to GitHub
         if (isSuperAdmin && token && selectedApkFile) {
           localStorage.setItem("zappora_gh_token", token);
           log.style.display = "block";
@@ -841,8 +1230,9 @@
         }
 
         const rawScreenshots = document.getElementById("appScreenshots").value.trim();
+        const delimiter = rawScreenshots.includes(" | ") ? " | " : ",";
         const screenshotsArray = rawScreenshots
-          ? rawScreenshots.split(",").map(s => s.trim()).filter(Boolean)
+          ? rawScreenshots.split(delimiter).map(s => s.trim()).filter(Boolean)
           : [];
 
         const existing = allApps.find(a => a.id === appId);
@@ -860,7 +1250,8 @@
           screenshots: screenshotsArray,
           releaseNotes: document.getElementById("appNotes").value.trim(),
           developerUid: existing ? existing.developerUid : currentUser.uid,
-          developerName: existing ? existing.developerName : (currentUser.displayName || currentUser.email.split("@")[0]),
+          developerName: existing ? existing.developerName : currentDeveloperDoc.studioName,
+          developerUsername: existing ? (existing.developerUsername || currentDeveloperDoc.username) : currentDeveloperDoc.username,
           status: isSuperAdmin ? "approved" : "pending",
           updatedAt: Date.now()
         };
@@ -869,6 +1260,7 @@
 
         document.getElementById("appForm").reset();
         document.getElementById("iconPreview").style.display = "none";
+        document.getElementById("ssPreviewBox").innerHTML = "";
         document.getElementById("apkFileName").innerText = "";
         selectedApkFile = null;
 
@@ -887,12 +1279,20 @@
 
     window.approveApp = async (id) => {
       if (!isSuperAdmin) return;
-      await updateDoc(doc(db, "apps", id), { status: "approved" });
+      await updateDoc(doc(db, "apps", id), { status: "approved", rejectReason: "" });
+      await loadAppsFromFirebase();
+    };
+
+    window.rejectApp = async (id) => {
+      if (!isSuperAdmin) return;
+      const reason = prompt("Enter reason for rejecting this app (visible to developer):", "Invalid APK link or policy violation");
+      if (reason === null) return;
+      await updateDoc(doc(db, "apps", id), { status: "rejected", rejectReason: reason });
       await loadAppsFromFirebase();
     };
 
     window.deleteApp = async (id) => {
-      if (confirm("Are you sure you want to delete this app?")) {
+      if (confirm("Are you sure you want to permanently delete this app?")) {
         await deleteDoc(doc(db, "apps", id));
         await loadAppsFromFirebase();
       }
@@ -917,8 +1317,8 @@
       document.getElementById("formCard").scrollIntoView({ behavior: "smooth" });
     };
 
-    // 1-Click Import of existing version.json apps into Firebase
     window.importVersionJsonToFirebase = async () => {
+      if (!isSuperAdmin) return;
       try {
         const res = await fetch("./version.json?t=" + Date.now());
         if (!res.ok) throw new Error("Could not fetch version.json");
@@ -930,13 +1330,14 @@
             ...item,
             id: cleanId,
             developerUid: currentUser.uid,
-            developerName: "Zappora Official",
+            developerName: currentDeveloperDoc.studioName || "Zappora Official",
+            developerUsername: currentDeveloperDoc.username || "ankur",
             status: "approved",
             downloads: parseInt(item.downloads, 10) || 0,
             updatedAt: Date.now()
           });
         }
-        alert(`🎉 Successfully imported ${list.length} apps from version.json to Firebase!`);
+        alert(`🎉 Successfully imported ${list.length} apps from version.json!`);
         await loadAppsFromFirebase();
       } catch (err) {
         alert("Import failed: " + err.message);
