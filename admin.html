@@ -7,48 +7,57 @@
   <link rel="icon" type="image/png" href="favicon.png" />
   <style>
     :root {
-      --bg-main: #f1f5f9;
+      --bg-main: #f8fafc;
       --surface: #ffffff;
+      --surface-subtle: #f1f5f9;
       --primary: #0284c7;
       --primary-dark: #0369a1;
       --primary-light: #e0f2fe;
       --border-color: #e2e8f0;
       --text-main: #0f172a;
       --text-muted: #64748b;
-      --danger: #ef4444;
-      --success: #10b981;
-      --warning: #f59e0b;
+      --danger: #dc2626;
+      --danger-bg: #fef2f2;
+      --success: #059669;
+      --success-bg: #ecfdf5;
+      --warning: #d97706;
+      --warning-bg: #fffbeb;
+      --radius-lg: 14px;
+      --radius-md: 10px;
+      --shadow-sm: 0 1px 3px rgba(15, 23, 42, 0.04);
+      --shadow-lg: 0 20px 40px -15px rgba(15, 23, 42, 0.08);
     }
 
     * {
       box-sizing: border-box;
       margin: 0;
       padding: 0;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, sans-serif;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Inter, Roboto, sans-serif;
     }
 
     body {
       background-color: var(--bg-main);
       color: var(--text-main);
-      padding: 20px 16px 80px;
+      padding: 24px 16px 80px;
+      line-height: 1.5;
     }
 
     .container {
-      max-width: 1100px;
+      max-width: 1120px;
       margin: 0 auto;
     }
 
     /* ==========================================
-       REAL SECURE AUTH SCREEN (LOGIN / SIGNUP)
+       AUTHENTICATION VIEW
        ========================================== */
     .auth-wrapper {
       max-width: 440px;
-      margin: 36px auto;
+      margin: 40px auto;
       background: var(--surface);
       border: 1px solid var(--border-color);
-      border-radius: 20px;
-      padding: 32px 28px;
-      box-shadow: 0 20px 40px -15px rgba(15, 23, 42, 0.1);
+      border-radius: 18px;
+      padding: 36px 32px;
+      box-shadow: var(--shadow-lg);
     }
 
     .auth-logo {
@@ -60,14 +69,14 @@
     }
 
     .auth-logo img {
-      width: 46px;
-      height: 46px;
-      border-radius: 12px;
-      box-shadow: 0 4px 10px rgba(2, 132, 199, 0.2);
+      width: 44px;
+      height: 44px;
+      border-radius: 10px;
+      border: 1px solid var(--border-color);
     }
 
     .auth-logo h2 {
-      font-size: 1.55rem;
+      font-size: 1.5rem;
       color: var(--text-main);
       font-weight: 800;
       letter-spacing: -0.5px;
@@ -81,7 +90,7 @@
       text-align: center;
       color: var(--text-muted);
       font-size: 0.88rem;
-      margin-bottom: 22px;
+      margin-bottom: 24px;
     }
 
     .btn-google {
@@ -91,19 +100,18 @@
       justify-content: center;
       gap: 10px;
       padding: 12px;
-      border-radius: 10px;
+      border-radius: var(--radius-md);
       border: 1px solid var(--border-color);
-      background: #ffffff;
+      background: var(--surface);
       color: var(--text-main);
-      font-size: 0.94rem;
-      font-weight: 700;
+      font-size: 0.92rem;
+      font-weight: 600;
       cursor: pointer;
-      transition: all 0.2s;
-      box-shadow: 0 1px 2px rgba(0,0,0,0.04);
+      transition: all 0.2s ease;
     }
 
     .btn-google:hover {
-      background: #f8fafc;
+      background: var(--surface-subtle);
       border-color: #cbd5e1;
     }
 
@@ -111,11 +119,12 @@
       display: flex;
       align-items: center;
       text-align: center;
-      margin: 18px 0;
+      margin: 20px 0;
       color: var(--text-muted);
-      font-size: 0.78rem;
+      font-size: 0.75rem;
       font-weight: 600;
       text-transform: uppercase;
+      letter-spacing: 0.5px;
     }
 
     .divider::before, .divider::after {
@@ -124,14 +133,14 @@
       border-bottom: 1px solid var(--border-color);
     }
 
-    .divider:not(:empty)::before { margin-right: 10px; }
-    .divider:not(:empty)::after { margin-left: 10px; }
+    .divider:not(:empty)::before { margin-right: 12px; }
+    .divider:not(:empty)::after { margin-left: 12px; }
 
     .auth-tabs {
       display: flex;
-      margin-bottom: 18px;
-      background: #f1f5f9;
-      border-radius: 10px;
+      margin-bottom: 20px;
+      background: var(--surface-subtle);
+      border-radius: var(--radius-md);
       padding: 4px;
     }
 
@@ -139,18 +148,18 @@
       flex: 1;
       text-align: center;
       padding: 9px;
-      font-weight: 700;
+      font-weight: 600;
       font-size: 0.88rem;
       cursor: pointer;
       border-radius: 8px;
       color: var(--text-muted);
-      transition: 0.2s;
+      transition: all 0.2s ease;
     }
 
     .auth-tab.active {
       background: var(--surface);
       color: var(--primary);
-      box-shadow: 0 2px 4px rgba(0,0,0,0.06);
+      box-shadow: var(--shadow-sm);
     }
 
     .input-wrap {
@@ -165,14 +174,16 @@
       background: none;
       border: none;
       cursor: pointer;
-      font-size: 0.95rem;
-      color: var(--text-muted);
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: var(--primary);
+      text-transform: uppercase;
     }
 
     .strength-bar {
       height: 4px;
       border-radius: 4px;
-      background: #e2e8f0;
+      background: var(--border-color);
       margin-top: 6px;
       overflow: hidden;
       display: none;
@@ -187,8 +198,8 @@
     .forgot-row {
       display: flex;
       justify-content: flex-end;
-      margin-top: -8px;
-      margin-bottom: 14px;
+      margin-top: -6px;
+      margin-bottom: 16px;
     }
 
     .forgot-link {
@@ -208,7 +219,7 @@
       font-size: 0.85rem;
       margin-top: 14px;
       text-align: center;
-      padding: 10px;
+      padding: 10px 12px;
       border-radius: 8px;
       display: none;
       font-weight: 600;
@@ -216,38 +227,39 @@
 
     .auth-msg.err {
       display: block;
-      background: #fef2f2;
+      background: var(--danger-bg);
       color: var(--danger);
       border: 1px solid #fecaca;
     }
 
     .auth-msg.ok {
       display: block;
-      background: #f0fdf4;
-      color: #15803d;
-      border: 1px solid #bbf7d0;
+      background: var(--success-bg);
+      color: var(--success);
+      border: 1px solid #a7f3d0;
     }
 
     /* ==========================================
-       DASHBOARD & DEVELOPER TOOLS
+       DASHBOARD NAVIGATION & LAYOUT
        ========================================== */
     .header {
       background: var(--surface);
-      padding: 16px 22px;
-      border-radius: 14px;
+      padding: 18px 24px;
+      border-radius: var(--radius-lg);
       border: 1px solid var(--border-color);
-      margin-bottom: 22px;
+      margin-bottom: 24px;
       display: flex;
       justify-content: space-between;
       align-items: center;
       flex-wrap: wrap;
-      gap: 12px;
+      gap: 16px;
+      box-shadow: var(--shadow-sm);
     }
 
     .brand-header {
       display: flex;
       align-items: center;
-      gap: 12px;
+      gap: 14px;
     }
 
     .brand-logo {
@@ -259,9 +271,10 @@
     }
 
     .header h1 {
-      font-size: 1.35rem;
+      font-size: 1.3rem;
       font-weight: 800;
-      color: var(--primary);
+      color: var(--text-main);
+      letter-spacing: -0.3px;
     }
 
     .user-bar {
@@ -272,75 +285,107 @@
     }
 
     .role-badge {
-      font-size: 0.75rem;
+      font-size: 0.74rem;
       font-weight: 700;
       padding: 5px 12px;
       border-radius: 20px;
       background: var(--primary-light);
       color: var(--primary-dark);
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
     }
 
     .role-badge.admin {
-      background: #fef3c7;
-      color: #b45309;
+      background: var(--warning-bg);
+      color: var(--warning);
       border: 1px solid #fde68a;
     }
 
-    .btn-logout {
-      padding: 7px 14px;
+    .btn-outline {
+      padding: 8px 14px;
       border-radius: 8px;
       border: 1px solid var(--border-color);
       background: var(--surface);
+      color: var(--text-main);
+      font-weight: 600;
+      font-size: 0.82rem;
+      cursor: pointer;
+      text-decoration: none;
+      transition: all 0.2s;
+    }
+
+    .btn-outline:hover {
+      background: var(--surface-subtle);
+      border-color: #cbd5e1;
+    }
+
+    .btn-logout {
+      padding: 8px 14px;
+      border-radius: 8px;
+      border: 1px solid #fecaca;
+      background: var(--danger-bg);
       color: var(--danger);
-      font-weight: 700;
+      font-weight: 600;
       font-size: 0.82rem;
       cursor: pointer;
     }
 
-    /* Stats Overview Cards */
+    /* Metrics Grid */
     .stats-row {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
       gap: 16px;
-      margin-bottom: 22px;
+      margin-bottom: 24px;
     }
 
     .stat-card {
       background: var(--surface);
       border: 1px solid var(--border-color);
-      border-radius: 12px;
-      padding: 16px 20px;
+      border-radius: var(--radius-lg);
+      padding: 18px 22px;
+      box-shadow: var(--shadow-sm);
     }
 
     .stat-card span {
-      font-size: 0.78rem;
+      font-size: 0.76rem;
       color: var(--text-muted);
       font-weight: 700;
       text-transform: uppercase;
+      letter-spacing: 0.5px;
     }
 
     .stat-card h3 {
-      font-size: 1.8rem;
-      color: var(--primary-dark);
-      margin-top: 4px;
+      font-size: 1.85rem;
+      color: var(--text-main);
+      margin-top: 6px;
+      font-weight: 800;
     }
 
     .card {
       background: var(--surface);
       border: 1px solid var(--border-color);
-      border-radius: 14px;
-      padding: 22px;
-      margin-bottom: 22px;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.03);
+      border-radius: var(--radius-lg);
+      padding: 24px;
+      margin-bottom: 24px;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .card-title-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 18px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--border-color);
     }
 
     .card h2 {
-      font-size: 1.18rem;
-      margin-bottom: 14px;
+      font-size: 1.15rem;
       color: var(--text-main);
+      font-weight: 700;
     }
 
-    /* Table Styles */
+    /* Data Table */
     .table-responsive {
       overflow-x: auto;
     }
@@ -353,17 +398,18 @@
     }
 
     th, td {
-      padding: 12px 14px;
+      padding: 14px 16px;
       border-bottom: 1px solid var(--border-color);
       vertical-align: middle;
     }
 
     th {
-      background: #f8fafc;
+      background: var(--surface-subtle);
       color: var(--text-muted);
       font-weight: 700;
-      font-size: 0.76rem;
+      font-size: 0.75rem;
       text-transform: uppercase;
+      letter-spacing: 0.5px;
     }
 
     .app-cell {
@@ -383,77 +429,94 @@
 
     .status-pill {
       display: inline-block;
-      font-size: 0.73rem;
+      font-size: 0.72rem;
       font-weight: 700;
-      padding: 3px 9px;
+      padding: 4px 10px;
       border-radius: 20px;
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
     }
 
-    .status-approved { background: #dcfce7; color: #15803d; }
-    .status-pending { background: #fef3c7; color: #b45309; }
-    .status-rejected { background: #fee2e2; color: #b91c1c; }
+    .status-approved { background: var(--success-bg); color: var(--success); }
+    .status-pending { background: var(--warning-bg); color: var(--warning); }
+    .status-rejected { background: var(--danger-bg); color: var(--danger); }
 
     .action-btn {
-      padding: 6px 10px;
+      padding: 6px 12px;
       border-radius: 6px;
       font-size: 0.76rem;
-      font-weight: 700;
+      font-weight: 600;
       cursor: pointer;
-      border: none;
+      border: 1px solid transparent;
       margin-right: 4px;
       margin-bottom: 4px;
     }
 
-    .btn-approve { background: #dcfce7; color: #15803d; }
-    .btn-reject { background: #ffedd5; color: #c2410c; }
-    .btn-edit { background: #e0f2fe; color: var(--primary-dark); }
-    .btn-delete { background: #fee2e2; color: var(--danger); }
+    .btn-approve { background: var(--success-bg); color: var(--success); border-color: #a7f3d0; }
+    .btn-reject { background: var(--warning-bg); color: var(--warning); border-color: #fde68a; }
+    .btn-edit { background: var(--primary-light); color: var(--primary-dark); }
+    .btn-delete { background: var(--danger-bg); color: var(--danger); }
 
-    /* Form Design */
+    /* Form Controls */
     .form-group {
-      margin-bottom: 15px;
+      margin-bottom: 16px;
     }
 
     .form-group label {
       display: block;
       font-size: 0.84rem;
       font-weight: 600;
-      margin-bottom: 5px;
+      margin-bottom: 6px;
       color: var(--text-main);
     }
 
     .form-group input, .form-group select, .form-group textarea {
       width: 100%;
-      padding: 10px 14px;
-      border-radius: 9px;
+      padding: 11px 14px;
+      border-radius: var(--radius-md);
       border: 1px solid var(--border-color);
-      font-size: 0.93rem;
+      font-size: 0.92rem;
+      color: var(--text-main);
+      background: var(--surface);
       outline: none;
-      transition: border-color 0.2s;
+      transition: border-color 0.2s, box-shadow 0.2s;
     }
 
-    .form-group input:focus, .form-group textarea:focus {
+    .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
       border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.12);
     }
 
     .form-row {
       display: flex;
-      gap: 14px;
+      gap: 16px;
       flex-wrap: wrap;
     }
 
     .file-dropzone {
       border: 2px dashed #cbd5e1;
-      border-radius: 10px;
-      padding: 12px;
-      background: #f8fafc;
+      border-radius: var(--radius-md);
+      padding: 16px;
+      background: var(--bg-main);
       text-align: center;
       cursor: pointer;
       margin-bottom: 8px;
+      transition: border-color 0.2s, background 0.2s;
+    }
+
+    .file-dropzone:hover {
+      border-color: var(--primary);
+      background: #f0f9ff;
     }
 
     .file-dropzone input[type="file"] {
       display: none;
+    }
+
+    .dropzone-label {
+      font-size: 0.86rem;
+      color: var(--text-muted);
+      font-weight: 600;
     }
 
     .preview-box {
@@ -471,6 +534,7 @@
       border-radius: 10px;
       object-fit: cover;
       display: none;
+      border: 1px solid var(--border-color);
     }
 
     .ss-thumb {
@@ -481,11 +545,11 @@
     }
 
     .btn-submit {
-      padding: 12px 22px;
+      padding: 13px 24px;
       background: var(--primary);
-      color: #fff;
+      color: #ffffff;
       border: none;
-      border-radius: 10px;
+      border-radius: var(--radius-md);
       font-size: 0.95rem;
       font-weight: 700;
       cursor: pointer;
@@ -497,14 +561,19 @@
       background: var(--primary-dark);
     }
 
+    .btn-submit:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+
     .upload-log {
-      margin-top: 12px;
+      margin-top: 14px;
       padding: 12px 16px;
       border-radius: 8px;
-      background: #f0fdf4;
-      border: 1px solid #bbf7d0;
-      color: #166534;
-      font-size: 0.88rem;
+      background: var(--success-bg);
+      border: 1px solid #a7f3d0;
+      color: var(--success);
+      font-size: 0.86rem;
       font-weight: 600;
       display: none;
     }
@@ -513,18 +582,17 @@
 <body>
 
   <!-- ==========================================
-       1. REAL SECURE LOGIN / SIGN UP VIEW
+       1. AUTHENTICATION VIEW (SIGN IN / SIGN UP)
        ========================================== -->
   <div id="authSection" class="auth-wrapper">
     <div class="auth-logo">
       <img src="favicon.png" alt="Zappora" onerror="this.src='logo.png'" />
       <h2>Zappora <span>Console</span></h2>
     </div>
-    <p class="auth-sub">Official Developer Portal — Publish & manage Android apps</p>
+    <p class="auth-sub">Official Developer Portal for Android Applications</p>
 
-    <!-- Google Sign In Button -->
     <button type="button" class="btn-google" onclick="loginWithGoogle()">
-      <svg width="20" height="20" viewBox="0 0 48 48">
+      <svg width="18" height="18" viewBox="0 0 48 48">
         <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/>
         <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/>
         <path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/>
@@ -541,10 +609,9 @@
     </div>
 
     <form id="authForm" onsubmit="handleAuth(event)">
-      <!-- Extra Fields for Developer Sign Up -->
       <div id="signupExtraFields" style="display: none;">
         <div class="form-group">
-          <label>Unique Developer Username (@handle)</label>
+          <label>Unique Developer Username</label>
           <input type="text" id="authUsername" placeholder="e.g. ankur_dev (lowercase, no spaces)" oninput="this.value = this.value.toLowerCase().replace(/[^a-z0-9_]/g, '')" />
         </div>
         <div class="form-group">
@@ -562,7 +629,7 @@
         <label>Password</label>
         <div class="input-wrap">
           <input type="password" id="authPassword" placeholder="Minimum 6 characters" oninput="checkPassStrength(this.value)" required />
-          <button type="button" class="toggle-pass" onclick="togglePasswordVisibility()">👁️</button>
+          <button type="button" class="toggle-pass" id="togglePassBtn" onclick="togglePasswordVisibility()">Show</button>
         </div>
         <div class="strength-bar" id="strengthBar">
           <div class="strength-fill" id="strengthFill"></div>
@@ -578,8 +645,8 @@
 
     <div id="authMsg" class="auth-msg"></div>
 
-    <div style="text-align: center; margin-top: 20px;">
-      <a href="index.html" style="font-size: 0.85rem; color: var(--primary); text-decoration: none; font-weight: 700;">← Back to Zappora Store</a>
+    <div style="text-align: center; margin-top: 22px;">
+      <a href="index.html" style="font-size: 0.85rem; color: var(--primary); text-decoration: none; font-weight: 600;">Back to Zappora Store</a>
     </div>
   </div>
 
@@ -592,62 +659,64 @@
         <img src="favicon.png" alt="Zappora Logo" class="brand-logo" onerror="this.src='logo.png'" />
         <div>
           <h1>Zappora Developer Console</h1>
-          <span id="welcomeText" style="font-size: 0.82rem; color: var(--text-muted); font-weight: 600;"></span>
+          <span id="welcomeText" style="font-size: 0.82rem; color: var(--text-muted); font-weight: 500;"></span>
         </div>
       </div>
       <div class="user-bar">
         <span id="roleBadge" class="role-badge">Developer</span>
-        <button onclick="toggleProfileCard()" style="padding: 7px 12px; border-radius: 8px; border: 1px solid var(--border-color); background: #f8fafc; font-weight: 700; font-size: 0.82rem; cursor: pointer;">⚙️ Profile</button>
-        <a href="index.html" target="_blank" style="font-size: 0.85rem; color: var(--primary); font-weight: 700; text-decoration: none; padding: 7px 10px;">Live Store ↗</a>
-        <button class="btn-logout" onclick="logoutUser()">Logout</button>
+        <button onclick="toggleProfileCard()" class="btn-outline">Profile Settings</button>
+        <a href="index.html" target="_blank" class="btn-outline">View Live Store</a>
+        <button class="btn-logout" onclick="logoutUser()">Sign Out</button>
       </div>
     </div>
 
-    <!-- Developer Profile Settings Modal/Card -->
+    <!-- Developer Profile Settings -->
     <div id="profileCard" class="card" style="display: none; background: #f8fafc; border-color: #bae6fd;">
-      <h2>👤 Developer Profile & Username Settings</h2>
+      <div class="card-title-row">
+        <h2>Developer Profile Settings</h2>
+      </div>
       <div class="form-row">
         <div class="form-group" style="flex: 1; min-width: 200px;">
           <label>Unique Username (@handle)</label>
           <input type="text" id="profUsername" oninput="this.value = this.value.toLowerCase().replace(/[^a-z0-9_]/g, '')" placeholder="ankur_dev" />
         </div>
         <div class="form-group" style="flex: 1; min-width: 200px;">
-          <label>Studio / Display Name</label>
+          <label>Studio / Publisher Name</label>
           <input type="text" id="profStudioName" placeholder="Ankur Studios" />
         </div>
         <div class="form-group" style="flex: 1; min-width: 200px;">
-          <label>Developer Website / GitHub Link (Optional)</label>
+          <label>Official Website or GitHub URL</label>
           <input type="url" id="profWebsite" placeholder="https://github.com/..." />
         </div>
       </div>
-      <button onclick="saveDeveloperProfile()" class="btn-submit" style="width: auto; padding: 10px 20px;">Save Profile</button>
+      <button onclick="saveDeveloperProfile()" class="btn-submit" style="width: auto; padding: 10px 22px;">Save Profile Changes</button>
     </div>
 
-    <!-- Super Admin Quick Tools (ONLY visible to the verified Owner UID) -->
-    <div id="superAdminTools" class="card" style="display: none; background: #fffbeb; border-color: #fde68a;">
-      <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
+    <!-- Super Admin Quick Tools -->
+    <div id="superAdminTools" class="card" style="display: none; background: var(--warning-bg); border-color: #fde68a;">
+      <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px;">
         <div>
-          <h2 style="color: #92400e; margin-bottom: 4px; font-size: 1.05rem;">👑 Verified Super Admin Controls (UID Locked)</h2>
-          <p style="font-size: 0.83rem; color: #b45309;">Only your locked Firebase UID has access to this panel. Nobody else can fake your name or email.</p>
+          <h2 style="color: #92400e; margin-bottom: 4px; font-size: 1.05rem;">Super Administrator Controls (UID Locked)</h2>
+          <p style="font-size: 0.84rem; color: #b45309;">Full administrative privileges enabled. You can approve, reject, or remove any submission and synchronize legacy catalog entries.</p>
         </div>
-        <button onclick="importVersionJsonToFirebase()" style="padding: 9px 14px; background: #d97706; color: #fff; border: none; border-radius: 8px; font-weight: 700; cursor: pointer; font-size: 0.84rem;">
-          🔄 Import Old version.json Apps
+        <button onclick="importVersionJsonToFirebase()" style="padding: 10px 16px; background: #d97706; color: #ffffff; border: none; border-radius: 8px; font-weight: 700; cursor: pointer; font-size: 0.84rem;">
+          Synchronize Legacy version.json
         </button>
       </div>
     </div>
 
-    <!-- Live Counters -->
+    <!-- Metrics Overview -->
     <div class="stats-row">
       <div class="stat-card">
-        <span>Total Submitted</span>
+        <span>Total Submissions</span>
         <h3 id="statTotal">0</h3>
       </div>
       <div class="stat-card">
-        <span>Approved & Live</span>
+        <span>Approved & Published</span>
         <h3 id="statApproved" style="color: var(--success);">0</h3>
       </div>
       <div class="stat-card">
-        <span>Pending Review</span>
+        <span>Pending Verification</span>
         <h3 id="statPending" style="color: var(--warning);">0</h3>
       </div>
       <div class="stat-card">
@@ -656,14 +725,16 @@
       </div>
     </div>
 
-    <!-- Apps Inventory Table -->
+    <!-- Applications Inventory Table -->
     <div class="card">
-      <h2 id="tableHeading">Your Submitted Applications</h2>
+      <div class="card-title-row">
+        <h2 id="tableHeading">Submitted Applications</h2>
+      </div>
       <div class="table-responsive">
         <table>
           <thead>
             <tr>
-              <th>App & Developer</th>
+              <th>Application & Publisher</th>
               <th>Category</th>
               <th>Version</th>
               <th>Status</th>
@@ -673,25 +744,27 @@
           </thead>
           <tbody id="catalogTableBody">
             <tr>
-              <td colspan="6" style="text-align: center; color: var(--text-muted);">Loading applications...</td>
+              <td colspan="6" style="text-align: center; color: var(--text-muted);">Loading application catalog...</td>
             </tr>
           </tbody>
         </table>
       </div>
     </div>
 
-    <!-- Submit / Edit Application Form -->
+    <!-- Application Submission Form -->
     <div class="card" id="formCard">
-      <h2 id="formHeading">Submit New App or Game</h2>
+      <div class="card-title-row">
+        <h2 id="formHeading">Submit or Update Application</h2>
+      </div>
       <form id="appForm" onsubmit="handleFormSubmit(event)">
         <div class="form-row">
           <div class="form-group" style="flex: 1; min-width: 200px;">
-            <label>Unique App ID (e.g. bagh_chal, neon_dash)</label>
-            <input type="text" id="appId" placeholder="my_awesome_game" required />
+            <label>Unique Package ID (e.g. bagh_chal, neon_dash)</label>
+            <input type="text" id="appId" placeholder="my_application_id" required />
           </div>
           <div class="form-group" style="flex: 2; min-width: 260px;">
             <label>Application Title</label>
-            <input type="text" id="appTitle" placeholder="My Awesome Game" required />
+            <input type="text" id="appTitle" placeholder="Official Application Name" required />
           </div>
         </div>
 
@@ -709,68 +782,68 @@
           </div>
           <div class="form-group" style="flex: 1; min-width: 140px;">
             <label>Package Size</label>
-            <input type="text" id="appSize" placeholder="Select APK or type size" required />
+            <input type="text" id="appSize" placeholder="Auto-filled or manual (e.g. 8.5MB)" required />
           </div>
         </div>
 
-        <!-- App Icon Picker -->
+        <!-- App Icon -->
         <div class="form-group">
-          <label>App Icon (Select PNG/JPG from PC OR Paste Direct URL)</label>
+          <label>Application Icon (Select PNG/JPG File or Provide Direct URL)</label>
           <div class="file-dropzone" onclick="document.getElementById('iconFileInput').click()">
             <input type="file" id="iconFileInput" accept="image/*" onchange="handleIconFile(event)" />
-            <span id="iconUploadPrompt">📁 Click to Select App Icon from PC (Auto-compressed)</span>
+            <span class="dropzone-label" id="iconUploadPrompt">Select Application Icon File from Device</span>
             <div class="preview-box">
               <img id="iconPreview" alt="Icon Preview" />
             </div>
           </div>
-          <input type="text" id="appIcon" placeholder="Icon URL or DataURL" required />
+          <input type="text" id="appIcon" placeholder="Icon Image URL or Auto-Generated Data Stream" required />
         </div>
 
-        <!-- Direct APK File Picker -->
+        <!-- APK File -->
         <div class="form-group">
-          <label>APK File (Select .apk from PC to auto-read size & enter Download Link)</label>
+          <label>Android Package (.apk) File & Direct Download URL</label>
           <div class="file-dropzone" onclick="document.getElementById('apkFileInput').click()">
             <input type="file" id="apkFileInput" accept=".apk" onchange="handleApkFile(event)" />
-            <span id="apkUploadPrompt">📦 Click to Select .apk from PC to Auto-Calculate Size</span>
+            <span class="dropzone-label" id="apkUploadPrompt">Select .apk Package to Calculate File Size</span>
             <div id="apkFileName" style="font-size: 0.84rem; color: var(--primary-dark); font-weight: 600; margin-top: 4px;"></div>
           </div>
-          <input type="url" id="appDownloadUrl" placeholder="Paste Direct APK Download URL (GitHub Release / Drive / MediaFire)" required />
+          <input type="url" id="appDownloadUrl" placeholder="Direct APK Download URL (GitHub Releases / Cloud Storage)" required />
         </div>
 
-        <!-- Super Admin Optional GitHub Auto-Upload Token -->
-        <div class="form-group" id="ghUploadBox" style="display: none; background: #f0f9ff; padding: 12px; border-radius: 8px; border: 1px solid #bae6fd;">
-          <label style="color: #0369a1;">⚡ Super Admin GitHub Auto-Uploader (Optional Token)</label>
-          <input type="password" id="ghToken" placeholder="Enter GitHub Personal Access Token (ghp_...) to auto-upload selected APK & Screenshots to GitHub" />
+        <!-- Super Admin GitHub Auto-Uploader -->
+        <div class="form-group" id="ghUploadBox" style="display: none; background: #f0f9ff; padding: 14px; border-radius: 10px; border: 1px solid #bae6fd;">
+          <label style="color: #0369a1;">Super Admin GitHub Repository Token (Optional Direct APK Hosting)</label>
+          <input type="password" id="ghToken" placeholder="Enter GitHub Personal Access Token (ghp_...) to upload selected APK automatically" />
         </div>
 
-        <!-- Screenshots Picker -->
+        <!-- Screenshots -->
         <div class="form-group">
-          <label>Game / App Screenshots (Select Images from PC OR Paste Comma-Separated URLs)</label>
+          <label>Application Screenshots (Select Up to 4 Images or Provide Comma-Separated URLs)</label>
           <div class="file-dropzone" onclick="document.getElementById('ssFileInput').click()">
             <input type="file" id="ssFileInput" accept="image/*" multiple onchange="handleScreenshotFiles(event)" />
-            <span id="ssUploadPrompt">🖼️ Click to Select 2-4 Screenshots from PC</span>
+            <span class="dropzone-label" id="ssUploadPrompt">Select Application Screenshots from Device</span>
             <div class="preview-box" id="ssPreviewBox"></div>
           </div>
-          <textarea id="appScreenshots" rows="2" placeholder="Screenshot URLs separated by commas"></textarea>
+          <textarea id="appScreenshots" rows="2" placeholder="Comma-separated Screenshot URLs"></textarea>
         </div>
 
         <div class="form-group">
-          <label>Short Description</label>
-          <textarea id="appDesc" rows="2" required></textarea>
+          <label>Application Description</label>
+          <textarea id="appDesc" rows="3" placeholder="Provide a clear summary of features and functionality..." required></textarea>
         </div>
 
         <div class="form-group">
-          <label>Release Notes (What's New)</label>
-          <textarea id="appNotes" rows="2" required></textarea>
+          <label>Release Notes (Changelog)</label>
+          <textarea id="appNotes" rows="2" placeholder="List new features, improvements, and bug fixes in this version..." required></textarea>
         </div>
 
-        <button type="submit" class="btn-submit" id="btnSubmit">🚀 Submit Application</button>
+        <button type="submit" class="btn-submit" id="btnSubmit">Submit Application to Catalog</button>
         <div class="upload-log" id="statusLog"></div>
       </form>
     </div>
   </div>
 
-  <!-- FIREBASE SDK & HIGH-SECURITY LOGIC -->
+  <!-- FIREBASE SDK & SECURITY LOGIC -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
     import {
@@ -821,7 +894,6 @@
     let allApps = [];
     let selectedApkFile = null;
 
-    // UI Helpers
     function showAuthMessage(text, isError = true) {
       const box = document.getElementById("authMsg");
       box.innerText = text;
@@ -830,7 +902,14 @@
 
     window.togglePasswordVisibility = () => {
       const passInput = document.getElementById("authPassword");
-      passInput.type = passInput.type === "password" ? "text" : "password";
+      const btn = document.getElementById("togglePassBtn");
+      if (passInput.type === "password") {
+        passInput.type = "text";
+        btn.innerText = "Hide";
+      } else {
+        passInput.type = "password";
+        btn.innerText = "Show";
+      }
     };
 
     window.checkPassStrength = (val) => {
@@ -847,7 +926,7 @@
       if (/[A-Z0-9!@#$%^&*]/.test(val)) score += 40;
 
       fill.style.width = Math.min(score, 100) + "%";
-      fill.style.background = score < 50 ? "#ef4444" : score < 80 ? "#f59e0b" : "#10b981";
+      fill.style.background = score < 50 ? "#dc2626" : score < 80 ? "#d97706" : "#059669";
     };
 
     window.switchAuthTab = (mode) => {
@@ -861,32 +940,29 @@
       document.getElementById("strengthBar").style.display = "none";
     };
 
-    // Forgot Password Handler
     window.handleForgotPassword = async () => {
       const email = document.getElementById("authEmail").value.trim();
       if (!email) {
-        showAuthMessage("Please enter your registered Email Address in the box above first!", true);
+        showAuthMessage("Please enter your registered email address first.", true);
         return;
       }
       try {
         await sendPasswordResetEmail(auth, email);
-        showAuthMessage(`✅ Password reset link sent to ${email}! Check your inbox or spam folder.`, false);
+        showAuthMessage(`Password reset instructions sent to ${email}. Please check your inbox.`, false);
       } catch (err) {
         showAuthMessage(err.message.replace("Firebase:", ""), true);
       }
     };
 
-    // Google Login Handler
     window.loginWithGoogle = async () => {
       try {
-        showAuthMessage("Connecting to Google...", false);
+        showAuthMessage("Authenticating with Google...", false);
         await signInWithPopup(auth, googleProvider);
       } catch (err) {
-        showAuthMessage("Google Sign-In failed: " + err.message.replace("Firebase:", ""), true);
+        showAuthMessage("Google authentication failed: " + err.message.replace("Firebase:", ""), true);
       }
     };
 
-    // Email/Password Auth Handler with Unique Username Validation
     window.handleAuth = async (e) => {
       e.preventDefault();
       const email = document.getElementById("authEmail").value.trim();
@@ -897,18 +973,17 @@
       try {
         if (authMode === "signup") {
           if (!username || username.length < 3) {
-            showAuthMessage("Please choose a unique username (at least 3 characters).", true);
+            showAuthMessage("Please enter a valid username (minimum 3 characters).", true);
             return;
           }
-          // Check if username is already taken
           const q = query(collection(db, "developers"), where("username", "==", username));
           const existingSnap = await getDocs(q);
           if (!existingSnap.empty) {
-            showAuthMessage(`Username @${username} is already taken! Please choose another.`, true);
+            showAuthMessage(`Username @${username} is already registered. Please select another.`, true);
             return;
           }
 
-          showAuthMessage("Creating your developer account...", false);
+          showAuthMessage("Creating developer account...", false);
           const cred = await createUserWithEmailAndPassword(auth, email, pass);
           const finalStudio = devName || username;
           await updateProfile(cred.user, { displayName: finalStudio });
@@ -933,13 +1008,11 @@
       await signOut(auth);
     };
 
-    // Verify Super Admin strictly by First-Registered Owner UID stored in Firestore settings/admin_config
     async function verifyStrictSuperAdmin(user) {
       const configRef = doc(db, "settings", "admin_config");
       const configSnap = await getDoc(configRef);
 
       if (!configSnap.exists()) {
-        // The very first user to log in claims permanent Super Admin UID ownership
         await setDoc(configRef, {
           superAdminUid: user.uid,
           superAdminEmail: user.email,
@@ -952,7 +1025,6 @@
       }
     }
 
-    // Ensure Developer Profile exists (especially for first-time Google Sign-In users)
     async function ensureDeveloperProfile(user) {
       const devRef = doc(db, "developers", user.uid);
       const devSnap = await getDoc(devRef);
@@ -988,16 +1060,15 @@
       const newWeb = document.getElementById("profWebsite").value.trim();
 
       if (!newHandle || newHandle.length < 3) {
-        alert("Username must be at least 3 characters.");
+        alert("Username must contain at least 3 characters.");
         return;
       }
 
-      // Check uniqueness if changed
       if (newHandle !== currentDeveloperDoc.username) {
         const q = query(collection(db, "developers"), where("username", "==", newHandle));
         const snap = await getDocs(q);
         if (!snap.empty) {
-          alert(`@${newHandle} is already taken by another developer!`);
+          alert(`Username @${newHandle} is already taken.`);
           return;
         }
       }
@@ -1013,9 +1084,9 @@
       currentDeveloperDoc.studioName = newStudio || newHandle;
       currentDeveloperDoc.website = newWeb;
 
-      document.getElementById("welcomeText").innerText = `${currentDeveloperDoc.studioName} (@${currentDeveloperDoc.username}) • ${currentUser.email}`;
+      document.getElementById("welcomeText").innerText = `${currentDeveloperDoc.studioName} (@${currentDeveloperDoc.username}) | ${currentUser.email}`;
       document.getElementById("profileCard").style.display = "none";
-      alert("✅ Developer Profile Updated!");
+      alert("Developer profile updated successfully.");
     };
 
     onAuthStateChanged(auth, async (user) => {
@@ -1027,15 +1098,15 @@
         await ensureDeveloperProfile(user);
         isSuperAdmin = await verifyStrictSuperAdmin(user);
 
-        document.getElementById("welcomeText").innerText = `${currentDeveloperDoc.studioName} (@${currentDeveloperDoc.username}) • ${user.email}`;
+        document.getElementById("welcomeText").innerText = `${currentDeveloperDoc.studioName} (@${currentDeveloperDoc.username}) | ${user.email}`;
 
         const badge = document.getElementById("roleBadge");
         if (isSuperAdmin) {
-          badge.innerText = "👑 Super Admin (Owner)";
+          badge.innerText = "Super Administrator";
           badge.classList.add("admin");
           document.getElementById("superAdminTools").style.display = "block";
           document.getElementById("ghUploadBox").style.display = "block";
-          document.getElementById("tableHeading").innerText = "All Developers' Applications (Super Admin View)";
+          document.getElementById("tableHeading").innerText = "All Developer Submissions (Administrator View)";
           const savedToken = localStorage.getItem("zappora_gh_token");
           if (savedToken) document.getElementById("ghToken").value = savedToken;
         } else {
@@ -1071,19 +1142,19 @@
 
         tbody.innerHTML = "";
         if (visibleApps.length === 0) {
-          tbody.innerHTML = '<tr><td colspan="6" style="text-align: center; color: var(--text-muted);">No apps submitted yet. Submit your first app below!</td></tr>';
+          tbody.innerHTML = '<tr><td colspan="6" style="text-align: center; color: var(--text-muted);">No applications found. Use the form below to submit an application.</td></tr>';
           return;
         }
 
         visibleApps.forEach(app => {
-          let statusBadge = '<span class="status-pill status-pending">⏳ Pending Review</span>';
-          if (app.status === "approved") statusBadge = '<span class="status-pill status-approved">✓ Approved</span>';
-          if (app.status === "rejected") statusBadge = `<span class="status-pill status-rejected" title="${app.rejectReason || ''}">✕ Rejected</span>`;
+          let statusBadge = '<span class="status-pill status-pending">Pending Review</span>';
+          if (app.status === "approved") statusBadge = '<span class="status-pill status-approved">Approved</span>';
+          if (app.status === "rejected") statusBadge = `<span class="status-pill status-rejected" title="${app.rejectReason || ''}">Rejected</span>`;
 
           const adminActions = isSuperAdmin
             ? `
-              ${app.status !== "approved" ? `<button class="action-btn btn-approve" onclick="approveApp('${app.id}')">✅ Approve</button>` : ""}
-              ${app.status !== "rejected" ? `<button class="action-btn btn-reject" onclick="rejectApp('${app.id}')">✕ Reject</button>` : ""}
+              ${app.status !== "approved" ? `<button class="action-btn btn-approve" onclick="approveApp('${app.id}')">Approve</button>` : ""}
+              ${app.status !== "rejected" ? `<button class="action-btn btn-reject" onclick="rejectApp('${app.id}')">Reject</button>` : ""}
             `
             : "";
 
@@ -1103,7 +1174,7 @@
             <td>${app.category}</td>
             <td>v${app.versionName}</td>
             <td>${statusBadge}</td>
-            <td><strong>⬇ ${app.downloads || 0}</strong></td>
+            <td><strong>${app.downloads || 0}</strong></td>
             <td>
               ${adminActions}
               <button class="action-btn btn-edit" onclick="populateEdit('${app.id}')">Edit</button>
@@ -1113,11 +1184,10 @@
           tbody.appendChild(row);
         });
       } catch (err) {
-        tbody.innerHTML = `<tr><td colspan="6" style="color: var(--danger); text-align:center;">Error loading Firestore: ${err.message}</td></tr>`;
+        tbody.innerHTML = `<tr><td colspan="6" style="color: var(--danger); text-align:center;">Database error: ${err.message}</td></tr>`;
       }
     }
 
-    // Compress Icon to WebP DataURL
     window.handleIconFile = (event) => {
       const file = event.target.files[0];
       if (!file) return;
@@ -1139,7 +1209,6 @@
       reader.readAsDataURL(file);
     };
 
-    // Compress Screenshots so any developer can pick images directly from PC
     window.handleScreenshotFiles = (event) => {
       const files = Array.from(event.target.files).slice(0, 4);
       if (files.length === 0) return;
@@ -1182,7 +1251,7 @@
 
       const sizeInMB = (file.size / (1024 * 1024)).toFixed(1) + "MB";
       document.getElementById("appSize").value = sizeInMB;
-      document.getElementById("apkFileName").innerText = `Selected: ${file.name} (${sizeInMB})`;
+      document.getElementById("apkFileName").innerText = `Selected Package: ${file.name} (${sizeInMB})`;
 
       if (isSuperAdmin) {
         const appId = document.getElementById("appId").value.trim() || "app";
@@ -1204,7 +1273,7 @@
         if (isSuperAdmin && token && selectedApkFile) {
           localStorage.setItem("zappora_gh_token", token);
           log.style.display = "block";
-          log.innerText = "⏳ Uploading APK to GitHub repository...";
+          log.innerText = "Uploading APK package to GitHub repository...";
 
           const cleanFile = selectedApkFile.name.replace(/[^a-zA-Z0-9._-]/g, "_");
           const repoPath = `assets/${appId}/apk/${cleanFile}`;
@@ -1266,12 +1335,12 @@
 
         log.style.display = "block";
         log.innerText = isSuperAdmin
-          ? "✅ Application published LIVE on Zappora Store!"
-          : "✅ Submitted! Your app is Pending Admin Approval and will go live once verified.";
+          ? "Application published directly to the live store."
+          : "Application submitted successfully. Status: Pending Administrator Approval.";
 
         await loadAppsFromFirebase();
       } catch (err) {
-        alert("Submit Error: " + err.message);
+        alert("Submission Error: " + err.message);
       } finally {
         btn.disabled = false;
       }
@@ -1285,14 +1354,14 @@
 
     window.rejectApp = async (id) => {
       if (!isSuperAdmin) return;
-      const reason = prompt("Enter reason for rejecting this app (visible to developer):", "Invalid APK link or policy violation");
+      const reason = prompt("Specify rejection reason for the developer:", "Invalid package link or policy violation");
       if (reason === null) return;
       await updateDoc(doc(db, "apps", id), { status: "rejected", rejectReason: reason });
       await loadAppsFromFirebase();
     };
 
     window.deleteApp = async (id) => {
-      if (confirm("Are you sure you want to permanently delete this app?")) {
+      if (confirm("Are you sure you want to permanently delete this application?")) {
         await deleteDoc(doc(db, "apps", id));
         await loadAppsFromFirebase();
       }
@@ -1313,7 +1382,7 @@
       document.getElementById("appDesc").value = item.desc;
       document.getElementById("appNotes").value = item.releaseNotes || "";
 
-      document.getElementById("formHeading").innerText = "Editing: " + item.title;
+      document.getElementById("formHeading").innerText = "Editing Application: " + item.title;
       document.getElementById("formCard").scrollIntoView({ behavior: "smooth" });
     };
 
@@ -1337,10 +1406,10 @@
             updatedAt: Date.now()
           });
         }
-        alert(`🎉 Successfully imported ${list.length} apps from version.json!`);
+        alert(`Successfully synchronized ${list.length} applications from version.json.`);
         await loadAppsFromFirebase();
       } catch (err) {
-        alert("Import failed: " + err.message);
+        alert("Synchronization failed: " + err.message);
       }
     };
   </script>
