@@ -819,6 +819,12 @@
           <input type="password" id="ghToken" placeholder="Enter GitHub Personal Access Token (ghp_...) to upload selected APK automatically" />
         </div>
 
+        <!-- Optional Web Play / Web View URL -->
+        <div class="form-group">
+          <label>Web Version URL (Optional — Shows "Web Play" for Games or "Web View" for Apps)</label>
+          <input type="url" id="appWebUrl" placeholder="https://... (Leave blank to show only Download APK)" />
+        </div>
+
         <!-- Screenshots -->
         <div class="form-group">
           <label>Application Screenshots (Select Up to 4 Images or Provide Comma-Separated URLs)</label>
@@ -1324,6 +1330,7 @@
           desc: document.getElementById("appDesc").value.trim(),
           icon: document.getElementById("appIcon").value.trim(),
           downloadUrl: document.getElementById("appDownloadUrl").value.trim(),
+          webUrl: document.getElementById("appWebUrl").value.trim(),
           screenshots: screenshotsArray,
           releaseNotes: document.getElementById("appNotes").value.trim(),
           developerUid: existing ? existing.developerUid : currentUser.uid,
@@ -1386,6 +1393,7 @@
       document.getElementById("appSize").value = item.size;
       document.getElementById("appIcon").value = item.icon;
       document.getElementById("appDownloadUrl").value = item.downloadUrl;
+      document.getElementById("appWebUrl").value = item.webUrl || "";
       document.getElementById("appScreenshots").value = Array.isArray(item.screenshots) ? item.screenshots.join(", ") : "";
       document.getElementById("appDesc").value = item.desc;
       document.getElementById("appNotes").value = item.releaseNotes || "";
