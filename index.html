@@ -4,10 +4,10 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="google-site-verification" content="6jiXl6s2IAC-aG8T4irxKVlaAU4hgpy3pNOG39xYv3U" />
-  <title>Zappora | Official Android App & Game Directory</title>
+  <title>Zappora Store - Official Android Apps & Games Directory</title>
   <link rel="icon" type="image/png" href="favicon.png" />
-  <meta name="description" content="Download official Android APK games and apps directly from Zappora. Fast, verified, and secure downloads without third-party installers." />
-  <meta name="keywords" content="Zappora, download apk, android apps download, apk store, deca chat apk, download android games, free apk portal" />
+  <meta name="description" content="Download official Android APK games and apps directly from Zappora Store. Fast, verified, and secure downloads." />
+  <link rel="canonical" href="https://zappora.onrender.com/" />
   <style>
     :root {
       --bg-main: #f8fafc;
@@ -22,6 +22,8 @@
       --badge-game: #0369a1;
       --badge-app: #0d9488;
       --badge-app-bg: #ccfbf1;
+      --web-btn-bg: #0f172a;
+      --web-btn-text: #ffffff;
       --shadow-card: 0 2px 6px rgba(0, 0, 0, 0.04);
       --shadow-hover: 0 12px 20px -4px rgba(2, 132, 199, 0.14);
     }
@@ -39,6 +41,8 @@
       --badge-game: #38bdf8;
       --badge-app: #2dd4bf;
       --badge-app-bg: rgba(45, 212, 191, 0.15);
+      --web-btn-bg: #334155;
+      --web-btn-text: #38bdf8;
       --shadow-card: 0 4px 10px rgba(0, 0, 0, 0.3);
       --shadow-hover: 0 12px 24px -4px rgba(56, 189, 248, 0.2);
     }
@@ -214,7 +218,7 @@
 
     .grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+      grid-template-columns: repeat(auto-fill, minmax(295px, 1fr));
       gap: 20px;
     }
 
@@ -331,7 +335,8 @@
 
     .card-actions {
       display: flex;
-      gap: 8px;
+      gap: 7px;
+      align-items: center;
     }
 
     .btn-download {
@@ -342,15 +347,37 @@
       color: #ffffff;
       text-decoration: none;
       font-weight: 700;
-      font-size: 0.92rem;
-      padding: 11px;
+      font-size: 0.86rem;
+      padding: 11px 8px;
       border-radius: 9px;
       border: none;
       cursor: pointer;
+      white-space: nowrap;
+    }
+
+    .btn-web {
+      flex: 0.9;
+      display: block;
+      text-align: center;
+      background: var(--web-btn-bg);
+      color: var(--web-btn-text);
+      text-decoration: none;
+      font-weight: 700;
+      font-size: 0.84rem;
+      padding: 11px 8px;
+      border-radius: 9px;
+      border: 1px solid var(--border-color);
+      cursor: pointer;
+      white-space: nowrap;
+      transition: opacity 0.2s;
+    }
+
+    .btn-web:hover {
+      opacity: 0.9;
     }
 
     .btn-info {
-      padding: 11px 13px;
+      padding: 11px 12px;
       border-radius: 9px;
       border: 1px solid var(--border-color);
       background: var(--surface-hover);
@@ -358,6 +385,23 @@
       font-weight: 700;
       font-size: 0.85rem;
       cursor: pointer;
+    }
+
+    /* Toast Notification for Mobile Share */
+    .toast-msg {
+      position: fixed;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #0f172a;
+      color: #ffffff;
+      padding: 12px 22px;
+      border-radius: 30px;
+      font-size: 0.88rem;
+      font-weight: 700;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.25);
+      z-index: 30000;
+      display: none;
     }
 
     /* Modal Popup */
@@ -542,7 +586,7 @@
 
     <section class="hero">
       <h1>Direct <span>APK Download</span> Portal</h1>
-      <p>Download official game and app releases directly to your device, or publish your own Android creations.</p>
+      <p>Download official game and app releases directly to your device, or play and launch instant web versions.</p>
     </section>
 
     <section class="controls">
@@ -558,8 +602,8 @@
 
     <div class="category-pills">
       <div class="pill active" id="pill-ALL" onclick="setCategory('ALL')">All Releases</div>
-      <div class="pill" id="pill-Game" onclick="setCategory('Game')">🎮 Games</div>
-      <div class="pill" id="pill-App" onclick="setCategory('App')">📱 Apps</div>
+      <div class="pill" id="pill-Game" onclick="setCategory('Game')">Games</div>
+      <div class="pill" id="pill-App" onclick="setCategory('App')">Apps</div>
     </div>
 
     <main class="grid" id="appsContainer"></main>
@@ -625,9 +669,10 @@
         <p id="mNotes"></p>
       </div>
 
-      <div style="display: flex; gap: 10px; margin-top: 20px;">
+      <div style="display: flex; gap: 8px; margin-top: 20px; flex-wrap: wrap;">
         <a id="mDownloadBtn" href="#" class="btn-download" target="_blank" rel="noopener noreferrer">Download APK</a>
-        <button class="btn-info" onclick="shareCurrentApp()">Share 🔗</button>
+        <a id="mWebBtn" href="#" class="btn-web" target="_blank" rel="noopener noreferrer" style="display: none;">Web Play</a>
+        <button class="btn-info" onclick="shareCurrentApp()">Share</button>
       </div>
     </div>
   </div>
@@ -636,6 +681,8 @@
     <img id="lightboxImg" src="" alt="Screenshot Fullscreen" />
   </div>
 
+  <div class="toast-msg" id="toastMsg">Link copied to clipboard!</div>
+
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
     import {
@@ -643,6 +690,7 @@
       collection,
       getDocs,
       doc,
+      setDoc,
       updateDoc,
       increment
     } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
@@ -675,9 +723,14 @@
       document.getElementById("themeToggle").innerText = isDark ? "☀️" : "🌙";
     };
 
-    // Load approved apps from Firebase (with automatic fallback to version.json)
+    function showToast(text) {
+      const t = document.getElementById("toastMsg");
+      t.innerText = text;
+      t.style.display = "block";
+      setTimeout(() => { t.style.display = "none"; }, 2800);
+    }
+
     async function loadCatalog() {
-      const container = document.getElementById("appsContainer");
       try {
         const snap = await getDocs(collection(db, "apps"));
         const fbApps = [];
@@ -693,15 +746,26 @@
           if (response.ok) activeCatalog = await response.json();
         }
         renderApps(activeCatalog);
+        checkUrlDeepLink();
       } catch (err) {
         const response = await fetch("./version.json?cache_bust=" + Date.now());
         if (response.ok) {
           activeCatalog = await response.json();
           renderApps(activeCatalog);
+          checkUrlDeepLink();
         }
       }
     }
 
+    function checkUrlDeepLink() {
+      const params = new URLSearchParams(window.location.search);
+      const targetApp = params.get("app");
+      if (targetApp) {
+        window.openModal(targetApp);
+      }
+    }
+
+    // Reliable Global Download Counter (Updates UI + Firestore)
     window.recordDownload = async (appId) => {
       const appItem = activeCatalog.find(i => i.id === appId);
       if (appItem) {
@@ -714,7 +778,14 @@
       }
       try {
         await updateDoc(doc(db, "apps", appId), { downloads: increment(1) });
-      } catch (e) {}
+      } catch (err) {
+        // Fallback if document wasn't synced yet
+        if (appItem) {
+          try {
+            await setDoc(doc(db, "apps", appId), { downloads: appItem.downloads }, { merge: true });
+          } catch (e2) {}
+        }
+      }
     };
 
     function renderApps(items) {
@@ -729,6 +800,13 @@
       items.forEach(app => {
         const badgeClass = app.category === "Game" ? "badge-game" : "badge-app";
         const totalDl = parseInt(app.downloads, 10) || 0;
+        const hasWebUrl = app.webUrl && app.webUrl.trim() !== "";
+        const webBtnLabel = app.category === "Game" ? "Web Play" : "Web View";
+
+        const webButtonHtml = hasWebUrl
+          ? `<a href="${app.webUrl.trim()}" class="btn-web" target="_blank" rel="noopener noreferrer">${webBtnLabel}</a>`
+          : "";
+
         const card = document.createElement("article");
         card.className = "card";
         card.onclick = () => window.openModal(app.id);
@@ -755,6 +833,7 @@
             </div>
             <div class="card-actions" onclick="event.stopPropagation()">
               <a href="${app.downloadUrl}" class="btn-download" target="_blank" rel="noopener noreferrer" onclick="recordDownload('${app.id}')">Download APK</a>
+              ${webButtonHtml}
               <button class="btn-info" onclick="openModal('${app.id}')">ⓘ</button>
             </div>
           </div>
@@ -830,6 +909,15 @@
       dlBtn.href = app.downloadUrl;
       dlBtn.onclick = () => window.recordDownload(app.id);
 
+      const webBtn = document.getElementById("mWebBtn");
+      if (app.webUrl && app.webUrl.trim() !== "") {
+        webBtn.style.display = "block";
+        webBtn.href = app.webUrl.trim();
+        webBtn.innerText = app.category === "Game" ? "Web Play" : "Web View";
+      } else {
+        webBtn.style.display = "none";
+      }
+
       document.getElementById("appModal").classList.add("open");
     };
 
@@ -840,17 +928,37 @@
     };
     window.closeLightbox = () => document.getElementById("lightbox").classList.remove("open");
 
-    window.shareCurrentApp = () => {
+    // 100% Working Mobile & Laptop Share Function
+    window.shareCurrentApp = async () => {
       if (!currentModalApp) return;
+      const shareUrl = `${window.location.origin}${window.location.pathname}?app=${encodeURIComponent(currentModalApp.id)}`;
+      const shareData = {
+        title: currentModalApp.title,
+        text: `Check out ${currentModalApp.title} on Zappora Store!`,
+        url: shareUrl
+      };
+
       if (navigator.share) {
-        navigator.share({
-          title: currentModalApp.title,
-          text: `Download ${currentModalApp.title} from Zappora Store!`,
-          url: window.location.href
-        });
-      } else {
-        navigator.clipboard.writeText(currentModalApp.downloadUrl);
-        alert("Download link copied!");
+        try {
+          await navigator.share(shareData);
+          return;
+        } catch (err) {
+          if (err.name === "AbortError") return;
+        }
+      }
+
+      // Universal Fallback for Mobile WebViews & Desktop Browsers
+      try {
+        await navigator.clipboard.writeText(shareUrl);
+        showToast("App Share Link Copied!");
+      } catch (e) {
+        const tempInput = document.createElement("input");
+        tempInput.value = shareUrl;
+        document.body.appendChild(tempInput);
+        tempInput.select();
+        document.execCommand("copy");
+        document.body.removeChild(tempInput);
+        showToast("App Share Link Copied!");
       }
     };
 
