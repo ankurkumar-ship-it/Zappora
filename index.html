@@ -11,7 +11,7 @@
   <meta name="application-name" content="Zappora" />
 
   <!-- 2. High-Ranking Unique Title & Meta Description -->
-  <title>Zappora | Official Android APK Store, Instant Web Games & Developer Hub</title>
+  <title>Zappora — Official Android APK Store, Instant Web Games & Developer Hub</title>
   <meta name="description" content="Zappora is the official next-gen Android app store and indie developer platform. Download 100% verified APKs, play instant web games (BaghChal, OX Arena, Neon Dash), or publish your own Android creations for free." />
   <meta name="keywords" content="Zappora, Zappora Store, Zappora APK download, Zappora app store, indie android games store, publish android apk free, BaghChal apk, Deca Chat apk, Neon Dash game, Ankur Studios" />
 
@@ -34,6 +34,7 @@
     "description": "Official Android App & Game Store and Public Developer Publishing Console."
   }
   </script>
+
   <style>
     :root {
       --bg-main: #f8fafc;
@@ -50,6 +51,7 @@
       --badge-app-bg: #ccfbf1;
       --web-btn-bg: #0f172a;
       --web-btn-text: #ffffff;
+      --star-color: #f59e0b;
       --shadow-card: 0 2px 6px rgba(0, 0, 0, 0.04);
       --shadow-hover: 0 12px 20px -4px rgba(2, 132, 199, 0.14);
     }
@@ -83,13 +85,27 @@
     body {
       background-color: var(--bg-main);
       color: var(--text-main);
-      padding: 20px 16px 85px;
+      padding: 20px 16px 110px;
       transition: background-color 0.25s, color 0.25s;
     }
 
     .container {
-      max-width: 980px;
+      max-width: 1020px;
       margin: 0 auto;
+    }
+
+    /* 1. HQ Announcement Banner */
+    .announcement-bar {
+      display: none;
+      background: linear-gradient(90deg, #0284c7, #2563eb);
+      color: #ffffff;
+      padding: 11px 18px;
+      border-radius: 12px;
+      margin-bottom: 18px;
+      font-size: 0.88rem;
+      font-weight: 700;
+      text-align: center;
+      box-shadow: 0 4px 12px rgba(2, 132, 199, 0.2);
     }
 
     .navbar {
@@ -98,7 +114,7 @@
       align-items: center;
       padding: 10px 0 20px;
       border-bottom: 1px solid var(--border-color);
-      margin-bottom: 28px;
+      margin-bottom: 24px;
     }
 
     .brand {
@@ -158,39 +174,111 @@
       font-size: 1.1rem;
     }
 
-    .hero {
-      text-align: center;
-      margin-bottom: 30px;
+    /* 2. Featured Spotlight Banner */
+    .spotlight-banner {
+      display: none;
+      background: linear-gradient(135deg, #0f172a 0%, #0369a1 100%);
+      border-radius: 18px;
+      padding: 26px;
+      color: #ffffff;
+      margin-bottom: 28px;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 14px 28px -8px rgba(2, 132, 199, 0.35);
     }
 
-    .hero h1 {
-      font-size: 2.1rem;
-      color: var(--text-main);
-      margin-bottom: 8px;
+    .spotlight-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 22px;
+      flex-wrap: wrap;
+    }
+
+    .spotlight-left {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      flex: 1;
+      min-width: 260px;
+    }
+
+    .spotlight-icon {
+      width: 84px;
+      height: 84px;
+      border-radius: 18px;
+      object-fit: cover;
+      border: 2px solid rgba(255, 255, 255, 0.25);
+      flex-shrink: 0;
+    }
+
+    .spotlight-tag {
+      display: inline-block;
+      background: rgba(56, 189, 248, 0.25);
+      color: #7dd3fc;
+      font-size: 0.7rem;
       font-weight: 800;
+      padding: 4px 10px;
+      border-radius: 20px;
+      text-transform: uppercase;
+      letter-spacing: 0.6px;
+      margin-bottom: 6px;
     }
 
-    .hero h1 span {
-      color: var(--primary);
+    .spotlight-left h2 {
+      font-size: 1.5rem;
+      font-weight: 800;
+      margin-bottom: 4px;
     }
 
-    .hero p {
-      color: var(--text-muted);
-      font-size: 0.98rem;
-      max-width: 580px;
-      margin: 0 auto;
+    .spotlight-left p {
+      font-size: 0.88rem;
+      color: #cbd5e1;
+      max-width: 520px;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
     }
 
+    .spotlight-actions {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .btn-spot-dl {
+      background: #38bdf8;
+      color: #0f172a;
+      font-weight: 800;
+      font-size: 0.9rem;
+      padding: 12px 20px;
+      border-radius: 10px;
+      text-decoration: none;
+    }
+
+    .btn-spot-web {
+      background: rgba(255, 255, 255, 0.14);
+      color: #ffffff;
+      font-weight: 700;
+      font-size: 0.9rem;
+      padding: 12px 18px;
+      border-radius: 10px;
+      text-decoration: none;
+      border: 1px solid rgba(255, 255, 255, 0.25);
+    }
+
+    /* Controls & Sort Bar */
     .controls {
       display: flex;
       gap: 12px;
-      margin-bottom: 22px;
+      margin-bottom: 18px;
       flex-wrap: wrap;
     }
 
     .search-box {
       flex: 1;
-      min-width: 250px;
+      min-width: 230px;
     }
 
     .search-box input {
@@ -205,12 +293,12 @@
     }
 
     .filter-select {
-      padding: 13px 18px;
+      padding: 13px 16px;
       border-radius: 11px;
       border: 1px solid var(--border-color);
       background-color: var(--surface);
       color: var(--text-main);
-      font-size: 0.95rem;
+      font-size: 0.92rem;
       font-weight: 600;
       outline: none;
       cursor: pointer;
@@ -219,9 +307,10 @@
     .category-pills {
       display: flex;
       gap: 10px;
-      margin-bottom: 24px;
+      margin-bottom: 20px;
       overflow-x: auto;
       padding-bottom: 4px;
+      align-items: center;
     }
 
     .pill {
@@ -240,6 +329,21 @@
       background: var(--primary);
       color: #ffffff;
       border-color: var(--primary);
+    }
+
+    /* Developer Filter Chip */
+    .dev-filter-bar {
+      display: none;
+      align-items: center;
+      justify-content: space-between;
+      background: var(--primary-light);
+      border: 1px solid var(--primary);
+      color: var(--text-main);
+      padding: 10px 16px;
+      border-radius: 10px;
+      margin-bottom: 20px;
+      font-size: 0.88rem;
+      font-weight: 700;
     }
 
     .grid {
@@ -292,10 +396,15 @@
     }
 
     .dev-label {
-      font-size: 0.75rem;
-      color: var(--text-muted);
-      margin-bottom: 5px;
-      font-weight: 500;
+      font-size: 0.76rem;
+      color: var(--primary);
+      margin-bottom: 6px;
+      font-weight: 600;
+      display: inline-block;
+    }
+
+    .dev-label:hover {
+      text-decoration: underline;
     }
 
     .badge-row {
@@ -329,6 +438,15 @@
       font-weight: 700;
       color: var(--text-muted);
       background: var(--surface-hover);
+      padding: 3px 8px;
+      border-radius: 5px;
+    }
+
+    .rating-pill {
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: #b45309;
+      background: #fef3c7;
       padding: 3px 8px;
       border-radius: 5px;
     }
@@ -395,11 +513,6 @@
       border: 1px solid var(--border-color);
       cursor: pointer;
       white-space: nowrap;
-      transition: opacity 0.2s;
-    }
-
-    .btn-web:hover {
-      opacity: 0.9;
     }
 
     .btn-info {
@@ -413,10 +526,79 @@
       cursor: pointer;
     }
 
-    /* Toast Notification for Mobile Share */
+    /* Floating Get Zappora App Bar */
+    .floating-app-bar {
+      position: fixed;
+      bottom: 16px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: calc(100% - 32px);
+      max-width: 560px;
+      background: #0f172a;
+      color: #ffffff;
+      border: 1px solid #334155;
+      border-radius: 16px;
+      padding: 12px 16px;
+      display: none;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      box-shadow: 0 15px 30px rgba(0, 0, 0, 0.35);
+      z-index: 9000;
+    }
+
+    .floating-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .floating-left img {
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+    }
+
+    .floating-left div strong {
+      display: block;
+      font-size: 0.88rem;
+    }
+
+    .floating-left div span {
+      font-size: 0.75rem;
+      color: #94a3b8;
+    }
+
+    .floating-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .btn-float-install {
+      background: #38bdf8;
+      color: #0f172a;
+      text-decoration: none;
+      font-size: 0.8rem;
+      font-weight: 800;
+      padding: 8px 14px;
+      border-radius: 8px;
+      white-space: nowrap;
+    }
+
+    .btn-float-close {
+      background: transparent;
+      border: none;
+      color: #94a3b8;
+      font-size: 1rem;
+      cursor: pointer;
+      padding: 4px;
+    }
+
+    /* Toast Notification */
     .toast-msg {
       position: fixed;
-      bottom: 24px;
+      bottom: 85px;
       left: 50%;
       transform: translateX(-50%);
       background: #0f172a;
@@ -451,7 +633,7 @@
       background: var(--surface);
       border: 1px solid var(--border-color);
       border-radius: 18px;
-      max-width: 600px;
+      max-width: 620px;
       width: 100%;
       padding: 24px;
       max-height: 90vh;
@@ -541,6 +723,69 @@
       cursor: zoom-in;
     }
 
+    /* 5-Star Rating & Reviews Section inside Modal */
+    .reviews-box {
+      border-top: 1px solid var(--border-color);
+      padding-top: 16px;
+      margin-top: 18px;
+    }
+
+    .star-picker {
+      display: flex;
+      gap: 6px;
+      margin-bottom: 10px;
+    }
+
+    .star-btn {
+      font-size: 1.4rem;
+      cursor: pointer;
+      color: #cbd5e1;
+      background: none;
+      border: none;
+      transition: color 0.15s;
+    }
+
+    .star-btn.selected {
+      color: var(--star-color);
+    }
+
+    .review-form-row {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 12px;
+      flex-wrap: wrap;
+    }
+
+    .review-input {
+      padding: 9px 12px;
+      border-radius: 8px;
+      border: 1px solid var(--border-color);
+      background: var(--bg-main);
+      color: var(--text-main);
+      font-size: 0.85rem;
+      outline: none;
+    }
+
+    .btn-post-review {
+      padding: 9px 16px;
+      background: var(--primary);
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      font-size: 0.84rem;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .review-item {
+      background: var(--bg-main);
+      border: 1px solid var(--border-color);
+      border-radius: 10px;
+      padding: 10px 12px;
+      margin-bottom: 8px;
+      font-size: 0.84rem;
+    }
+
     .lightbox-overlay {
       position: fixed;
       inset: 0;
@@ -599,8 +844,11 @@
 <body>
 
   <div class="container">
+    <!-- Live HQ Announcement Bar -->
+    <div id="hqAnnouncement" class="announcement-bar"></div>
+
     <header class="navbar">
-      <a href="#" class="brand">
+      <a href="#" class="brand" onclick="clearDevFilter()">
         <img src="favicon.png" alt="Zappora" onerror="this.src='logo.png'" />
         <span>ZAPPORA</span>
       </a>
@@ -610,19 +858,39 @@
       </div>
     </header>
 
-    <section class="hero">
-      <h1>Direct <span>APK Download</span> Portal</h1>
-      <p>Download official game and app releases directly to your device, or play and launch instant web versions.</p>
+    <!-- Featured Spotlight Banner -->
+    <section id="spotlightBanner" class="spotlight-banner">
+      <div class="spotlight-inner">
+        <div class="spotlight-left">
+          <img id="spotIcon" src="favicon.png" alt="Featured" class="spotlight-icon" onerror="this.src='favicon.png'" />
+          <div>
+            <span class="spotlight-tag">Featured Release</span>
+            <h2 id="spotTitle">Zappora Featured</h2>
+            <p id="spotDesc"></p>
+          </div>
+        </div>
+        <div class="spotlight-actions">
+          <a id="spotDlBtn" href="#" class="btn-spot-dl" target="_blank" rel="noopener noreferrer">Download APK</a>
+          <a id="spotWebBtn" href="#" class="btn-spot-web" target="_blank" rel="noopener noreferrer" style="display: none;">Web Play</a>
+        </div>
+      </div>
     </section>
 
+    <!-- Search, Category & Smart Sorting Controls -->
     <section class="controls">
       <div class="search-box">
-        <input type="text" id="searchInput" placeholder="Search applications and games..." oninput="filterCatalog()" />
+        <input type="text" id="searchInput" placeholder="Search applications, games, or @developers..." oninput="filterCatalog()" />
       </div>
       <select id="categoryFilter" class="filter-select" onchange="setCategory(this.value)">
         <option value="ALL">All Categories</option>
         <option value="Game">Games Only</option>
         <option value="App">Apps Only</option>
+      </select>
+      <select id="sortFilter" class="filter-select" onchange="filterCatalog()">
+        <option value="POPULAR">Sort: Most Popular</option>
+        <option value="RATED">Sort: Top Rated</option>
+        <option value="NEWEST">Sort: Newest Releases</option>
+        <option value="AZ">Sort: A to Z</option>
       </select>
     </section>
 
@@ -630,6 +898,12 @@
       <div class="pill active" id="pill-ALL" onclick="setCategory('ALL')">All Releases</div>
       <div class="pill" id="pill-Game" onclick="setCategory('Game')">Games</div>
       <div class="pill" id="pill-App" onclick="setCategory('App')">Apps</div>
+    </div>
+
+    <!-- Active Developer Filter Indicator -->
+    <div id="devFilterBar" class="dev-filter-bar">
+      <span id="devFilterText">Showing apps by Developer</span>
+      <button onclick="clearDevFilter()" style="background:none; border:none; color:var(--primary-dark); font-weight:800; cursor:pointer;">Show All Apps ✕</button>
     </div>
 
     <main class="grid" id="appsContainer"></main>
@@ -644,11 +918,26 @@
     </section>
 
     <footer>
-      &copy; 2026 Zappora Store. All rights reserved.
+      &copy; 2026 Zappora Store. Official Android App & Game Directory.
     </footer>
   </div>
 
-  <!-- App Details Modal -->
+  <!-- Floating Install Zappora App Bar -->
+  <div id="floatingAppBar" class="floating-app-bar">
+    <div class="floating-left">
+      <img src="favicon.png" alt="Zappora" onerror="this.src='logo.png'" />
+      <div>
+        <strong>Get the Official Zappora App</strong>
+        <span>Fast 1-click updates & native Android experience</span>
+      </div>
+    </div>
+    <div class="floating-actions">
+      <a id="floatingAppLink" href="#" class="btn-float-install" target="_blank">Install APK</a>
+      <button class="btn-float-close" onclick="dismissFloatingBar()">✕</button>
+    </div>
+  </div>
+
+  <!-- App Details & Reviews Modal -->
   <div class="modal-overlay" id="appModal" onclick="closeModal()">
     <div class="modal-box" onclick="event.stopPropagation()">
       <button class="modal-close" onclick="closeModal()">✕</button>
@@ -656,7 +945,7 @@
         <img id="mIcon" src="" alt="App Icon" class="modal-icon" onerror="this.src='favicon.png'" />
         <div>
           <h2 id="mTitle" style="font-size: 1.3rem; margin-bottom: 2px;"></h2>
-          <div id="mDeveloper" style="font-size: 0.82rem; color: var(--text-muted); margin-bottom: 6px;"></div>
+          <div id="mDeveloper" style="font-size: 0.82rem; color: var(--primary); font-weight: 600; cursor: pointer; margin-bottom: 6px;"></div>
           <span id="mBadge" class="badge"></span>
         </div>
       </div>
@@ -675,9 +964,15 @@
           <strong id="mDownloads">0</strong>
         </div>
         <div>
-          <span>Security</span>
-          <strong style="color: #10b981;">✓ Verified</strong>
+          <span>Rating</span>
+          <strong id="mRating" style="color: var(--star-color);">★ 5.0</strong>
         </div>
+      </div>
+
+      <div style="display: flex; gap: 8px; margin-bottom: 20px; flex-wrap: wrap;">
+        <a id="mDownloadBtn" href="#" class="btn-download" target="_blank" rel="noopener noreferrer">Download APK</a>
+        <a id="mWebBtn" href="#" class="btn-web" target="_blank" rel="noopener noreferrer" style="display: none;">Web Play</a>
+        <button class="btn-info" onclick="shareCurrentApp()">Share</button>
       </div>
 
       <div class="screenshots-wrapper" id="mScreenshotsWrapper" style="display: none;">
@@ -695,10 +990,22 @@
         <p id="mNotes"></p>
       </div>
 
-      <div style="display: flex; gap: 8px; margin-top: 20px; flex-wrap: wrap;">
-        <a id="mDownloadBtn" href="#" class="btn-download" target="_blank" rel="noopener noreferrer">Download APK</a>
-        <a id="mWebBtn" href="#" class="btn-web" target="_blank" rel="noopener noreferrer" style="display: none;">Web Play</a>
-        <button class="btn-info" onclick="shareCurrentApp()">Share</button>
+      <!-- 5-Star Rating & User Reviews -->
+      <div class="reviews-box">
+        <h4 style="font-size: 0.88rem; color: var(--primary); margin-bottom: 8px; text-transform: uppercase;">Rate & Review This App</h4>
+        <div class="star-picker" id="starPicker">
+          <button type="button" class="star-btn selected" onclick="selectStar(1)">★</button>
+          <button type="button" class="star-btn selected" onclick="selectStar(2)">★</button>
+          <button type="button" class="star-btn selected" onclick="selectStar(3)">★</button>
+          <button type="button" class="star-btn selected" onclick="selectStar(4)">★</button>
+          <button type="button" class="star-btn selected" onclick="selectStar(5)">★</button>
+        </div>
+        <div class="review-form-row">
+          <input type="text" id="revName" class="review-input" style="flex: 1; min-width: 120px;" placeholder="Your Name" />
+          <input type="text" id="revComment" class="review-input" style="flex: 2; min-width: 180px;" placeholder="Write a short review..." />
+          <button type="button" class="btn-post-review" onclick="submitAppReview()">Post</button>
+        </div>
+        <div id="mReviewsList"></div>
       </div>
     </div>
   </div>
@@ -716,6 +1023,7 @@
       collection,
       getDocs,
       doc,
+      getDoc,
       setDoc,
       updateDoc,
       increment
@@ -736,6 +1044,8 @@
 
     let activeCatalog = [];
     let currentModalApp = null;
+    let selectedStarCount = 5;
+    let activeDeveloperFilter = null;
 
     if (localStorage.getItem("zappora_theme") === "dark") {
       document.body.classList.add("dark-mode");
@@ -756,7 +1066,35 @@
       setTimeout(() => { t.style.display = "none"; }, 2800);
     }
 
+    function getAppRating(appItem) {
+      if (!appItem.ratingCount || appItem.ratingCount <= 0) return "5.0";
+      return (appItem.ratingSum / appItem.ratingCount).toFixed(1);
+    }
+
+    async function loadPlatformConfig() {
+      try {
+        const snap = await getDoc(doc(db, "settings", "platform_config"));
+        if (snap.exists()) {
+          const data = snap.data();
+          if (data.announcement && data.announcement.trim() !== "") {
+            const bar = document.getElementById("hqAnnouncement");
+            bar.innerText = data.announcement;
+            bar.style.display = "block";
+          }
+          if (data.maintenance === true) {
+            document.getElementById("appsContainer").innerHTML =
+              '<div style="grid-column:1/-1; text-align:center; padding:50px;"><h2>Store Under Scheduled Maintenance</h2><p style="color:var(--text-muted); margin-top:8px;">Please check back shortly.</p></div>';
+            return false;
+          }
+        }
+      } catch (e) {}
+      return true;
+    }
+
     async function loadCatalog() {
+      const isLive = await loadPlatformConfig();
+      if (!isLive) return;
+
       try {
         const snap = await getDocs(collection(db, "apps"));
         const fbApps = [];
@@ -771,27 +1109,63 @@
           const response = await fetch("./version.json?cache_bust=" + Date.now());
           if (response.ok) activeCatalog = await response.json();
         }
-        renderApps(activeCatalog);
-        checkUrlDeepLink();
       } catch (err) {
         const response = await fetch("./version.json?cache_bust=" + Date.now());
-        if (response.ok) {
-          activeCatalog = await response.json();
-          renderApps(activeCatalog);
-          checkUrlDeepLink();
+        if (response.ok) activeCatalog = await response.json();
+      }
+
+      setupSpotlightAndFloatingBar();
+      window.filterCatalog();
+      checkUrlDeepLink();
+    }
+
+    function setupSpotlightAndFloatingBar() {
+      if (activeCatalog.length === 0) return;
+
+      // Pick highest downloaded or first game for Spotlight Banner
+      const sorted = [...activeCatalog].sort((a, b) => (parseInt(b.downloads, 10) || 0) - (parseInt(a.downloads, 10) || 0));
+      const spot = sorted.find(a => a.category === "Game") || sorted[0];
+
+      if (spot) {
+        document.getElementById("spotlightBanner").style.display = "block";
+        document.getElementById("spotIcon").src = spot.icon;
+        document.getElementById("spotTitle").innerText = spot.title;
+        document.getElementById("spotDesc").innerText = spot.desc;
+
+        const dlBtn = document.getElementById("spotDlBtn");
+        dlBtn.href = spot.downloadUrl;
+        dlBtn.onclick = () => window.recordDownload(spot.id);
+
+        const webBtn = document.getElementById("spotWebBtn");
+        if (spot.webUrl && spot.webUrl.trim() !== "") {
+          webBtn.style.display = "inline-block";
+          webBtn.href = spot.webUrl.trim();
+          webBtn.innerText = spot.category === "Game" ? "Web Play" : "Web View";
         }
       }
+
+      // Setup Floating Official Store App Bar
+      const storeApp = activeCatalog.find(a => a.title.toLowerCase().includes("zappora"));
+      if (storeApp && !sessionStorage.getItem("hide_zappora_bar")) {
+        const bar = document.getElementById("floatingAppBar");
+        const link = document.getElementById("floatingAppLink");
+        link.href = storeApp.downloadUrl;
+        link.onclick = () => window.recordDownload(storeApp.id);
+        bar.style.display = "flex";
+      }
     }
+
+    window.dismissFloatingBar = () => {
+      document.getElementById("floatingAppBar").style.display = "none";
+      sessionStorage.setItem("hide_zappora_bar", "1");
+    };
 
     function checkUrlDeepLink() {
       const params = new URLSearchParams(window.location.search);
       const targetApp = params.get("app");
-      if (targetApp) {
-        window.openModal(targetApp);
-      }
+      if (targetApp) window.openModal(targetApp);
     }
 
-    // Reliable Global Download Counter (Updates UI + Firestore)
     window.recordDownload = async (appId) => {
       const appItem = activeCatalog.find(i => i.id === appId);
       if (appItem) {
@@ -805,7 +1179,6 @@
       try {
         await updateDoc(doc(db, "apps", appId), { downloads: increment(1) });
       } catch (err) {
-        // Fallback if document wasn't synced yet
         if (appItem) {
           try {
             await setDoc(doc(db, "apps", appId), { downloads: appItem.downloads }, { merge: true });
@@ -814,18 +1187,35 @@
       }
     };
 
+    window.filterByDeveloper = (devName, e) => {
+      if (e) e.stopPropagation();
+      activeDeveloperFilter = devName;
+      document.getElementById("devFilterBar").style.display = "flex";
+      document.getElementById("devFilterText").innerText = `Showing releases by: ${devName}`;
+      window.closeModal();
+      window.filterCatalog();
+    };
+
+    window.clearDevFilter = () => {
+      activeDeveloperFilter = null;
+      document.getElementById("devFilterBar").style.display = "none";
+      window.filterCatalog();
+    };
+
     function renderApps(items) {
       const container = document.getElementById("appsContainer");
       container.innerHTML = "";
 
       if (items.length === 0) {
-        container.innerHTML = '<p style="grid-column: 1/-1; text-align: center; color: var(--text-muted); padding: 40px;">No results found.</p>';
+        container.innerHTML = '<p style="grid-column: 1/-1; text-align: center; color: var(--text-muted); padding: 40px;">No matching applications found.</p>';
         return;
       }
 
       items.forEach(app => {
         const badgeClass = app.category === "Game" ? "badge-game" : "badge-app";
         const totalDl = parseInt(app.downloads, 10) || 0;
+        const avgRating = getAppRating(app);
+        const devName = app.developerName || "Zappora Official";
         const hasWebUrl = app.webUrl && app.webUrl.trim() !== "";
         const webBtnLabel = app.category === "Game" ? "Web Play" : "Web View";
 
@@ -843,9 +1233,10 @@
               <img src="${app.icon}" alt="${app.title}" class="app-icon" onerror="this.src='favicon.png'" />
               <div class="app-title-block">
                 <h2>${app.title}</h2>
-                <div class="dev-label">by ${app.developerName || "Zappora Official"}</div>
+                <div class="dev-label" onclick="filterByDeveloper('${devName.replace(/'/g, "")}', event)">by ${devName}</div>
                 <div class="badge-row">
                   <span class="badge ${badgeClass}">${app.category}</span>
+                  <span class="rating-pill">★ ${avgRating}</span>
                   <span class="dl-pill" id="dl-count-${app.id}">⬇ ${totalDl}</span>
                 </div>
               </div>
@@ -879,23 +1270,110 @@
     window.filterCatalog = () => {
       const query = document.getElementById("searchInput").value.toLowerCase().trim();
       const selectedCategory = document.getElementById("categoryFilter").value;
+      const sortMode = document.getElementById("sortFilter").value;
 
-      const filtered = activeCatalog.filter(item => {
-        const matchesText = item.title.toLowerCase().includes(query) || item.desc.toLowerCase().includes(query);
+      let filtered = activeCatalog.filter(item => {
+        const dev = (item.developerName || "Zappora Official").toLowerCase();
+        const matchesText =
+          item.title.toLowerCase().includes(query) ||
+          item.desc.toLowerCase().includes(query) ||
+          dev.includes(query);
         const matchesCategory = selectedCategory === "ALL" || item.category === selectedCategory;
-        return matchesText && matchesCategory;
+        const matchesDev = !activeDeveloperFilter || (item.developerName || "Zappora Official") === activeDeveloperFilter;
+        return matchesText && matchesCategory && matchesDev;
       });
+
+      if (sortMode === "POPULAR") {
+        filtered.sort((a, b) => (parseInt(b.downloads, 10) || 0) - (parseInt(a.downloads, 10) || 0));
+      } else if (sortMode === "RATED") {
+        filtered.sort((a, b) => parseFloat(getAppRating(b)) - parseFloat(getAppRating(a)));
+      } else if (sortMode === "NEWEST") {
+        filtered.sort((a, b) => (b.updatedAt || 0) - (a.updatedAt || 0));
+      } else if (sortMode === "AZ") {
+        filtered.sort((a, b) => a.title.localeCompare(b.title));
+      }
+
       renderApps(filtered);
     };
+
+    window.selectStar = (count) => {
+      selectedStarCount = count;
+      const stars = document.querySelectorAll("#starPicker .star-btn");
+      stars.forEach((btn, idx) => {
+        btn.classList.toggle("selected", idx < count);
+      });
+    };
+
+    window.submitAppReview = async () => {
+      if (!currentModalApp) return;
+      const nameInput = document.getElementById("revName");
+      const commentInput = document.getElementById("revComment");
+      const userName = nameInput.value.trim() || "Zappora User";
+      const comment = commentInput.value.trim();
+
+      if (!comment) {
+        showToast("Please write a short comment!");
+        return;
+      }
+
+      const newReview = {
+        user: userName,
+        stars: selectedStarCount,
+        text: comment,
+        date: new Date().toLocaleDateString()
+      };
+
+      currentModalApp.ratingSum = (currentModalApp.ratingSum || 5) + selectedStarCount;
+      currentModalApp.ratingCount = (currentModalApp.ratingCount || 1) + 1;
+      currentModalApp.reviews = [newReview, ...(currentModalApp.reviews || [])].slice(0, 15);
+
+      commentInput.value = "";
+      renderModalReviews();
+      document.getElementById("mRating").innerText = "★ " + getAppRating(currentModalApp);
+      window.filterCatalog();
+
+      try {
+        await setDoc(doc(db, "apps", currentModalApp.id), {
+          ratingSum: currentModalApp.ratingSum,
+          ratingCount: currentModalApp.ratingCount,
+          reviews: currentModalApp.reviews
+        }, { merge: true });
+        showToast("Thank you! Your review is live.");
+      } catch (e) {
+        showToast("Review posted locally!");
+      }
+    };
+
+    function renderModalReviews() {
+      const box = document.getElementById("mReviewsList");
+      const list = currentModalApp.reviews || [];
+      if (list.length === 0) {
+        box.innerHTML = '<p style="font-size: 0.82rem; color: var(--text-muted);">No reviews yet. Be the first to review!</p>';
+        return;
+      }
+      box.innerHTML = list.map(r => `
+        <div class="review-item">
+          <div style="display:flex; justify-content:space-between; margin-bottom:3px;">
+            <strong>${r.user} <span style="color:var(--star-color);">${"★".repeat(r.stars || 5)}</span></strong>
+            <span style="font-size:0.74rem; color:var(--text-muted);">${r.date || ""}</span>
+          </div>
+          <p style="color:var(--text-muted);">${r.text}</p>
+        </div>
+      `).join("");
+    }
 
     window.openModal = (id) => {
       const app = activeCatalog.find(item => item.id === id);
       if (!app) return;
       currentModalApp = app;
 
+      const devName = app.developerName || "Zappora Official";
       document.getElementById("mIcon").src = app.icon;
       document.getElementById("mTitle").innerText = app.title;
-      document.getElementById("mDeveloper").innerText = "Developed by " + (app.developerName || "Zappora Official");
+      const devEl = document.getElementById("mDeveloper");
+      devEl.innerText = "Developed by " + devName + " (View all)";
+      devEl.onclick = (e) => window.filterByDeveloper(devName, e);
+
       const badge = document.getElementById("mBadge");
       badge.innerText = app.category;
       badge.className = "badge " + (app.category === "Game" ? "badge-game" : "badge-app");
@@ -903,6 +1381,7 @@
       document.getElementById("mVersion").innerText = "v" + app.versionName;
       document.getElementById("mSize").innerText = app.size;
       document.getElementById("mDownloads").innerText = parseInt(app.downloads, 10) || 0;
+      document.getElementById("mRating").innerText = "★ " + getAppRating(app);
       document.getElementById("mDesc").innerText = app.desc;
 
       const ssWrapper = document.getElementById("mScreenshotsWrapper");
@@ -944,6 +1423,8 @@
         webBtn.style.display = "none";
       }
 
+      window.selectStar(5);
+      renderModalReviews();
       document.getElementById("appModal").classList.add("open");
     };
 
@@ -954,7 +1435,6 @@
     };
     window.closeLightbox = () => document.getElementById("lightbox").classList.remove("open");
 
-    // 100% Working Mobile & Laptop Share Function
     window.shareCurrentApp = async () => {
       if (!currentModalApp) return;
       const shareUrl = `${window.location.origin}${window.location.pathname}?app=${encodeURIComponent(currentModalApp.id)}`;
@@ -973,7 +1453,6 @@
         }
       }
 
-      // Universal Fallback for Mobile WebViews & Desktop Browsers
       try {
         await navigator.clipboard.writeText(shareUrl);
         showToast("App Share Link Copied!");
