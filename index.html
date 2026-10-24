@@ -95,7 +95,6 @@
       margin: 0 auto;
     }
 
-    /* 1. HQ Announcement Banner */
     .announcement-bar {
       display: none;
       background: linear-gradient(90deg, #0284c7, #2563eb);
@@ -172,10 +171,10 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 1.1rem;
+      font-size: 0.82rem;
+      font-weight: 700;
     }
 
-    /* 2. Featured Spotlight Banner */
     .spotlight-banner {
       display: none;
       background: linear-gradient(135deg, #0f172a 0%, #0369a1 100%);
@@ -269,7 +268,6 @@
       border: 1px solid rgba(255, 255, 255, 0.25);
     }
 
-    /* Controls & Sort Bar */
     .controls {
       display: flex;
       gap: 12px;
@@ -332,7 +330,6 @@
       border-color: var(--primary);
     }
 
-    /* Developer Filter Chip */
     .dev-filter-bar {
       display: none;
       align-items: center;
@@ -394,6 +391,7 @@
       font-weight: 700;
       color: var(--text-main);
       margin-bottom: 3px;
+      word-break: break-word;
     }
 
     .dev-label {
@@ -462,6 +460,7 @@
       -webkit-box-orient: vertical;
       overflow: hidden;
       flex-grow: 1;
+      word-break: break-word;
     }
 
     .card-footer {
@@ -527,7 +526,29 @@
       cursor: pointer;
     }
 
-    /* Floating Get Zappora App Bar */
+    .load-more-wrap {
+      text-align: center;
+      margin-top: 28px;
+      display: none;
+    }
+
+    .btn-load-more {
+      padding: 12px 28px;
+      border-radius: 10px;
+      border: 1px solid var(--primary);
+      background: var(--surface);
+      color: var(--primary);
+      font-weight: 700;
+      font-size: 0.9rem;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+
+    .btn-load-more:hover {
+      background: var(--primary);
+      color: #ffffff;
+    }
+
     .floating-app-bar {
       position: fixed;
       bottom: 16px;
@@ -596,7 +617,6 @@
       padding: 4px;
     }
 
-    /* Toast Notification */
     .toast-msg {
       position: fixed;
       bottom: 85px;
@@ -613,7 +633,6 @@
       display: none;
     }
 
-    /* Modal Popup */
     .modal-overlay {
       position: fixed;
       inset: 0;
@@ -652,7 +671,7 @@
       width: 34px;
       height: 34px;
       border-radius: 50%;
-      font-size: 1.1rem;
+      font-size: 1rem;
       cursor: pointer;
       font-weight: 700;
     }
@@ -724,7 +743,6 @@
       cursor: zoom-in;
     }
 
-    /* 5-Star Rating & Reviews Section inside Modal */
     .reviews-box {
       border-top: 1px solid var(--border-color);
       padding-top: 16px;
@@ -785,6 +803,7 @@
       padding: 10px 12px;
       margin-bottom: 8px;
       font-size: 0.84rem;
+      word-break: break-word;
     }
 
     .lightbox-overlay {
@@ -824,6 +843,7 @@
       color: var(--text-muted);
       line-height: 1.6;
       white-space: pre-line;
+      word-break: break-word;
     }
 
     .info-box {
@@ -845,7 +865,6 @@
 <body>
 
   <div class="container">
-    <!-- Live HQ Announcement Bar -->
     <div id="hqAnnouncement" class="announcement-bar"></div>
 
     <header class="navbar">
@@ -855,11 +874,10 @@
       </a>
       <div class="nav-right">
         <a href="admin.html" class="btn-publish">+ Publish App</a>
-        <button class="theme-btn" id="themeToggle" onclick="toggleTheme()" title="Toggle Dark/Light Mode">🌙</button>
+        <button class="theme-btn" id="themeToggle" onclick="toggleTheme()" title="Toggle Theme">Dark</button>
       </div>
     </header>
 
-    <!-- Featured Spotlight Banner -->
     <section id="spotlightBanner" class="spotlight-banner">
       <div class="spotlight-inner">
         <div class="spotlight-left">
@@ -877,17 +895,16 @@
       </div>
     </section>
 
-    <!-- Search, Category & Smart Sorting Controls -->
     <section class="controls">
       <div class="search-box">
-        <input type="text" id="searchInput" placeholder="Search applications, games, or @developers..." oninput="filterCatalog()" />
+        <input type="text" id="searchInput" placeholder="Search applications, games, or @developers..." oninput="resetAndFilter()" />
       </div>
       <select id="categoryFilter" class="filter-select" onchange="setCategory(this.value)">
         <option value="ALL">All Categories</option>
         <option value="Game">Games Only</option>
         <option value="App">Apps Only</option>
       </select>
-      <select id="sortFilter" class="filter-select" onchange="filterCatalog()">
+      <select id="sortFilter" class="filter-select" onchange="resetAndFilter()">
         <option value="POPULAR">Sort: Most Popular</option>
         <option value="RATED">Sort: Top Rated</option>
         <option value="NEWEST">Sort: Newest Releases</option>
@@ -901,13 +918,16 @@
       <div class="pill" id="pill-App" onclick="setCategory('App')">Apps</div>
     </div>
 
-    <!-- Active Developer Filter Indicator -->
     <div id="devFilterBar" class="dev-filter-bar">
       <span id="devFilterText">Showing apps by Developer</span>
-      <button onclick="clearDevFilter()" style="background:none; border:none; color:var(--primary-dark); font-weight:800; cursor:pointer;">Show All Apps ✕</button>
+      <button onclick="clearDevFilter()" style="background:none; border:none; color:var(--primary-dark); font-weight:800; cursor:pointer;">Show All Apps [X]</button>
     </div>
 
     <main class="grid" id="appsContainer"></main>
+
+    <div class="load-more-wrap" id="loadMoreWrap">
+      <button class="btn-load-more" onclick="loadMoreItems()">Load More Applications</button>
+    </div>
 
     <section class="info-box">
       <h3 style="color: var(--primary); margin-bottom: 8px;">Installation Guide</h3>
@@ -923,7 +943,6 @@
     </footer>
   </div>
 
-  <!-- Floating Install Zappora App Bar -->
   <div id="floatingAppBar" class="floating-app-bar">
     <div class="floating-left">
       <img src="favicon.png" alt="Zappora" onerror="this.src='logo.png'" />
@@ -933,15 +952,14 @@
       </div>
     </div>
     <div class="floating-actions">
-      <a id="floatingAppLink" href="#" class="btn-float-install" target="_blank">Install APK</a>
-      <button class="btn-float-close" onclick="dismissFloatingBar()">✕</button>
+      <a id="floatingAppLink" href="#" class="btn-float-install" target="_blank" rel="noopener noreferrer">Install APK</a>
+      <button class="btn-float-close" onclick="dismissFloatingBar()">X</button>
     </div>
   </div>
 
-  <!-- App Details & Reviews Modal -->
   <div class="modal-overlay" id="appModal" onclick="closeModal()">
     <div class="modal-box" onclick="event.stopPropagation()">
-      <button class="modal-close" onclick="closeModal()">✕</button>
+      <button class="modal-close" onclick="closeModal()">X</button>
       <div class="modal-header">
         <img id="mIcon" src="" alt="App Icon" class="modal-icon" onerror="this.src='favicon.png'" />
         <div>
@@ -991,7 +1009,6 @@
         <p id="mNotes"></p>
       </div>
 
-      <!-- 5-Star Rating & User Reviews -->
       <div class="reviews-box">
         <h4 style="font-size: 0.88rem; color: var(--primary); margin-bottom: 8px; text-transform: uppercase;">Rate & Review This App</h4>
         <div class="star-picker" id="starPicker">
@@ -1002,8 +1019,8 @@
           <button type="button" class="star-btn selected" onclick="selectStar(5)">★</button>
         </div>
         <div class="review-form-row">
-          <input type="text" id="revName" class="review-input" style="flex: 1; min-width: 120px;" placeholder="Your Name" />
-          <input type="text" id="revComment" class="review-input" style="flex: 2; min-width: 180px;" placeholder="Write a short review..." />
+          <input type="text" id="revName" class="review-input" maxlength="32" style="flex: 1; min-width: 120px;" placeholder="Your Name" />
+          <input type="text" id="revComment" class="review-input" maxlength="240" style="flex: 2; min-width: 180px;" placeholder="Write a short review..." />
           <button type="button" class="btn-post-review" onclick="submitAppReview()">Post</button>
         </div>
         <div id="mReviewsList"></div>
@@ -1044,20 +1061,42 @@
     const db = getFirestore(app);
 
     let activeCatalog = [];
+    let currentFilteredList = [];
+    let visibleLimit = 24;
+    const PAGE_SIZE = 24;
+
     let currentModalApp = null;
     let selectedStarCount = 5;
     let activeDeveloperFilter = null;
 
+    // SECURITY HELPERS: Anti-XSS & Anti-JavaScript URL Injection
+    function escapeHTML(str) {
+      return String(str ?? "")
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#39;");
+    }
+
+    function safeUrl(url, fallback = "#") {
+      const s = String(url ?? "").trim();
+      if (!s) return fallback;
+      if (/^(https?:\/\/|data:image\/)/i.test(s)) return s;
+      if (!s.includes(":") && !s.startsWith("//")) return s;
+      return fallback;
+    }
+
     if (localStorage.getItem("zappora_theme") === "dark") {
       document.body.classList.add("dark-mode");
-      document.getElementById("themeToggle").innerText = "☀️";
+      document.getElementById("themeToggle").innerText = "Light";
     }
 
     window.toggleTheme = () => {
       document.body.classList.toggle("dark-mode");
       const isDark = document.body.classList.contains("dark-mode");
       localStorage.setItem("zappora_theme", isDark ? "dark" : "light");
-      document.getElementById("themeToggle").innerText = isDark ? "☀️" : "🌙";
+      document.getElementById("themeToggle").innerText = isDark ? "Light" : "Dark";
     };
 
     function showToast(text) {
@@ -1069,7 +1108,8 @@
 
     function getAppRating(appItem) {
       if (!appItem.ratingCount || appItem.ratingCount <= 0) return "5.0";
-      return (appItem.ratingSum / appItem.ratingCount).toFixed(1);
+      const val = appItem.ratingSum / appItem.ratingCount;
+      return Math.min(Math.max(val, 1), 5).toFixed(1);
     }
 
     async function loadPlatformConfig() {
@@ -1116,41 +1156,39 @@
       }
 
       setupSpotlightAndFloatingBar();
-      window.filterCatalog();
+      window.resetAndFilter();
       checkUrlDeepLink();
     }
 
     function setupSpotlightAndFloatingBar() {
       if (activeCatalog.length === 0) return;
 
-      // Pick highest downloaded or first game for Spotlight Banner
       const sorted = [...activeCatalog].sort((a, b) => (parseInt(b.downloads, 10) || 0) - (parseInt(a.downloads, 10) || 0));
       const spot = sorted.find(a => a.category === "Game") || sorted[0];
 
       if (spot) {
         document.getElementById("spotlightBanner").style.display = "block";
-        document.getElementById("spotIcon").src = spot.icon;
+        document.getElementById("spotIcon").src = safeUrl(spot.icon, "favicon.png");
         document.getElementById("spotTitle").innerText = spot.title;
         document.getElementById("spotDesc").innerText = spot.desc;
 
         const dlBtn = document.getElementById("spotDlBtn");
-        dlBtn.href = spot.downloadUrl;
+        dlBtn.href = safeUrl(spot.downloadUrl);
         dlBtn.onclick = () => window.recordDownload(spot.id);
 
         const webBtn = document.getElementById("spotWebBtn");
-        if (spot.webUrl && spot.webUrl.trim() !== "") {
+        if (spot.webUrl && safeUrl(spot.webUrl) !== "#") {
           webBtn.style.display = "inline-block";
-          webBtn.href = spot.webUrl.trim();
+          webBtn.href = safeUrl(spot.webUrl);
           webBtn.innerText = spot.category === "Game" ? "Web Play" : "Web View";
         }
       }
 
-      // Setup Floating Official Store App Bar
-      const storeApp = activeCatalog.find(a => a.title.toLowerCase().includes("zappora"));
+      const storeApp = activeCatalog.find(a => String(a.title || "").toLowerCase().includes("zappora"));
       if (storeApp && !sessionStorage.getItem("hide_zappora_bar")) {
         const bar = document.getElementById("floatingAppBar");
         const link = document.getElementById("floatingAppLink");
-        link.href = storeApp.downloadUrl;
+        link.href = safeUrl(storeApp.downloadUrl);
         link.onclick = () => window.recordDownload(storeApp.id);
         bar.style.display = "flex";
       }
@@ -1172,20 +1210,14 @@
       if (appItem) {
         appItem.downloads = (parseInt(appItem.downloads, 10) || 0) + 1;
         const badgeEl = document.getElementById("dl-count-" + appId);
-        if (badgeEl) badgeEl.innerText = `⬇ ${appItem.downloads}`;
+        if (badgeEl) badgeEl.innerText = `DL: ${appItem.downloads}`;
         if (currentModalApp && currentModalApp.id === appId) {
           document.getElementById("mDownloads").innerText = appItem.downloads;
         }
       }
       try {
         await updateDoc(doc(db, "apps", appId), { downloads: increment(1) });
-      } catch (err) {
-        if (appItem) {
-          try {
-            await setDoc(doc(db, "apps", appId), { downloads: appItem.downloads }, { merge: true });
-          } catch (e2) {}
-        }
-      }
+      } catch (err) {}
     };
 
     window.filterByDeveloper = (devName, e) => {
@@ -1194,70 +1226,88 @@
       document.getElementById("devFilterBar").style.display = "flex";
       document.getElementById("devFilterText").innerText = `Showing releases by: ${devName}`;
       window.closeModal();
-      window.filterCatalog();
+      window.resetAndFilter();
     };
 
     window.clearDevFilter = () => {
       activeDeveloperFilter = null;
       document.getElementById("devFilterBar").style.display = "none";
-      window.filterCatalog();
+      window.resetAndFilter();
     };
 
-    function renderApps(items) {
+    window.loadMoreItems = () => {
+      visibleLimit += PAGE_SIZE;
+      renderApps();
+    };
+
+    function renderApps() {
       const container = document.getElementById("appsContainer");
+      const loadMoreWrap = document.getElementById("loadMoreWrap");
       container.innerHTML = "";
 
-      if (items.length === 0) {
+      if (currentFilteredList.length === 0) {
         container.innerHTML = '<p style="grid-column: 1/-1; text-align: center; color: var(--text-muted); padding: 40px;">No matching applications found.</p>';
+        loadMoreWrap.style.display = "none";
         return;
       }
 
-      items.forEach(app => {
+      const slice = currentFilteredList.slice(0, visibleLimit);
+
+      slice.forEach(app => {
         const badgeClass = app.category === "Game" ? "badge-game" : "badge-app";
         const totalDl = parseInt(app.downloads, 10) || 0;
         const avgRating = getAppRating(app);
         const devName = app.developerName || "Zappora Official";
-        const hasWebUrl = app.webUrl && app.webUrl.trim() !== "";
+        const cleanWebUrl = safeUrl(app.webUrl, "");
         const webBtnLabel = app.category === "Game" ? "Web Play" : "Web View";
 
-        const webButtonHtml = hasWebUrl
-          ? `<a href="${app.webUrl.trim()}" class="btn-web" target="_blank" rel="noopener noreferrer">${webBtnLabel}</a>`
+        const webButtonHtml = cleanWebUrl
+          ? `<a href="${escapeHTML(cleanWebUrl)}" class="btn-web" target="_blank" rel="noopener noreferrer">${webBtnLabel}</a>`
           : "";
 
         const card = document.createElement("article");
         card.className = "card";
-        card.onclick = () => window.openModal(app.id);
+        card.addEventListener("click", () => window.openModal(app.id));
 
         card.innerHTML = `
           <div>
             <div class="card-header">
-              <img src="${app.icon}" alt="${app.title}" class="app-icon" onerror="this.src='favicon.png'" />
+              <img src="${escapeHTML(safeUrl(app.icon, 'favicon.png'))}" alt="${escapeHTML(app.title)}" loading="lazy" decoding="async" class="app-icon" onerror="this.src='favicon.png'" />
               <div class="app-title-block">
-                <h2>${app.title}</h2>
-                <div class="dev-label" onclick="filterByDeveloper('${devName.replace(/'/g, "")}', event)">by ${devName}</div>
+                <h2>${escapeHTML(app.title)}</h2>
+                <div class="dev-label" data-dev="${escapeHTML(devName)}">by ${escapeHTML(devName)}</div>
                 <div class="badge-row">
-                  <span class="badge ${badgeClass}">${app.category}</span>
-                  <span class="rating-pill">★ ${avgRating}</span>
-                  <span class="dl-pill" id="dl-count-${app.id}">⬇ ${totalDl}</span>
+                  <span class="badge ${badgeClass}">${escapeHTML(app.category)}</span>
+                  <span class="rating-pill">★ ${escapeHTML(avgRating)}</span>
+                  <span class="dl-pill" id="dl-count-${escapeHTML(app.id)}">DL: ${totalDl}</span>
                 </div>
               </div>
             </div>
-            <p class="app-desc">${app.desc}</p>
+            <p class="app-desc">${escapeHTML(app.desc)}</p>
           </div>
           <div class="card-footer">
             <div class="meta-specs">
-              <span>v${app.versionName}</span>
-              <span>${app.size}</span>
+              <span>v${escapeHTML(app.versionName)}</span>
+              <span>${escapeHTML(app.size)}</span>
             </div>
-            <div class="card-actions" onclick="event.stopPropagation()">
-              <a href="${app.downloadUrl}" class="btn-download" target="_blank" rel="noopener noreferrer" onclick="recordDownload('${app.id}')">Download APK</a>
+            <div class="card-actions">
+              <a href="${escapeHTML(safeUrl(app.downloadUrl))}" class="btn-download" data-dl="${escapeHTML(app.id)}" target="_blank" rel="noopener noreferrer">Download APK</a>
               ${webButtonHtml}
-              <button class="btn-info" onclick="openModal('${app.id}')">ⓘ</button>
+              <button type="button" class="btn-info" data-info="${escapeHTML(app.id)}">Info</button>
             </div>
           </div>
         `;
+
+        // Safe Event Listeners (Prevents inline quote injection)
+        card.querySelector(".dev-label").addEventListener("click", (e) => window.filterByDeveloper(devName, e));
+        card.querySelector(".card-actions").addEventListener("click", (e) => e.stopPropagation());
+        card.querySelector(".btn-download").addEventListener("click", () => window.recordDownload(app.id));
+        card.querySelector(".btn-info").addEventListener("click", () => window.openModal(app.id));
+
         container.appendChild(card);
       });
+
+      loadMoreWrap.style.display = currentFilteredList.length > visibleLimit ? "block" : "none";
     }
 
     window.setCategory = (cat) => {
@@ -1265,6 +1315,11 @@
       document.querySelectorAll(".pill").forEach(p => p.classList.remove("active"));
       const activePill = document.getElementById("pill-" + cat);
       if (activePill) activePill.classList.add("active");
+      window.resetAndFilter();
+    };
+
+    window.resetAndFilter = () => {
+      visibleLimit = PAGE_SIZE;
       window.filterCatalog();
     };
 
@@ -1273,28 +1328,27 @@
       const selectedCategory = document.getElementById("categoryFilter").value;
       const sortMode = document.getElementById("sortFilter").value;
 
-      let filtered = activeCatalog.filter(item => {
-        const dev = (item.developerName || "Zappora Official").toLowerCase();
-        const matchesText =
-          item.title.toLowerCase().includes(query) ||
-          item.desc.toLowerCase().includes(query) ||
-          dev.includes(query);
+      currentFilteredList = activeCatalog.filter(item => {
+        const title = String(item.title || "").toLowerCase();
+        const desc = String(item.desc || "").toLowerCase();
+        const dev = String(item.developerName || "Zappora Official").toLowerCase();
+        const matchesText = title.includes(query) || desc.includes(query) || dev.includes(query);
         const matchesCategory = selectedCategory === "ALL" || item.category === selectedCategory;
         const matchesDev = !activeDeveloperFilter || (item.developerName || "Zappora Official") === activeDeveloperFilter;
         return matchesText && matchesCategory && matchesDev;
       });
 
       if (sortMode === "POPULAR") {
-        filtered.sort((a, b) => (parseInt(b.downloads, 10) || 0) - (parseInt(a.downloads, 10) || 0));
+        currentFilteredList.sort((a, b) => (parseInt(b.downloads, 10) || 0) - (parseInt(a.downloads, 10) || 0));
       } else if (sortMode === "RATED") {
-        filtered.sort((a, b) => parseFloat(getAppRating(b)) - parseFloat(getAppRating(a)));
+        currentFilteredList.sort((a, b) => parseFloat(getAppRating(b)) - parseFloat(getAppRating(a)));
       } else if (sortMode === "NEWEST") {
-        filtered.sort((a, b) => (b.updatedAt || 0) - (a.updatedAt || 0));
+        currentFilteredList.sort((a, b) => (b.updatedAt || 0) - (a.updatedAt || 0));
       } else if (sortMode === "AZ") {
-        filtered.sort((a, b) => a.title.localeCompare(b.title));
+        currentFilteredList.sort((a, b) => String(a.title || "").localeCompare(String(b.title || "")));
       }
 
-      renderApps(filtered);
+      renderApps();
     };
 
     window.selectStar = (count) => {
@@ -1307,13 +1361,20 @@
 
     window.submitAppReview = async () => {
       if (!currentModalApp) return;
+
+      const rateKey = "zappora_rated_" + currentModalApp.id;
+      if (localStorage.getItem(rateKey)) {
+        showToast("You have already reviewed this application.");
+        return;
+      }
+
       const nameInput = document.getElementById("revName");
       const commentInput = document.getElementById("revComment");
-      const userName = nameInput.value.trim() || "Zappora User";
-      const comment = commentInput.value.trim();
+      const userName = nameInput.value.trim().slice(0, 32) || "Zappora User";
+      const comment = commentInput.value.trim().slice(0, 240);
 
       if (!comment) {
-        showToast("Please write a short comment!");
+        showToast("Please write a short review comment.");
         return;
       }
 
@@ -1324,24 +1385,29 @@
         date: new Date().toLocaleDateString()
       };
 
-      currentModalApp.ratingSum = (currentModalApp.ratingSum || 5) + selectedStarCount;
-      currentModalApp.ratingCount = (currentModalApp.ratingCount || 1) + 1;
-      currentModalApp.reviews = [newReview, ...(currentModalApp.reviews || [])].slice(0, 15);
+      const nextRatingSum = (currentModalApp.ratingSum || 5) + selectedStarCount;
+      const nextRatingCount = (currentModalApp.ratingCount || 1) + 1;
+      const nextReviews = [newReview, ...(currentModalApp.reviews || [])].slice(0, 25);
+
+      currentModalApp.ratingSum = nextRatingSum;
+      currentModalApp.ratingCount = nextRatingCount;
+      currentModalApp.reviews = nextReviews;
 
       commentInput.value = "";
+      localStorage.setItem(rateKey, "1");
       renderModalReviews();
       document.getElementById("mRating").innerText = "★ " + getAppRating(currentModalApp);
       window.filterCatalog();
 
       try {
-        await setDoc(doc(db, "apps", currentModalApp.id), {
-          ratingSum: currentModalApp.ratingSum,
-          ratingCount: currentModalApp.ratingCount,
-          reviews: currentModalApp.reviews
-        }, { merge: true });
+        await updateDoc(doc(db, "apps", currentModalApp.id), {
+          ratingSum: nextRatingSum,
+          ratingCount: nextRatingCount,
+          reviews: nextReviews
+        });
         showToast("Thank you! Your review is live.");
       } catch (e) {
-        showToast("Review posted locally!");
+        showToast("Review saved locally.");
       }
     };
 
@@ -1352,15 +1418,18 @@
         box.innerHTML = '<p style="font-size: 0.82rem; color: var(--text-muted);">No reviews yet. Be the first to review!</p>';
         return;
       }
-      box.innerHTML = list.map(r => `
-        <div class="review-item">
-          <div style="display:flex; justify-content:space-between; margin-bottom:3px;">
-            <strong>${r.user} <span style="color:var(--star-color);">${"★".repeat(r.stars || 5)}</span></strong>
-            <span style="font-size:0.74rem; color:var(--text-muted);">${r.date || ""}</span>
+      box.innerHTML = list.map(r => {
+        const starCount = Math.min(Math.max(parseInt(r.stars, 10) || 5, 1), 5);
+        return `
+          <div class="review-item">
+            <div style="display:flex; justify-content:space-between; margin-bottom:3px;">
+              <strong>${escapeHTML(r.user)} <span style="color:var(--star-color);">${"★".repeat(starCount)}</span></strong>
+              <span style="font-size:0.74rem; color:var(--text-muted);">${escapeHTML(r.date || "")}</span>
+            </div>
+            <p style="color:var(--text-muted);">${escapeHTML(r.text)}</p>
           </div>
-          <p style="color:var(--text-muted);">${r.text}</p>
-        </div>
-      `).join("");
+        `;
+      }).join("");
     }
 
     window.openModal = (id) => {
@@ -1369,7 +1438,7 @@
       currentModalApp = app;
 
       const devName = app.developerName || "Zappora Official";
-      document.getElementById("mIcon").src = app.icon;
+      document.getElementById("mIcon").src = safeUrl(app.icon, "favicon.png");
       document.getElementById("mTitle").innerText = app.title;
       const devEl = document.getElementById("mDeveloper");
       devEl.innerText = "Developed by " + devName + " (View all)";
@@ -1392,11 +1461,13 @@
       if (Array.isArray(app.screenshots) && app.screenshots.length > 0) {
         ssWrapper.style.display = "block";
         app.screenshots.forEach(url => {
-          if (!url.trim()) return;
+          const validImg = safeUrl(url, "");
+          if (!validImg) return;
           const img = document.createElement("img");
-          img.src = url.trim();
+          img.src = validImg;
+          img.loading = "lazy";
           img.className = "screenshot-item";
-          img.onclick = () => window.openLightbox(url.trim());
+          img.onclick = () => window.openLightbox(validImg);
           ssList.appendChild(img);
         });
       } else {
@@ -1412,13 +1483,14 @@
       }
 
       const dlBtn = document.getElementById("mDownloadBtn");
-      dlBtn.href = app.downloadUrl;
+      dlBtn.href = safeUrl(app.downloadUrl);
       dlBtn.onclick = () => window.recordDownload(app.id);
 
       const webBtn = document.getElementById("mWebBtn");
-      if (app.webUrl && app.webUrl.trim() !== "") {
+      const cleanWeb = safeUrl(app.webUrl, "");
+      if (cleanWeb) {
         webBtn.style.display = "block";
-        webBtn.href = app.webUrl.trim();
+        webBtn.href = cleanWeb;
         webBtn.innerText = app.category === "Game" ? "Web Play" : "Web View";
       } else {
         webBtn.style.display = "none";
@@ -1431,7 +1503,7 @@
 
     window.closeModal = () => document.getElementById("appModal").classList.remove("open");
     window.openLightbox = (url) => {
-      document.getElementById("lightboxImg").src = url;
+      document.getElementById("lightboxImg").src = safeUrl(url, "favicon.png");
       document.getElementById("lightbox").classList.add("open");
     };
     window.closeLightbox = () => document.getElementById("lightbox").classList.remove("open");
