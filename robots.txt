@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+Disallow: /hq.html
+Sitemap: https://zappora.onrender.com/sitemap.xml
