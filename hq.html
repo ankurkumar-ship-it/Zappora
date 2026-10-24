@@ -40,7 +40,6 @@
       flex-direction: column;
     }
 
-    /* Authentication Gate */
     .auth-gate {
       max-width: 420px;
       width: 92%;
@@ -144,7 +143,6 @@
       border-color: rgba(239, 68, 68, 0.3);
     }
 
-    /* Master Layout */
     .hq-layout {
       display: none;
       min-height: 100vh;
@@ -354,7 +352,6 @@
       display: block;
     }
 
-    /* Developer Dossier (Kundali) Modal */
     .modal-backdrop {
       position: fixed;
       inset: 0;
@@ -411,6 +408,7 @@
       display: flex;
       justify-content: space-between;
       font-size: 0.85rem;
+      gap: 12px;
     }
 
     @media (max-width: 820px) {
@@ -426,7 +424,6 @@
 </head>
 <body>
 
-  <!-- 1. RESTRICTED MASTER LOGIN -->
   <div id="authGate" class="auth-gate">
     <h1>Zappora Master HQ</h1>
     <p>Restricted Command Center. Only the primary owner UID is permitted.</p>
@@ -449,7 +446,6 @@
     <p id="gateError" style="color: var(--danger); font-size: 0.82rem; margin-top: 14px; text-align: center;"></p>
   </div>
 
-  <!-- 2. MASTER CONTROL CENTER WORKSPACE -->
   <div id="hqWorkspace" class="hq-layout">
     <aside class="sidebar">
       <div>
@@ -488,7 +484,6 @@
         </div>
       </div>
 
-      <!-- KPI METRICS -->
       <div class="metrics-grid">
         <div class="metric-box">
           <span>Registered Developers</span>
@@ -512,7 +507,6 @@
         </div>
       </div>
 
-      <!-- TAB 1: OVERVIEW -->
       <section id="tab-overview" class="tab-section active">
         <div class="panel">
           <div class="panel-header">
@@ -557,7 +551,6 @@
         </div>
       </section>
 
-      <!-- TAB 2: DEVELOPER REGISTRY (FULL KUNDALI) -->
       <section id="tab-developers" class="tab-section">
         <div class="panel">
           <div class="panel-header">
@@ -584,7 +577,6 @@
         </div>
       </section>
 
-      <!-- TAB 3: APP MODERATION -->
       <section id="tab-moderation" class="tab-section">
         <div class="panel">
           <div class="panel-header">
@@ -609,7 +601,6 @@
         </div>
       </section>
 
-      <!-- TAB 4: ACTIVITY & AUDIT LOG -->
       <section id="tab-activity" class="tab-section">
         <div class="panel">
           <div class="panel-header">
@@ -619,7 +610,6 @@
         </div>
       </section>
 
-      <!-- TAB 5: PLATFORM CONTROLS -->
       <section id="tab-settings" class="tab-section">
         <div class="panel">
           <div class="panel-header">
@@ -628,7 +618,7 @@
           <form onsubmit="saveGlobalSettings(event)">
             <div class="form-group">
               <label>Global Store Announcement Banner (Shown on Storefront)</label>
-              <input type="text" id="cfgBanner" class="form-control" placeholder="Leave blank to hide banner" />
+              <input type="text" id="cfgBanner" class="form-control" maxlength="200" placeholder="Leave blank to hide banner" />
             </div>
             <div class="form-group">
               <label>Developer Registration Policy</label>
@@ -651,7 +641,6 @@
     </main>
   </div>
 
-  <!-- DEVELOPER DOSSIER (KUNDALI) MODAL -->
   <div id="dossierModal" class="modal-backdrop" onclick="closeDossier()">
     <div class="modal-card" onclick="event.stopPropagation()">
       <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-line); padding-bottom: 14px;">
@@ -750,6 +739,15 @@
     let appsList = [];
     let selectedDeveloper = null;
 
+    function escapeHTML(str) {
+      return String(str ?? "")
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#39;");
+    }
+
     window.masterGoogleLogin = async () => {
       try {
         await signInWithPopup(auth, googleProvider);
@@ -780,7 +778,6 @@
         return;
       }
 
-      // Verify Owner UID Lock
       const cfgRef = doc(db, "settings", "admin_config");
       const cfgSnap = await getDoc(cfgRef);
 
@@ -820,7 +817,6 @@
       appsList = [];
       appSnap.forEach(a => appsList.push(a.data()));
 
-      // Load Platform Settings
       const sysSnap = await getDoc(doc(db, "settings", "platform_config"));
       if (sysSnap.exists()) {
         const sys = sysSnap.data();
@@ -848,112 +844,167 @@
     function renderOverviewTables() {
       const pendingBody = document.getElementById("pendingQueueBody");
       const pendingApps = appsList.filter(a => a.status !== "approved");
-      pendingBody.innerHTML = pendingApps.length === 0
-        ? '<tr><td colspan="6" style="text-align:center; color: var(--text-muted);">All submissions have been reviewed.</td></tr>'
-        : pendingApps.map(a => `
-          <tr>
-            <td><strong>${a.title}</strong><div style="font-size:0.75rem; color:var(--text-muted);">ID: ${a.id}</div></td>
-            <td>${a.developerName || "Unknown"} (@${a.developerUsername || "dev"})</td>
-            <td>${a.category}</td>
-            <td>v${a.versionName}</td>
-            <td>${a.size}</td>
-            <td>
-              <button class="btn btn-success" onclick="setAppStatus('${a.id}', 'approved')">Approve</button>
-              <button class="btn btn-danger" onclick="setAppStatus('${a.id}', 'rejected')">Reject</button>
-            </td>
-          </tr>
-        `).join("");
+      pendingBody.innerHTML = "";
+
+      if (pendingApps.length === 0) {
+        pendingBody.innerHTML = '<tr><td colspan="6" style="text-align:center; color: var(--text-muted);">All submissions have been reviewed.</td></tr>';
+      } else {
+        pendingApps.forEach(a => {
+          const tr = document.createElement("tr");
+          tr.innerHTML = `
+            <td><strong>${escapeHTML(a.title)}</strong><div style="font-size:0.75rem; color:var(--text-muted);">ID: ${escapeHTML(a.id)}</div></td>
+            <td>${escapeHTML(a.developerName || "Unknown")} (@${escapeHTML(a.developerUsername || "dev")})</td>
+            <td>${escapeHTML(a.category)}</td>
+            <td>v${escapeHTML(a.versionName)}</td>
+            <td>${escapeHTML(a.size)}</td>
+            <td class="decision-cell"></td>
+          `;
+          const cell = tr.querySelector(".decision-cell");
+          const btnApp = document.createElement("button");
+          btnApp.className = "btn btn-success";
+          btnApp.innerText = "Approve";
+          btnApp.onclick = () => window.setAppStatus(a.id, "approved");
+
+          const btnRej = document.createElement("button");
+          btnRej.className = "btn btn-danger";
+          btnRej.style.marginLeft = "6px";
+          btnRej.innerText = "Reject";
+          btnRej.onclick = () => window.setAppStatus(a.id, "rejected");
+
+          cell.append(btnApp, btnRej);
+          pendingBody.appendChild(tr);
+        });
+      }
 
       const recentBody = document.getElementById("recentDevsBody");
+      recentBody.innerHTML = "";
       const sortedDevs = [...developersList].sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0)).slice(0, 6);
-      recentBody.innerHTML = sortedDevs.length === 0
-        ? '<tr><td colspan="6" style="text-align:center; color: var(--text-muted);">No registered developers found.</td></tr>'
-        : sortedDevs.map(d => {
+
+      if (sortedDevs.length === 0) {
+        recentBody.innerHTML = '<tr><td colspan="6" style="text-align:center; color: var(--text-muted);">No registered developers found.</td></tr>';
+      } else {
+        sortedDevs.forEach(d => {
           const count = appsList.filter(a => a.developerUid === d.uid).length;
           const badge = d.banned
             ? '<span class="badge badge-banned">Suspended</span>'
             : '<span class="badge badge-active">Active</span>';
-          return `
-            <tr>
-              <td><strong>${d.studioName || "-"}</strong></td>
-              <td>@${d.username || "-"}</td>
-              <td>${d.email || "-"}</td>
-              <td>${count}</td>
-              <td>${badge}</td>
-              <td><button class="btn btn-outline" onclick="openDossier('${d.uid}')">View Dossier</button></td>
-            </tr>
+          const tr = document.createElement("tr");
+          tr.innerHTML = `
+            <td><strong>${escapeHTML(d.studioName || "-")}</strong></td>
+            <td>@${escapeHTML(d.username || "-")}</td>
+            <td>${escapeHTML(d.email || "-")}</td>
+            <td>${count}</td>
+            <td>${badge}</td>
+            <td class="inspect-cell"></td>
           `;
-        }).join("");
+          const btn = document.createElement("button");
+          btn.className = "btn btn-outline";
+          btn.innerText = "View Dossier";
+          btn.onclick = () => window.openDossier(d.uid);
+          tr.querySelector(".inspect-cell").appendChild(btn);
+          recentBody.appendChild(tr);
+        });
+      }
     }
 
     window.renderDevelopersTable = () => {
       const q = (document.getElementById("devSearch").value || "").toLowerCase().trim();
       const tbody = document.getElementById("allDevsBody");
+      tbody.innerHTML = "";
 
       const filtered = developersList.filter(d =>
-        (d.studioName || "").toLowerCase().includes(q) ||
-        (d.username || "").toLowerCase().includes(q) ||
-        (d.email || "").toLowerCase().includes(q) ||
-        (d.uid || "").toLowerCase().includes(q)
+        String(d.studioName || "").toLowerCase().includes(q) ||
+        String(d.username || "").toLowerCase().includes(q) ||
+        String(d.email || "").toLowerCase().includes(q) ||
+        String(d.uid || "").toLowerCase().includes(q)
       );
 
-      tbody.innerHTML = filtered.map(d => {
+      filtered.forEach(d => {
         const devApps = appsList.filter(a => a.developerUid === d.uid);
         const totalDl = devApps.reduce((s, a) => s + (parseInt(a.downloads, 10) || 0), 0);
         const badge = d.banned
           ? '<span class="badge badge-banned">Suspended</span>'
           : '<span class="badge badge-active">Active</span>';
 
-        return `
-          <tr>
-            <td><strong>${d.studioName || "-"}</strong></td>
-            <td>@${d.username || "-"}</td>
-            <td>${d.email || "-"}</td>
-            <td style="font-family: monospace; font-size: 0.76rem; color: var(--text-muted);">${d.uid}</td>
-            <td>${devApps.length}</td>
-            <td>${totalDl}</td>
-            <td>${badge}</td>
-            <td>
-              <button class="btn btn-outline" onclick="openDossier('${d.uid}')">Full Dossier</button>
-            </td>
-          </tr>
+        const tr = document.createElement("tr");
+        tr.innerHTML = `
+          <td><strong>${escapeHTML(d.studioName || "-")}</strong></td>
+          <td>@${escapeHTML(d.username || "-")}</td>
+          <td>${escapeHTML(d.email || "-")}</td>
+          <td style="font-family: monospace; font-size: 0.76rem; color: var(--text-muted);">${escapeHTML(d.uid)}</td>
+          <td>${devApps.length}</td>
+          <td>${totalDl}</td>
+          <td>${badge}</td>
+          <td class="act-cell"></td>
         `;
-      }).join("");
+        const btn = document.createElement("button");
+        btn.className = "btn btn-outline";
+        btn.innerText = "Full Dossier";
+        btn.onclick = () => window.openDossier(d.uid);
+        tr.querySelector(".act-cell").appendChild(btn);
+        tbody.appendChild(tr);
+      });
     };
 
     window.renderAppsTable = () => {
       const q = (document.getElementById("appSearch").value || "").toLowerCase().trim();
       const tbody = document.getElementById("allAppsBody");
+      tbody.innerHTML = "";
 
       const filtered = appsList.filter(a =>
-        (a.title || "").toLowerCase().includes(q) ||
-        (a.id || "").toLowerCase().includes(q) ||
-        (a.developerName || "").toLowerCase().includes(q)
+        String(a.title || "").toLowerCase().includes(q) ||
+        String(a.id || "").toLowerCase().includes(q) ||
+        String(a.developerName || "").toLowerCase().includes(q)
       );
 
-      tbody.innerHTML = filtered.map(a => {
+      filtered.forEach(a => {
         let badge = '<span class="badge badge-pending">Pending</span>';
         if (a.status === "approved") badge = '<span class="badge badge-approved">Approved</span>';
         if (a.status === "rejected") badge = '<span class="badge badge-rejected">Rejected</span>';
 
-        return `
-          <tr>
-            <td><strong>${a.title}</strong><div style="font-size:0.75rem; color:var(--text-muted);">ID: ${a.id} (${a.category})</div></td>
-            <td>${a.developerName || "Zappora"} (@${a.developerUsername || "admin"})</td>
-            <td>v${a.versionName} (${a.size})</td>
-            <td>
-              <strong>${a.downloads || 0}</strong>
-              <button class="btn btn-outline" style="padding: 2px 7px; font-size: 0.7rem; margin-left: 6px;" onclick="overrideDownloads('${a.id}', ${a.downloads || 0})">Set</button>
-            </td>
-            <td>${badge}</td>
-            <td>
-              ${a.status !== "approved" ? `<button class="btn btn-success" onclick="setAppStatus('${a.id}', 'approved')">Approve</button>` : ""}
-              ${a.status !== "rejected" ? `<button class="btn btn-warning" onclick="setAppStatus('${a.id}', 'rejected')">Reject</button>` : ""}
-              <button class="btn btn-danger" onclick="removeAppPermanently('${a.id}')">Delete</button>
-            </td>
-          </tr>
+        const dlCount = parseInt(a.downloads, 10) || 0;
+        const tr = document.createElement("tr");
+        tr.innerHTML = `
+          <td><strong>${escapeHTML(a.title)}</strong><div style="font-size:0.75rem; color:var(--text-muted);">ID: ${escapeHTML(a.id)} (${escapeHTML(a.category)})</div></td>
+          <td>${escapeHTML(a.developerName || "Zappora")} (@${escapeHTML(a.developerUsername || "admin")})</td>
+          <td>v${escapeHTML(a.versionName)} (${escapeHTML(a.size)})</td>
+          <td class="dl-cell"><strong>${dlCount}</strong> </td>
+          <td>${badge}</td>
+          <td class="m-cell"></td>
         `;
-      }).join("");
+
+        const btnSetDl = document.createElement("button");
+        btnSetDl.className = "btn btn-outline";
+        btnSetDl.style.cssText = "padding: 2px 7px; font-size: 0.7rem; margin-left: 6px;";
+        btnSetDl.innerText = "Set";
+        btnSetDl.onclick = () => window.overrideDownloads(a.id, dlCount);
+        tr.querySelector(".dl-cell").appendChild(btnSetDl);
+
+        const mCell = tr.querySelector(".m-cell");
+        if (a.status !== "approved") {
+          const b1 = document.createElement("button");
+          b1.className = "btn btn-success";
+          b1.style.marginRight = "4px";
+          b1.innerText = "Approve";
+          b1.onclick = () => window.setAppStatus(a.id, "approved");
+          mCell.appendChild(b1);
+        }
+        if (a.status !== "rejected") {
+          const b2 = document.createElement("button");
+          b2.className = "btn btn-warning";
+          b2.style.marginRight = "4px";
+          b2.innerText = "Reject";
+          b2.onclick = () => window.setAppStatus(a.id, "rejected");
+          mCell.appendChild(b2);
+        }
+        const b3 = document.createElement("button");
+        b3.className = "btn btn-danger";
+        b3.innerText = "Delete";
+        b3.onclick = () => window.removeAppPermanently(a.id);
+        mCell.appendChild(b3);
+
+        tbody.appendChild(tr);
+      });
     };
 
     function renderActivityStream() {
@@ -982,15 +1033,14 @@
 
       box.innerHTML = events.length === 0
         ? '<p style="color: var(--text-muted);">No recorded activity yet.</p>'
-        : events.slice(0, 40).map(ev => `
+        : events.slice(0, 50).map(ev => `
           <div class="log-item">
-            <span>${ev.label}</span>
-            <span style="color: var(--text-muted); font-size: 0.78rem;">${new Date(ev.time).toLocaleString()}</span>
+            <span>${escapeHTML(ev.label)}</span>
+            <span style="color: var(--text-muted); font-size: 0.78rem; white-space: nowrap;">${escapeHTML(new Date(ev.time).toLocaleString())}</span>
           </div>
         `).join("");
     }
 
-    // Dossier (Kundali) Inspection Functions
     window.openDossier = (uid) => {
       const dev = developersList.find(d => d.uid === uid);
       if (!dev) return;
@@ -1013,11 +1063,11 @@
         ? '<tr><td colspan="5" style="text-align:center; color: var(--text-muted);">No applications submitted by this account.</td></tr>'
         : devApps.map(a => `
           <tr>
-            <td><strong>${a.title}</strong></td>
-            <td>${a.category}</td>
-            <td>v${a.versionName}</td>
-            <td>${a.downloads || 0}</td>
-            <td>${a.status.toUpperCase()}</td>
+            <td><strong>${escapeHTML(a.title)}</strong></td>
+            <td>${escapeHTML(a.category)}</td>
+            <td>v${escapeHTML(a.versionName)}</td>
+            <td>${parseInt(a.downloads, 10) || 0}</td>
+            <td>${escapeHTML(String(a.status || "pending").toUpperCase())}</td>
           </tr>
         `).join("");
 
@@ -1072,7 +1122,7 @@
       const input = prompt("Set new download counter value:", currentVal);
       if (input === null) return;
       const parsed = parseInt(input, 10);
-      if (isNaN(parsed)) return;
+      if (isNaN(parsed) || parsed < 0) return;
       await updateDoc(doc(db, "apps", appId), { downloads: parsed });
       await refreshAllData();
     };
