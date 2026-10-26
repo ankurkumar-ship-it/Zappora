@@ -61,14 +61,14 @@
     "id": "Zappora_Store",
     "title": "Zappora Store",
     "category": "App",
-    "versionName": "1.0.2",
+    "versionName": "1.0.3",
     "versionCode": 1,
-    "size": "6.4MB",
+    "size": "5.6MB",
     "desc": "Zappora is a fast, lightweight native app store for downloading and installing Android apps and games seamlessly.",
     "icon": "https://zappora.onrender.com/favicon.png",
-    "downloadUrl": "https://github.com/ankurkumar-ship-it/Zappora/releases/download/Zapoora_1.0.2/app-debug.apk",
+    "downloadUrl": "https://github.com/ankurkumar-ship-it/Zappora/releases/download/v1.0.3/zappora_1.0.3.apk",
     "forceUpdate": false,
-    "releaseNotes": "v1.0.2: Initial official release with direct background downloads, native package installer support, and custom branding."
+    "releaseNotes": "v1.0.3: Initial official release with direct background downloads, native package installer support, and custom branding."
   },
   {
     "id": "Deca_chat",
