@@ -738,6 +738,7 @@
     <div class="card" id="formCard">
       <div class="card-title-row">
         <h2 id="formHeading">Submit or Update Application</h2>
+        <button type="button" id="cancelEditBtn" onclick="resetFormState()" class="btn-outline" style="display: none;">Cancel Edit</button>
       </div>
       <form id="appForm" onsubmit="handleFormSubmit(event)">
         <div class="form-row">
@@ -767,6 +768,16 @@
             <label>Package Size</label>
             <input type="text" id="appSize" maxlength="20" placeholder="Auto-filled or manual (e.g. 8.5MB)" required />
           </div>
+        </div>
+
+        <!-- Super Admin Publisher Brand Selector -->
+        <div class="form-group" id="publisherBrandGroup" style="display: none; background: #f0f9ff; padding: 14px; border-radius: 10px; border: 1px solid #bae6fd;">
+          <label style="color: #0369a1;">Publisher / Developer Brand Name (Owner Control)</label>
+          <select id="appPublisherBrand">
+            <option value="Zappora Official">Zappora Official (Official Platform App)</option>
+            <option value="Ankur Studios">Ankur Studios (Personal Studio App)</option>
+            <option value="KEEP_EXISTING">Keep Existing Developer Name</option>
+          </select>
         </div>
 
         <div class="form-group">
@@ -1122,6 +1133,7 @@
           badge.classList.add("admin");
           document.getElementById("superAdminTools").style.display = "block";
           document.getElementById("ghUploadBox").style.display = "block";
+          document.getElementById("publisherBrandGroup").style.display = "block";
           document.getElementById("tableHeading").innerText = "All Developer Submissions (Administrator View)";
           const savedToken = localStorage.getItem("zappora_gh_token");
           if (savedToken) document.getElementById("ghToken").value = savedToken;
@@ -1130,6 +1142,7 @@
           badge.classList.remove("admin");
           document.getElementById("superAdminTools").style.display = "none";
           document.getElementById("ghUploadBox").style.display = "none";
+          document.getElementById("publisherBrandGroup").style.display = "none";
           document.getElementById("tableHeading").innerText = "Your Submitted Applications";
         }
 
@@ -1192,7 +1205,7 @@
               <img src="${escapeHTML(safeUrl(app.icon, 'favicon.png'))}" loading="lazy" class="table-icon" onerror="this.src='favicon.png'" />
               <div>
                 <strong>${escapeHTML(app.title)}</strong>
-                <div style="font-size: 0.75rem; color: var(--text-muted);">by ${escapeHTML(app.developerName || "Zappora")} ${handleText}</div>
+                <div style="font-size: 0.75rem; color: var(--text-muted);">by ${escapeHTML(app.developerName || "Zappora Official")} ${handleText}</div>
               </div>
             </div>
           </td>
@@ -1310,6 +1323,20 @@
       }
     };
 
+    window.resetFormState = () => {
+      document.getElementById("appForm").reset();
+      const idInput = document.getElementById("appId");
+      idInput.readOnly = false;
+      idInput.style.backgroundColor = "";
+      document.getElementById("iconPreview").style.display = "none";
+      document.getElementById("ssPreviewBox").innerHTML = "";
+      document.getElementById("apkFileName").innerText = "";
+      document.getElementById("formHeading").innerText = "Submit or Update Application";
+      document.getElementById("btnSubmit").innerText = "Submit Application to Catalog";
+      document.getElementById("cancelEditBtn").style.display = "none";
+      selectedApkFile = null;
+    };
+
     window.handleFormSubmit = async (e) => {
       e.preventDefault();
       const btn = document.getElementById("btnSubmit");
@@ -1320,7 +1347,6 @@
         const appId = document.getElementById("appId").value.trim().toLowerCase().replace(/[^a-z0-9_-]/g, "_");
         const existing = allApps.find(a => a.id === appId);
 
-        // Ownership protection check before writing
         if (existing && !isSuperAdmin && existing.developerUid !== currentUser.uid) {
           alert("Package ID '" + appId + "' is already owned by another developer. Please choose a unique Package ID.");
           btn.disabled = false;
@@ -1370,6 +1396,19 @@
           ? rawScreenshots.split(delimiter).map(s => safeUrl(s.trim(), "")).filter(Boolean)
           : [];
 
+        // Determine Publisher Brand Name
+        let finalDevName = existing ? existing.developerName : currentDeveloperDoc.studioName;
+        if (isSuperAdmin) {
+          const selectedBrand = document.getElementById("appPublisherBrand").value;
+          if (selectedBrand === "KEEP_EXISTING" && existing) {
+            finalDevName = existing.developerName;
+          } else if (selectedBrand !== "KEEP_EXISTING") {
+            finalDevName = selectedBrand;
+          } else {
+            finalDevName = "Zappora Official";
+          }
+        }
+
         const appData = {
           id: appId,
           title: document.getElementById("appTitle").value.trim(),
@@ -1388,7 +1427,7 @@
           screenshots: screenshotsArray,
           releaseNotes: document.getElementById("appNotes").value.trim(),
           developerUid: existing ? existing.developerUid : currentUser.uid,
-          developerName: existing ? existing.developerName : currentDeveloperDoc.studioName,
+          developerName: finalDevName,
           developerUsername: existing ? (existing.developerUsername || currentDeveloperDoc.username) : currentDeveloperDoc.username,
           status: isSuperAdmin ? "approved" : "pending",
           updatedAt: Date.now()
@@ -1396,15 +1435,11 @@
 
         await setDoc(doc(db, "apps", appId), appData);
 
-        document.getElementById("appForm").reset();
-        document.getElementById("iconPreview").style.display = "none";
-        document.getElementById("ssPreviewBox").innerHTML = "";
-        document.getElementById("apkFileName").innerText = "";
-        selectedApkFile = null;
+        window.resetFormState();
 
         log.style.display = "block";
         log.innerText = isSuperAdmin
-          ? "Application published directly to the live store."
+          ? "Application published/updated directly on the live store."
           : "Application submitted successfully. Status: Pending Administrator Verification.";
 
         await loadAppsFromFirebase();
@@ -1440,7 +1475,11 @@
       const item = allApps.find(a => a.id === id);
       if (!item) return;
 
-      document.getElementById("appId").value = item.id;
+      const idInput = document.getElementById("appId");
+      idInput.value = item.id;
+      idInput.readOnly = true;
+      idInput.style.backgroundColor = "var(--surface-subtle)";
+
       document.getElementById("appTitle").value = item.title;
       document.getElementById("appCategory").value = item.category;
       document.getElementById("appVersionName").value = item.versionName;
@@ -1452,7 +1491,18 @@
       document.getElementById("appDesc").value = item.desc;
       document.getElementById("appNotes").value = item.releaseNotes || "";
 
+      if (isSuperAdmin) {
+        const brandSelect = document.getElementById("appPublisherBrand");
+        if (item.developerName === "Zappora Official" || item.developerName === "Ankur Studios") {
+          brandSelect.value = item.developerName;
+        } else {
+          brandSelect.value = "KEEP_EXISTING";
+        }
+      }
+
       document.getElementById("formHeading").innerText = "Editing Application: " + item.title;
+      document.getElementById("btnSubmit").innerText = "Update Application";
+      document.getElementById("cancelEditBtn").style.display = "inline-block";
       document.getElementById("formCard").scrollIntoView({ behavior: "smooth" });
     };
 
@@ -1469,7 +1519,7 @@
             ...item,
             id: cleanId,
             developerUid: currentUser.uid,
-            developerName: currentDeveloperDoc.studioName || "Zappora Official",
+            developerName: "Zappora Official",
             developerUsername: currentDeveloperDoc.username || "ankur",
             status: "approved",
             downloads: parseInt(item.downloads, 10) || 0,
