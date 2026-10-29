@@ -1391,9 +1391,11 @@
         }
 
         const rawScreenshots = document.getElementById("appScreenshots").value.trim();
-        const delimiter = rawScreenshots.includes(" | ") ? " | " : ",";
         const screenshotsArray = rawScreenshots
-          ? rawScreenshots.split(delimiter).map(s => safeUrl(s.trim(), "")).filter(Boolean)
+          ? (rawScreenshots.includes(" | ")
+              ? rawScreenshots.split(" | ")
+              : rawScreenshots.split(/,(?=\s*(?:https?:\/\/|data:image\/))/i)
+            ).map(s => safeUrl(s.trim(), "")).filter(Boolean)
           : [];
 
         // Determine Publisher Brand Name
@@ -1430,6 +1432,7 @@
           developerName: finalDevName,
           developerUsername: existing ? (existing.developerUsername || currentDeveloperDoc.username) : currentDeveloperDoc.username,
           status: isSuperAdmin ? "approved" : "pending",
+          createdAt: existing && existing.createdAt ? existing.createdAt : Date.now(),
           updatedAt: Date.now()
         };
 
@@ -1487,7 +1490,7 @@
       document.getElementById("appIcon").value = item.icon;
       document.getElementById("appDownloadUrl").value = item.downloadUrl;
       document.getElementById("appWebUrl").value = item.webUrl || "";
-      document.getElementById("appScreenshots").value = Array.isArray(item.screenshots) ? item.screenshots.join(", ") : "";
+      document.getElementById("appScreenshots").value = Array.isArray(item.screenshots) ? item.screenshots.join(" | ") : "";
       document.getElementById("appDesc").value = item.desc;
       document.getElementById("appNotes").value = item.releaseNotes || "";
 
