@@ -18,37 +18,50 @@
     :root {
       --bg:#f8fafc; --surf:#ffffff; --hover:#f1f5f9; --pri:#0284c7; --pri-d:#0369a1;
       --pri-l:#e0f2fe; --bdr:#e2e8f0; --txt:#0f172a; --muted:#64748b; --game:#0369a1;
-      --app:#0d9488; --app-bg:#ccfbf1; --web-bg:#0f172a; --web-txt:#fff; --star:#f59e0b;
+      --app:#0d9488; --app-bg:#ccfbf1; --web-bg:#0f172a; --web-txt:#ffffff; --star:#f59e0b;
       --ok:#10b981; --ok-bg:#dcfce7; --err:#dc2626;
+      --shadow-card:0 2px 6px rgba(0,0,0,0.04);
+      --shadow-hover:0 12px 22px -4px rgba(2,132,199,0.14);
     }
     body.dark-mode {
       --bg:#0b1120; --surf:#1e293b; --hover:#334155; --pri:#38bdf8; --pri-d:#0284c7;
       --pri-l:rgba(56,189,248,0.15); --bdr:#334155; --txt:#f8fafc; --muted:#94a3b8;
       --game:#38bdf8; --app:#2dd4bf; --app-bg:rgba(45,212,191,0.15); --web-bg:#334155; --web-txt:#38bdf8;
+      --shadow-card:0 4px 10px rgba(0,0,0,0.3);
+      --shadow-hover:0 12px 24px -4px rgba(56,189,248,0.22);
     }
     * { box-sizing:border-box; margin:0; padding:0; font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif; }
     body { background:var(--bg); color:var(--txt); padding:18px 14px 100px; transition:0.2s; }
     .container { max-width:1020px; margin:0 auto; }
     .announcement-bar { display:none; background:linear-gradient(90deg,#0284c7,#2563eb); color:#fff; padding:10px 16px; border-radius:10px; margin-bottom:16px; font-size:0.86rem; font-weight:700; text-align:center; }
+
+    /* Navbar */
     .navbar { display:flex; justify-content:space-between; align-items:center; padding:8px 0 18px; border-bottom:1px solid var(--bdr); margin-bottom:22px; flex-wrap:wrap; gap:10px; }
     .brand { display:flex; align-items:center; gap:10px; text-decoration:none; }
     .brand img { width:38px; height:38px; border-radius:9px; object-fit:cover; }
-    .brand span { font-weight:800; font-size:1.35rem; color:var(--pri); }
+    .brand span { font-weight:800; font-size:1.35rem; color:var(--pri); letter-spacing:0.4px; }
     .nav-right { display:flex; align-items:center; gap:8px; flex-wrap:wrap; }
-    .visitor-chip { background:var(--surf); border:1px solid var(--bdr); color:var(--txt); font-size:0.78rem; font-weight:700; padding:7px 12px; border-radius:9px; cursor:pointer; }
-    .btn-publish { background:var(--pri-l); color:var(--pri); text-decoration:none; font-size:0.82rem; font-weight:700; padding:8px 13px; border-radius:9px; }
-    .theme-btn { background:var(--surf); border:1px solid var(--bdr); color:var(--txt); padding:7px 11px; border-radius:9px; cursor:pointer; font-size:0.78rem; font-weight:700; }
-    .verified-tick { display:inline-flex; align-items:center; justify-content:center; width:15px; height:15px; border-radius:50%; background:#0284c7; color:#fff; font-size:0.6rem; font-weight:900; margin-left:4px; }
-    .spotlight-banner { display:none; background:linear-gradient(135deg,#0f172a 0%,#0369a1 100%); border-radius:16px; padding:22px; color:#fff; margin-bottom:24px; }
+    .btn-auth-nav { background:var(--surf); border:1px solid var(--bdr); color:var(--txt); font-size:0.8rem; font-weight:700; padding:8px 13px; border-radius:9px; cursor:pointer; transition:0.2s; }
+    .btn-auth-nav:hover { border-color:var(--pri); color:var(--pri); }
+    .btn-publish { background:var(--pri-l); color:var(--pri); text-decoration:none; font-size:0.82rem; font-weight:700; padding:8px 13px; border-radius:9px; transition:0.2s; }
+    .btn-publish:hover { background:var(--pri); color:#fff; }
+    .theme-btn { background:var(--surf); border:1px solid var(--bdr); color:var(--txt); padding:8px 11px; border-radius:9px; cursor:pointer; font-size:0.78rem; font-weight:700; }
+
+    .verified-tick { display:inline-flex; align-items:center; justify-content:center; width:15px; height:15px; border-radius:50%; background:#0284c7; color:#fff; font-size:0.6rem; font-weight:900; margin-left:4px; vertical-align:middle; }
+
+    /* Spotlight Banner */
+    .spotlight-banner { display:none; background:linear-gradient(135deg,#0f172a 0%,#0369a1 100%); border-radius:16px; padding:22px; color:#fff; margin-bottom:24px; box-shadow:0 12px 24px -6px rgba(2,132,199,0.3); }
     .spotlight-inner { display:flex; align-items:center; justify-content:space-between; gap:18px; flex-wrap:wrap; }
-    .spotlight-left { display:flex; align-items:center; gap:16px; flex:1; min-width:250px; }
-    .spotlight-icon { width:76px; height:76px; border-radius:16px; object-fit:cover; border:2px solid rgba(255,255,255,0.25); }
+    .spotlight-left { display:flex; align-items:center; gap:16px; flex:1; min-width:250px; cursor:pointer; }
+    .spotlight-icon { width:76px; height:76px; border-radius:16px; object-fit:cover; border:2px solid rgba(255,255,255,0.25); flex-shrink:0; }
     .spotlight-tag { display:inline-block; background:rgba(56,189,248,0.25); color:#7dd3fc; font-size:0.68rem; font-weight:800; padding:3px 9px; border-radius:20px; text-transform:uppercase; margin-bottom:5px; }
     .spotlight-left h2 { font-size:1.35rem; font-weight:800; margin-bottom:4px; }
     .spotlight-left p { font-size:0.85rem; color:#cbd5e1; max-width:500px; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; }
     .spotlight-actions { display:flex; gap:10px; flex-wrap:wrap; }
-    .btn-spot-dl { background:#38bdf8; color:#0f172a; font-weight:800; font-size:0.86rem; padding:11px 18px; border-radius:9px; border:none; cursor:pointer; }
+    .btn-spot-dl { background:#38bdf8; color:#0f172a; font-weight:800; font-size:0.86rem; padding:11px 18px; border-radius:9px; border:none; cursor:pointer; text-decoration:none; }
     .btn-spot-web { background:rgba(255,255,255,0.14); color:#fff; font-weight:700; font-size:0.86rem; padding:11px 16px; border-radius:9px; text-decoration:none; border:1px solid rgba(255,255,255,0.25); }
+
+    /* Search & Filters */
     .controls { display:flex; gap:10px; margin-bottom:16px; flex-wrap:wrap; }
     .search-box { flex:1; min-width:220px; }
     .search-box input, .filter-select { width:100%; padding:11px 14px; border-radius:10px; border:1px solid var(--bdr); background:var(--surf); color:var(--txt); font-size:0.9rem; outline:none; }
@@ -57,29 +70,32 @@
     .pill { padding:7px 16px; border-radius:20px; font-size:0.84rem; font-weight:700; cursor:pointer; border:1px solid var(--bdr); background:var(--surf); color:var(--muted); white-space:nowrap; }
     .pill.active { background:var(--pri); color:#fff; border-color:var(--pri); }
     .dev-filter-bar { display:none; align-items:center; justify-content:space-between; background:var(--pri-l); border:1px solid var(--pri); color:var(--txt); padding:9px 14px; border-radius:9px; margin-bottom:18px; font-size:0.85rem; font-weight:700; }
+
+    /* Clean App Cards (No DL badge, No Version/Size row, No Info button, Always Download APK) */
     .grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(285px,1fr)); gap:18px; }
-    .card { background:var(--surf); border:1px solid var(--bdr); border-radius:14px; padding:18px; display:flex; flex-direction:column; justify-content:space-between; transition:0.2s; cursor:pointer; }
-    .card:hover { transform:translateY(-3px); border-color:var(--pri); }
-    .card-header { display:flex; gap:12px; align-items:center; margin-bottom:12px; }
-    .app-icon { width:58px; height:58px; border-radius:13px; object-fit:cover; background:var(--hover); border:1px solid var(--bdr); flex-shrink:0; }
-    .app-title-block h2 { font-size:1.05rem; font-weight:700; margin-bottom:2px; word-break:break-word; }
-    .dev-label { font-size:0.74rem; color:var(--pri); margin-bottom:5px; font-weight:600; display:inline-block; }
-    .badge-row { display:flex; align-items:center; gap:5px; flex-wrap:wrap; }
-    .badge { font-size:0.65rem; font-weight:700; padding:2px 7px; border-radius:5px; text-transform:uppercase; }
+    .card { background:var(--surf); border:1px solid var(--bdr); border-radius:15px; padding:18px; display:flex; flex-direction:column; justify-content:space-between; box-shadow:var(--shadow-card); transition:transform 0.2s,box-shadow 0.2s,border-color 0.2s; cursor:pointer; }
+    .card:hover { transform:translateY(-3px); box-shadow:var(--shadow-hover); border-color:var(--pri); }
+    .card-header { display:flex; gap:13px; align-items:center; margin-bottom:12px; }
+    .app-icon { width:60px; height:60px; border-radius:14px; object-fit:cover; background:var(--hover); border:1px solid var(--bdr); flex-shrink:0; }
+    .app-title-block h2 { font-size:1.08rem; font-weight:700; margin-bottom:2px; word-break:break-word; }
+    .dev-label { font-size:0.75rem; color:var(--pri); margin-bottom:6px; font-weight:600; display:inline-block; }
+    .dev-label:hover { text-decoration:underline; }
+    .badge-row { display:flex; align-items:center; gap:6px; flex-wrap:wrap; }
+    .badge { font-size:0.66rem; font-weight:700; padding:3px 8px; border-radius:5px; text-transform:uppercase; }
     .badge-game { background:var(--pri-l); color:var(--game); }
     .badge-app { background:var(--app-bg); color:var(--app); }
-    .dl-pill { font-size:0.7rem; font-weight:700; color:var(--muted); background:var(--hover); padding:2px 7px; border-radius:5px; }
-    .rating-pill { font-size:0.7rem; font-weight:700; color:#b45309; background:#fef3c7; padding:2px 7px; border-radius:5px; }
-    .app-desc { color:var(--muted); font-size:0.86rem; line-height:1.45; margin-bottom:14px; display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical; overflow:hidden; flex-grow:1; }
-    .card-footer { border-top:1px solid var(--bdr); padding-top:10px; }
-    .meta-specs { display:flex; justify-content:space-between; font-size:0.76rem; color:var(--muted); margin-bottom:10px; font-weight:600; }
-    .card-actions { display:flex; gap:6px; align-items:center; }
-    .btn-download { flex:1; text-align:center; background:#0284c7; color:#fff; text-decoration:none; font-weight:700; font-size:0.82rem; padding:10px 8px; border-radius:8px; border:none; cursor:pointer; white-space:nowrap; }
-    .btn-download.installed { background:var(--ok-bg); color:#15803d; border:1px solid #86efac; }
-    .btn-web { flex:0.85; text-align:center; background:var(--web-bg); color:var(--web-txt); text-decoration:none; font-weight:700; font-size:0.8rem; padding:10px 8px; border-radius:8px; border:1px solid var(--bdr); white-space:nowrap; }
-    .btn-info { padding:10px 11px; border-radius:8px; border:1px solid var(--bdr); background:var(--hover); color:var(--txt); font-weight:700; font-size:0.8rem; cursor:pointer; }
+    .rating-pill { font-size:0.7rem; font-weight:700; color:#b45309; background:#fef3c7; padding:3px 8px; border-radius:5px; }
+    .app-desc { color:var(--muted); font-size:0.88rem; line-height:1.5; margin-bottom:16px; display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical; overflow:hidden; flex-grow:1; word-break:break-word; }
+    .card-footer { border-top:1px solid var(--bdr); padding-top:12px; }
+    .card-actions { display:flex; gap:8px; align-items:center; }
+    .btn-download { flex:1; display:inline-flex; align-items:center; justify-content:center; text-align:center; background:#0284c7; color:#fff; text-decoration:none; font-weight:700; font-size:0.86rem; padding:11px 12px; border-radius:9px; border:none; cursor:pointer; white-space:nowrap; transition:background 0.15s; }
+    .btn-download:hover { background:#0369a1; }
+    .btn-web { flex:0.9; display:inline-flex; align-items:center; justify-content:center; text-align:center; background:var(--web-bg); color:var(--web-txt); text-decoration:none; font-weight:700; font-size:0.85rem; padding:11px 12px; border-radius:9px; border:1px solid var(--bdr); white-space:nowrap; }
+
     .load-more-wrap { text-align:center; margin-top:24px; display:none; }
     .btn-load-more { padding:11px 24px; border-radius:9px; border:1px solid var(--pri); background:var(--surf); color:var(--pri); font-weight:700; cursor:pointer; }
+
+    /* Floating App Bar */
     .floating-app-bar { position:fixed; bottom:14px; left:50%; transform:translateX(-50%); width:calc(100% - 28px); max-width:540px; background:#0f172a; color:#fff; border:1px solid #334155; border-radius:14px; padding:11px 15px; display:none; align-items:center; justify-content:space-between; gap:10px; z-index:9000; }
     .floating-left { display:flex; align-items:center; gap:10px; }
     .floating-left img { width:36px; height:36px; border-radius:8px; }
@@ -87,34 +103,203 @@
     .floating-left div span { font-size:0.72rem; color:#94a3b8; }
     .btn-float-install { background:#38bdf8; color:#0f172a; border:none; font-size:0.78rem; font-weight:800; padding:8px 13px; border-radius:8px; cursor:pointer; }
     .btn-float-close { background:transparent; border:none; color:#94a3b8; font-size:0.95rem; cursor:pointer; padding:4px; }
-    .toast-msg { position:fixed; bottom:80px; left:50%; transform:translateX(-50%); background:#0f172a; color:#fff; padding:10px 20px; border-radius:30px; font-size:0.84rem; font-weight:700; z-index:30000; display:none; }
+
+    .toast-msg { position:fixed; bottom:80px; left:50%; transform:translateX(-50%); background:#0f172a; color:#fff; padding:10px 20px; border-radius:30px; font-size:0.84rem; font-weight:700; z-index:30000; display:none; box-shadow:0 10px 25px rgba(0,0,0,0.25); }
+
+    /* Modals */
     .modal-overlay { position:fixed; inset:0; background:rgba(15,23,42,0.75); backdrop-filter:blur(4px); display:none; align-items:center; justify-content:center; z-index:10000; padding:14px; }
     .modal-overlay.open { display:flex; }
-    .modal-box { background:var(--surf); border:1px solid var(--bdr); border-radius:16px; max-width:600px; width:100%; padding:22px; max-height:90vh; overflow-y:auto; position:relative; }
-    .modal-close { position:absolute; top:16px; right:16px; background:var(--hover); border:none; color:var(--txt); width:32px; height:32px; border-radius:50%; cursor:pointer; font-weight:700; }
-    .modal-header { display:flex; gap:14px; align-items:center; margin-bottom:16px; }
-    .modal-icon { width:70px; height:70px; border-radius:14px; object-fit:cover; border:1px solid var(--bdr); }
-    .modal-stats { display:grid; grid-template-columns:repeat(4,1fr); gap:6px; background:var(--bg); padding:10px; border-radius:10px; border:1px solid var(--bdr); margin-bottom:16px; text-align:center; }
-    .modal-stats div span { display:block; font-size:0.65rem; color:var(--muted); text-transform:uppercase; font-weight:600; }
-    .modal-stats div strong { font-size:0.86rem; }
-    .screenshots-wrapper { margin-bottom:18px; }
-    .screenshots-wrapper h4, .modal-section h4 { font-size:0.82rem; color:var(--pri); margin-bottom:6px; text-transform:uppercase; }
-    .screenshots-slider { display:flex; gap:10px; overflow-x:auto; padding-bottom:6px; }
-    .screenshot-item { height:190px; width:auto; border-radius:10px; object-fit:cover; border:1px solid var(--bdr); cursor:zoom-in; }
-    .modal-section { margin-bottom:14px; }
-    .modal-section p { font-size:0.88rem; color:var(--muted); line-height:1.55; white-space:pre-line; }
-    .reviews-box { border-top:1px solid var(--bdr); padding-top:14px; margin-top:16px; }
+    .modal-box { background:var(--surf); border:1px solid var(--bdr); border-radius:18px; max-width:620px; width:100%; padding:24px; max-height:92vh; overflow-y:auto; position:relative; }
+    .modal-close { position:absolute; top:16px; right:16px; background:var(--hover); border:none; color:var(--txt); width:34px; height:34px; border-radius:50%; cursor:pointer; font-weight:700; font-size:0.95rem; }
+    .modal-header { display:flex; gap:15px; align-items:center; margin-bottom:16px; }
+    .modal-icon { width:72px; height:72px; border-radius:15px; object-fit:cover; border:1px solid var(--bdr); flex-shrink:0; }
+
+    /* Image 3 Style Top Stats Box inside Modal */
+    .modal-stats { display:grid; grid-template-columns:repeat(4,1fr); gap:8px; background:var(--bg); padding:12px; border-radius:12px; border:1px solid var(--bdr); margin-bottom:18px; text-align:center; }
+    .modal-stats div span { display:block; font-size:0.68rem; color:var(--muted); text-transform:uppercase; font-weight:600; margin-bottom:2px; }
+    .modal-stats div strong { font-size:0.92rem; color:var(--txt); }
+
+    .btn-share { padding:11px 16px; border-radius:9px; border:1px solid var(--bdr); background:var(--hover); color:var(--txt); font-weight:700; font-size:0.85rem; cursor:pointer; }
+
+    /* Screenshots Slider */
+    .screenshots-wrapper { margin-bottom:20px; }
+    .screenshots-wrapper h4, .modal-section h4 { font-size:0.86rem; color:var(--pri); margin-bottom:8px; text-transform:uppercase; letter-spacing:0.3px; }
+    .screenshots-slider { display:flex; gap:12px; overflow-x:auto; padding-bottom:8px; }
+    .screenshot-item { height:210px; width:auto; border-radius:12px; object-fit:cover; border:1px solid var(--bdr); cursor:zoom-in; flex-shrink:0; }
+
+    .modal-section { margin-bottom:18px; }
+    .modal-section p { font-size:0.9rem; color:var(--muted); line-height:1.6; white-space:pre-line; word-break:break-word; }
+
+    /* Image 1 Style Play Store "About this Game/App" Metadata Grid */
+    .about-meta-grid {
+      display:grid;
+      grid-template-columns:repeat(2,1fr);
+      gap:16px 24px;
+      margin-top:14px;
+      padding-top:14px;
+      border-top:1px solid var(--bdr);
+    }
+    .about-meta-item span {
+      display:block;
+      font-size:0.8rem;
+      font-weight:700;
+      color:var(--txt);
+      margin-bottom:2px;
+    }
+    .about-meta-item strong {
+      display:block;
+      font-size:0.84rem;
+      font-weight:500;
+      color:var(--muted);
+    }
+
+    /* Reviews Section */
+    .reviews-box { border-top:1px solid var(--bdr); padding-top:16px; margin-top:16px; }
     .star-picker { display:flex; gap:5px; margin-bottom:8px; }
-    .star-btn { font-size:1.35rem; cursor:pointer; color:#cbd5e1; background:none; border:none; }
+    .star-btn { font-size:1.4rem; cursor:pointer; color:#cbd5e1; background:none; border:none; }
     .star-btn.selected { color:var(--star); }
     .review-form-row { display:flex; gap:8px; margin-bottom:12px; flex-wrap:wrap; }
-    .review-input { padding:9px 12px; border-radius:8px; border:1px solid var(--bdr); background:var(--bg); color:var(--txt); font-size:0.84rem; outline:none; }
-    .btn-post-review { padding:9px 15px; background:var(--pri); color:#fff; border:none; border-radius:8px; font-size:0.82rem; font-weight:700; cursor:pointer; }
-    .btn-report-issue { padding:10px 11px; border-radius:8px; border:1px solid #fecaca; background:#fef2f2; color:var(--err); font-weight:700; font-size:0.78rem; cursor:pointer; }
-    .review-item { background:var(--bg); border:1px solid var(--bdr); border-radius:9px; padding:9px 11px; margin-bottom:7px; font-size:0.82rem; }
-    .pass-box { max-width:390px; text-align:center; }
-    .btn-google-pass { width:100%; display:flex; align-items:center; justify-content:center; gap:10px; padding:10px; border-radius:9px; border:1px solid var(--bdr); background:var(--surf); color:var(--txt); font-weight:700; font-size:0.88rem; cursor:pointer; margin-bottom:12px; }
-    .lightbox-overlay { position:fixed; inset:0; background:rgba(0,0,0,0.9); display:none; align-items:center; justify-content:center; z-index:20000; padding:16px; }
+    .review-input { padding:10px 12px; border-radius:8px; border:1px solid var(--bdr); background:var(--bg); color:var(--txt); font-size:0.85rem; outline:none; }
+    .btn-post-review { padding:10px 16px; background:var(--pri); color:#fff; border:none; border-radius:8px; font-size:0.84rem; font-weight:700; cursor:pointer; }
+    .review-item { background:var(--bg); border:1px solid var(--bdr); border-radius:9px; padding:10px 12px; margin-bottom:8px; font-size:0.83rem; }
+
+    /* Image 4 Style Two-Column Login / Register Modal */
+    .auth-modal-card {
+      max-width:780px;
+      padding:0;
+      overflow:hidden;
+    }
+    .auth-modal-header {
+      padding:20px 26px;
+      border-bottom:1px solid var(--bdr);
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+    }
+    .auth-modal-header h2 {
+      font-size:1.25rem;
+      font-weight:800;
+    }
+    .auth-split {
+      display:grid;
+      grid-template-columns:1.15fr 0.85fr;
+    }
+    .auth-left {
+      padding:24px 26px;
+      border-right:1px solid var(--bdr);
+    }
+    .auth-right {
+      padding:24px 26px;
+      background:var(--bg);
+      font-size:0.84rem;
+      color:var(--muted);
+      line-height:1.55;
+    }
+    .auth-right h3 {
+      font-size:1rem;
+      color:var(--txt);
+      margin-bottom:8px;
+      font-weight:800;
+    }
+    .auth-right h4 {
+      font-size:0.88rem;
+      color:var(--txt);
+      margin:14px 0 4px;
+      font-weight:700;
+    }
+    .auth-field {
+      margin-bottom:14px;
+    }
+    .auth-field label {
+      display:block;
+      font-size:0.78rem;
+      font-weight:700;
+      color:var(--txt);
+      margin-bottom:5px;
+    }
+    .auth-field input {
+      width:100%;
+      padding:10px 12px;
+      border-radius:7px;
+      border:1px solid var(--bdr);
+      background:var(--surf);
+      color:var(--txt);
+      font-size:0.88rem;
+      outline:none;
+    }
+    .auth-field input:focus {
+      border-color:var(--pri);
+    }
+    .profile-url-preview {
+      background:var(--bg);
+      border:1px solid var(--bdr);
+      padding:8px 12px;
+      border-radius:7px;
+      font-size:0.8rem;
+      color:var(--muted);
+      margin-top:6px;
+      word-break:break-all;
+    }
+    .about-you-box {
+      border:1px solid var(--bdr);
+      border-radius:8px;
+      padding:12px;
+      margin-bottom:14px;
+      background:var(--bg);
+    }
+    .about-you-box strong {
+      display:block;
+      font-size:0.78rem;
+      margin-bottom:8px;
+      color:var(--txt);
+    }
+    .check-row {
+      display:flex;
+      align-items:flex-start;
+      gap:8px;
+      font-size:0.8rem;
+      color:var(--txt);
+      margin-bottom:6px;
+      cursor:pointer;
+    }
+    .check-row input {
+      margin-top:3px;
+    }
+    .btn-create-acc {
+      background:#e11d48;
+      color:#fff;
+      border:none;
+      padding:11px 20px;
+      border-radius:7px;
+      font-weight:700;
+      font-size:0.88rem;
+      cursor:pointer;
+    }
+    .btn-create-acc:hover {
+      background:#be123c;
+    }
+    .btn-google-quick {
+      width:100%;
+      padding:10px;
+      border-radius:7px;
+      border:1px solid var(--bdr);
+      background:var(--surf);
+      color:var(--txt);
+      font-weight:700;
+      font-size:0.84rem;
+      cursor:pointer;
+      margin-bottom:14px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      gap:8px;
+    }
+    @media (max-width:700px) {
+      .auth-split { grid-template-columns:1fr; }
+      .auth-left { border-right:none; border-bottom:1px solid var(--bdr); }
+    }
+
+    .lightbox-overlay { position:fixed; inset:0; background:rgba(0,0,0,0.92); display:none; align-items:center; justify-content:center; z-index:25000; padding:16px; }
     .lightbox-overlay.open { display:flex; }
     .lightbox-overlay img { max-width:95%; max-height:92vh; border-radius:10px; }
     .info-box { margin-top:34px; padding:18px; border-radius:12px; background:var(--pri-l); border:1px solid var(--bdr); }
@@ -130,7 +315,8 @@
         <span>ZAPPORA</span>
       </a>
       <div class="nav-right">
-        <button type="button" class="visitor-chip" id="visitorChipBtn" onclick="openVisitorPassModal()">Sign In / Visitor Pass</button>
+        <button type="button" class="btn-auth-nav" id="navLoginBtn" onclick="openAuthModal('login')">Log In</button>
+        <button type="button" class="btn-auth-nav" id="navRegisterBtn" onclick="openAuthModal('register')">Register</button>
         <a href="admin.html" class="btn-publish">+ Publish App</a>
         <button class="theme-btn" id="themeToggle" onclick="toggleTheme()">Dark</button>
       </div>
@@ -138,7 +324,7 @@
 
     <section id="spotlightBanner" class="spotlight-banner">
       <div class="spotlight-inner">
-        <div class="spotlight-left">
+        <div class="spotlight-left" id="spotClickArea">
           <img id="spotIcon" src="favicon.png" alt="Featured" class="spotlight-icon" onerror="this.src='favicon.png'" />
           <div>
             <span class="spotlight-tag">Featured Release</span>
@@ -190,14 +376,15 @@
     <section class="info-box">
       <h3 style="color:var(--pri); margin-bottom:6px;">Installation Guide</h3>
       <ol style="margin-left:18px; color:var(--muted); font-size:0.88rem; line-height:1.55;">
-        <li>Click <strong>Download APK</strong> on any application card.</li>
+        <li>Click <strong>Download APK</strong> on any application card for direct instant download.</li>
         <li>If prompted by your browser, select <strong>Download anyway</strong>.</li>
-        <li>Open the APK file and allow installation to complete setup.</li>
+        <li>Open the downloaded APK file and allow installation to complete setup.</li>
       </ol>
     </section>
     <footer>&copy; 2026 Zappora Store. Official Android App & Game Directory.</footer>
   </div>
 
+  <!-- Floating Install Bar -->
   <div id="floatingAppBar" class="floating-app-bar">
     <div class="floating-left">
       <img src="favicon.png" alt="Zappora" onerror="this.src='logo.png'" />
@@ -207,63 +394,148 @@
       </div>
     </div>
     <div style="display:flex;align-items:center;gap:8px;">
-      <button id="floatingAppBtn" type="button" class="btn-float-install">Install APK</button>
+      <button id="floatingAppBtn" type="button" class="btn-float-install">Download APK</button>
       <button class="btn-float-close" onclick="dismissFloatingBar()">X</button>
     </div>
   </div>
 
-  <!-- On-Demand Visitor Pass Modal (Only opens when user clicks Download / Rate / Report) -->
-  <div class="modal-overlay" id="visitorPassModal" onclick="closeVisitorPassModal()">
-    <div class="modal-box pass-box" onclick="event.stopPropagation()">
-      <button class="modal-close" onclick="closeVisitorPassModal()">X</button>
-      <img src="favicon.png" alt="Zappora" style="width:48px;height:48px;border-radius:11px;margin-bottom:8px;" onerror="this.src='logo.png'" />
-      <h2 style="font-size:1.22rem;margin-bottom:4px;">Verify Visitor Pass</h2>
-      <p style="font-size:0.82rem;color:var(--muted);margin-bottom:16px;">Enter your Name & Email once to unlock APK downloads, ratings, and issue reporting.</p>
-      <button type="button" class="btn-google-pass" onclick="visitorGoogleSignIn()">Continue with Google</button>
-      <div style="font-size:0.72rem;color:var(--muted);text-transform:uppercase;font-weight:700;margin-bottom:10px;">or enter details below</div>
-      <form onsubmit="saveManualVisitorPass(event)">
-        <input type="text" id="vpName" class="review-input" style="width:100%;margin-bottom:9px;padding:10px;" maxlength="50" placeholder="Your Full Name" required />
-        <input type="email" id="vpEmail" class="review-input" style="width:100%;margin-bottom:12px;padding:10px;" maxlength="90" placeholder="Your Email Address" required />
-        <button type="submit" class="btn-download" style="width:100%;padding:11px;">Continue</button>
-      </form>
+  <!-- Image 4 Style Two-Column Login / Register Modal -->
+  <div class="modal-overlay" id="authModal" onclick="closeAuthModal()">
+    <div class="modal-box auth-modal-card" onclick="event.stopPropagation()">
+      <div class="auth-modal-header">
+        <h2 id="authModalHeading">Create an account on Zappora</h2>
+        <button class="modal-close" style="position:static;" onclick="closeAuthModal()">X</button>
+      </div>
+      <div class="auth-split">
+        <div class="auth-left">
+          <button type="button" class="btn-google-quick" onclick="visitorGoogleSignIn()">
+            <svg width="16" height="16" viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>
+            Continue with Google
+          </button>
+
+          <form id="zapporaAuthForm" onsubmit="submitZapporaAuth(event)">
+            <div class="auth-field" id="fieldUsernameWrap">
+              <label>Username</label>
+              <input type="text" id="regUsername" maxlength="32" placeholder="your_username" oninput="updateProfilePreview(this.value)" />
+              <div class="profile-url-preview" id="profileUrlPreview">https://zappora.onrender.com/?user=username</div>
+            </div>
+
+            <div class="auth-field">
+              <label>Your email address</label>
+              <input type="email" id="regEmail" maxlength="90" placeholder="name@example.com" required />
+            </div>
+
+            <div class="auth-field">
+              <label>Password</label>
+              <input type="password" id="regPassword" minlength="6" placeholder="Minimum 6 characters" required />
+            </div>
+
+            <div class="auth-field" id="fieldRepeatPassWrap">
+              <label>Repeat password</label>
+              <input type="password" id="regRepeatPassword" placeholder="Repeat your password" />
+            </div>
+
+            <div class="about-you-box" id="fieldAboutYouWrap">
+              <strong>About you</strong>
+              <label class="check-row">
+                <input type="checkbox" id="chkGamer" checked />
+                <span>I'm interested in playing or downloading games on Zappora</span>
+              </label>
+              <label class="check-row">
+                <input type="checkbox" id="chkCreator" />
+                <span>I'm interested in distributing content on Zappora</span>
+              </label>
+            </div>
+
+            <label class="check-row" id="fieldTermsWrap" style="margin-bottom:14px;">
+              <input type="checkbox" id="chkTerms" checked required />
+              <span>I accept the <a href="#" style="color:var(--pri);">Terms of Service</a></span>
+            </label>
+
+            <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;">
+              <button type="submit" class="btn-create-acc" id="authSubmitBtn">Create account</button>
+              <span style="font-size:0.8rem;color:var(--muted);" id="authSwitchPrompt">
+                or already have an account? <a href="#" onclick=" switchAuthMode('login'); return false;" style="color:var(--pri);font-weight:700;">Log in</a>
+              </span>
+            </div>
+          </form>
+        </div>
+
+        <div class="auth-right">
+          <h3>Who should register on Zappora?</h3>
+          <p><strong>Zappora</strong> was built for Android gamers and independent creators. Downloading APKs is 100% free and instant without registration, but creating an account unlocks verified community features.</p>
+
+          <h4>I want to play games & apps!</h4>
+          <p>Although registration isn't required to download APKs, creating an account gives you the ability to post verified 5-star ratings, review your favorite releases, and build your gamer identity.</p>
+
+          <h4>I'm a developer/creator!</h4>
+          <p>Great! Zappora is designed for indie developers of all kinds to quickly distribute their Android APKs and HTML5 web games for free. If you check the creator box, you can also publish directly in the <a href="admin.html" style="color:var(--pri);font-weight:700;">Developer Console</a>.</p>
+        </div>
+      </div>
     </div>
   </div>
 
-  <!-- App Details Modal -->
+  <!-- App Details Modal (Image 3 Header + Image 1 About Section) -->
   <div class="modal-overlay" id="appModal" onclick="closeModal()">
     <div class="modal-box" onclick="event.stopPropagation()">
       <button class="modal-close" onclick="closeModal()">X</button>
       <div class="modal-header">
         <img id="mIcon" src="" alt="App Icon" class="modal-icon" onerror="this.src='favicon.png'" />
         <div>
-          <h2 id="mTitle" style="font-size:1.25rem;margin-bottom:2px;"></h2>
-          <div id="mDeveloper" style="font-size:0.8rem;color:var(--pri);font-weight:600;cursor:pointer;margin-bottom:5px;"></div>
+          <h2 id="mTitle" style="font-size:1.3rem;margin-bottom:2px;"></h2>
+          <div id="mDeveloper" style="font-size:0.82rem;color:var(--pri);font-weight:600;cursor:pointer;margin-bottom:6px;"></div>
           <span id="mBadge" class="badge"></span>
         </div>
       </div>
 
+      <!-- Image 3 Style Stats Bar -->
       <div class="modal-stats">
-        <div><span>Version</span><strong id="mVersion">1.0</strong></div>
-        <div><span>Size</span><strong id="mSize">10MB</strong></div>
-        <div><span>Downloads</span><strong id="mDownloads">0</strong></div>
-        <div><span>Rating</span><strong id="mRating" style="color:var(--star);">★ 5.0</strong></div>
+        <div><span>VERSION</span><strong id="mVersion">v1.0</strong></div>
+        <div><span>SIZE</span><strong id="mSize">10MB</strong></div>
+        <div><span>DOWNLOADS</span><strong id="mDownloads">0</strong></div>
+        <div><span>RATING</span><strong id="mRating" style="color:var(--star);">★ 5.0</strong></div>
       </div>
 
-      <div style="display:flex;gap:8px;margin-bottom:18px;flex-wrap:wrap;">
+      <!-- Action Buttons (Always Download APK, Web Play, Share — No Report Issue) -->
+      <div style="display:flex;gap:8px;margin-bottom:20px;flex-wrap:wrap;">
         <button id="mDownloadBtn" type="button" class="btn-download">Download APK</button>
         <a id="mWebBtn" href="#" class="btn-web" target="_blank" rel="noopener noreferrer" style="display:none;">Web Play</a>
-        <button class="btn-info" onclick="shareCurrentApp()">Share</button>
-        <button class="btn-report-issue" onclick="reportCurrentAppIssue()">Report Issue</button>
+        <button type="button" class="btn-share" onclick="shareCurrentApp()">Share</button>
       </div>
 
+      <!-- All Uploaded Screenshots Slider -->
       <div class="screenshots-wrapper" id="mScreenshotsWrapper" style="display:none;">
         <h4>Preview Screenshots</h4>
         <div class="screenshots-slider" id="mScreenshotsList"></div>
       </div>
 
+      <!-- Image 1 Style About this Game / App Section -->
       <div class="modal-section">
-        <h4>About This Application</h4>
+        <h4 id="mAboutHeading">About this app</h4>
         <p id="mDesc"></p>
+
+        <div class="about-meta-grid">
+          <div class="about-meta-item">
+            <span>Version</span>
+            <strong id="metaVersion">1.0.0</strong>
+          </div>
+          <div class="about-meta-item">
+            <span>Updated on</span>
+            <strong id="metaUpdatedOn">Oct 2026</strong>
+          </div>
+          <div class="about-meta-item">
+            <span>Downloads</span>
+            <strong id="metaDownloads">1+ downloads</strong>
+          </div>
+          <div class="about-meta-item">
+            <span>Released on</span>
+            <strong id="metaReleasedOn">Oct 2026</strong>
+          </div>
+          <div class="about-meta-item">
+            <span>Offered by</span>
+            <strong id="metaOfferedBy">Zappora Official</strong>
+          </div>
+        </div>
       </div>
 
       <div class="modal-section" id="mNotesSection">
@@ -271,12 +543,12 @@
         <p id="mNotes"></p>
       </div>
 
+      <!-- Ratings & Reviews -->
       <div class="reviews-box">
         <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;flex-wrap:wrap;">
           <h4 style="font-size:0.84rem;color:var(--pri);text-transform:uppercase;">Ratings & Reviews</h4>
           <span id="reviewerIdentityLabel" style="font-size:0.74rem;color:var(--muted);font-weight:600;"></span>
         </div>
-        <!-- Form hides automatically once user rates this app -->
         <div id="reviewFormBlock">
           <div class="star-picker" id="starPicker">
             <button type="button" class="star-btn selected" onclick="selectStar(1)">★</button>
@@ -286,7 +558,7 @@
             <button type="button" class="star-btn selected" onclick="selectStar(5)">★</button>
           </div>
           <div class="review-form-row">
-            <input type="text" id="revComment" class="review-input" maxlength="240" style="flex:1;min-width:180px;" placeholder="Write your verified review..." />
+            <input type="text" id="revComment" class="review-input" maxlength="240" style="flex:1;min-width:180px;" placeholder="Write a review..." />
             <button type="button" class="btn-post-review" onclick="submitAppReview()">Post Review</button>
           </div>
         </div>
@@ -305,8 +577,25 @@
 
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
-    import { getAuth, GoogleAuthProvider, signInWithPopup } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
-    import { getFirestore, collection, getDocs, doc, getDoc, setDoc, updateDoc, increment } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
+    import {
+      getAuth,
+      GoogleAuthProvider,
+      signInWithPopup,
+      createUserWithEmailAndPassword,
+      signInWithEmailAndPassword,
+      updateProfile,
+      signOut
+    } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
+    import {
+      getFirestore,
+      collection,
+      getDocs,
+      doc,
+      getDoc,
+      setDoc,
+      updateDoc,
+      increment
+    } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
 
     const firebaseConfig = {
       apiKey: "AIzaSyDRsTWsXM7NB2EyL6RYOQ6OFL5mAnzaicc",
@@ -323,6 +612,10 @@
     const db = getFirestore(app);
     const googleProvider = new GoogleAuthProvider();
 
+    if ("serviceWorker" in navigator) {
+      navigator.serviceWorker.register("./sw.js").catch(() => {});
+    }
+
     let activeCatalog = [];
     let verifiedDevelopersMap = {};
     let currentFilteredList = [];
@@ -332,17 +625,57 @@
     let selectedStarCount = 5;
     let activeDeveloperFilter = null;
     let currentVisitor = null;
-    let pendingActionCallback = null;
+    let currentAuthMode = "register";
+    let pendingAuthAction = null;
 
+    // A1 SECURITY: Anti-XSS & Safe URL Sanitizer
     function escapeHTML(str) {
       return String(str ?? "").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;").replace(/'/g,"&#39;");
     }
+
     function safeUrl(url, fallback = "#") {
       const s = String(url ?? "").trim();
       if (!s) return fallback;
       if (/^(https?:\/\/|data:image\/)/i.test(s)) return s;
       if (!s.includes(":") && !s.startsWith("//")) return s;
       return fallback;
+    }
+
+    // SMART SCREENSHOT PARSER (Fixes base64 data:image comma splitting bug!)
+    function parseScreenshotsList(raw) {
+      if (!raw) return [];
+      if (Array.isArray(raw)) {
+        const result = [];
+        for (let i = 0; i < raw.length; i++) {
+          const item = String(raw[i] || "").trim();
+          // Reconstruct if a data:image URL was accidentally split at its comma
+          if (item.startsWith("data:image/") && !item.includes(",") && i + 1 < raw.length) {
+            result.push(item + "," + String(raw[i + 1]).trim());
+            i++;
+          } else if (item.includes(" | ")) {
+            item.split(" | ").forEach(p => { if (p.trim()) result.push(p.trim()); });
+          } else if (item) {
+            result.push(item);
+          }
+        }
+        return result.map(u => safeUrl(u, "")).filter(Boolean);
+      }
+      if (typeof raw === "string") {
+        const s = raw.trim();
+        if (!s) return [];
+        if (s.includes(" | ")) {
+          return s.split(" | ").map(u => safeUrl(u.trim(), "")).filter(Boolean);
+        }
+        return s.split(/,(?=\s*(?:https?:\/\/|data:image\/))/i).map(u => safeUrl(u.trim(), "")).filter(Boolean);
+      }
+      return [];
+    }
+
+    function formatDisplayDate(timestamp, fallbackStr) {
+      if (!timestamp) return fallbackStr;
+      const d = new Date(Number(timestamp));
+      if (isNaN(d.getTime())) return fallbackStr;
+      return d.toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" });
     }
 
     if (localStorage.getItem("zappora_theme") === "dark") {
@@ -363,7 +696,7 @@
       setTimeout(() => { t.style.display = "none"; }, 2800);
     }
 
-    // 1. ON-DEMAND VISITOR PASS (Never pops up automatically on load)
+    // USER AUTHENTICATION (Image 4 Style Login & Register)
     function initVisitorSession() {
       try {
         const saved = localStorage.getItem("zappora_visitor_pass");
@@ -373,127 +706,178 @@
     }
 
     function updateVisitorUI() {
-      const chip = document.getElementById("visitorChipBtn");
+      const loginBtn = document.getElementById("navLoginBtn");
+      const regBtn = document.getElementById("navRegisterBtn");
       const revLabel = document.getElementById("reviewerIdentityLabel");
+
       if (currentVisitor && currentVisitor.name) {
-        chip.innerText = `User: ${currentVisitor.name}`;
-        if (revLabel) revLabel.innerText = `Verified: ${currentVisitor.name}`;
+        loginBtn.innerText = `@${currentVisitor.username || currentVisitor.name}`;
+        loginBtn.onclick = () => {
+          if (confirm(`Logged in as ${currentVisitor.name} (${currentVisitor.email}).\nDo you want to log out?`)) {
+            localStorage.removeItem("zappora_visitor_pass");
+            currentVisitor = null;
+            signOut(auth).catch(() => {});
+            updateVisitorUI();
+            showToast("Logged out successfully.");
+          }
+        };
+        regBtn.style.display = "none";
+        if (revLabel) revLabel.innerText = `Posting as ${currentVisitor.name}`;
       } else {
-        chip.innerText = "Sign In / Visitor Pass";
-        if (revLabel) revLabel.innerText = "Click Post to verify identity";
+        loginBtn.innerText = "Log In";
+        loginBtn.onclick = () => window.openAuthModal("login");
+        regBtn.style.display = "inline-block";
+        if (revLabel) revLabel.innerText = "Login required to post review";
       }
     }
 
-    window.openVisitorPassModal = (callback = null) => {
-      pendingActionCallback = callback;
-      if (currentVisitor) {
-        document.getElementById("vpName").value = currentVisitor.name || "";
-        document.getElementById("vpEmail").value = currentVisitor.email || "";
-      }
-      document.getElementById("visitorPassModal").classList.add("open");
-    };
-    window.closeVisitorPassModal = () => {
-      document.getElementById("visitorPassModal").classList.remove("open");
+    window.updateProfilePreview = (val) => {
+      const clean = String(val || "").toLowerCase().replace(/[^a-z0-9_]/g, "") || "username";
+      document.getElementById("profileUrlPreview").innerText = `https://zappora.onrender.com/?user=${clean}`;
     };
 
-    async function completeVisitorPass(name, email, method) {
+    window.openAuthModal = (mode = "register", callback = null) => {
+      pendingAuthAction = callback;
+      window.switchAuthMode(mode);
+      document.getElementById("authModal").classList.add("open");
+    };
+
+    window.closeAuthModal = () => {
+      document.getElementById("authModal").classList.remove("open");
+    };
+
+    window.switchAuthMode = (mode) => {
+      currentAuthMode = mode;
+      const isReg = mode === "register";
+      document.getElementById("authModalHeading").innerText = isReg ? "Create an account on Zappora" : "Log in to Zappora";
+      document.getElementById("fieldUsernameWrap").style.display = isReg ? "block" : "none";
+      document.getElementById("fieldRepeatPassWrap").style.display = isReg ? "block" : "none";
+      document.getElementById("fieldAboutYouWrap").style.display = isReg ? "block" : "none";
+      document.getElementById("fieldTermsWrap").style.display = isReg ? "flex" : "none";
+      document.getElementById("authSubmitBtn").innerText = isReg ? "Create account" : "Log in";
+      document.getElementById("authSwitchPrompt").innerHTML = isReg
+        ? `or already have an account? <a href="#" onclick="switchAuthMode('login'); return false;" style="color:var(--pri);font-weight:700;">Log in</a>`
+        : `Need an account? <a href="#" onclick="switchAuthMode('register'); return false;" style="color:var(--pri);font-weight:700;">Register</a>`;
+    };
+
+    async function saveVisitorIdentity(name, username, email, method, isCreator = false) {
       const cleanEmail = email.toLowerCase().trim();
       const visitorId = cleanEmail.replace(/[^a-z0-9]/g, "_").slice(0, 60);
-      const payload = { id: visitorId, name: name.trim(), email: cleanEmail, authMethod: method, lastActive: Date.now() };
+      const payload = {
+        id: visitorId,
+        name: name.trim(),
+        username: username.trim().toLowerCase(),
+        email: cleanEmail,
+        authMethod: method,
+        interestedInCreator: isCreator,
+        lastActive: Date.now()
+      };
       currentVisitor = payload;
       localStorage.setItem("zappora_visitor_pass", JSON.stringify(payload));
       updateVisitorUI();
-      window.closeVisitorPassModal();
-      showToast(`Verified as ${payload.name}!`);
+      window.closeAuthModal();
+      showToast(`Welcome, ${payload.name}!`);
 
-      if (typeof pendingActionCallback === "function") {
-        const cb = pendingActionCallback;
-        pendingActionCallback = null;
+      try {
+        await setDoc(doc(db, "visitors", visitorId), payload, { merge: true });
+      } catch (e) {}
+
+      if (typeof pendingAuthAction === "function") {
+        const cb = pendingAuthAction;
+        pendingAuthAction = null;
         cb();
       }
-      try { await setDoc(doc(db, "visitors", visitorId), payload, { merge: true }); } catch (e) {}
     }
 
     window.visitorGoogleSignIn = async () => {
       try {
         const res = await signInWithPopup(auth, googleProvider);
-        await completeVisitorPass(res.user.displayName || "Zappora User", res.user.email || "user@google.com", "Google");
-      } catch (err) { showToast("Google sign-in cancelled."); }
+        const u = res.user;
+        const handle = (u.email ? u.email.split("@")[0] : "user").replace(/[^a-z0-9_]/gi, "").toLowerCase();
+        await saveVisitorIdentity(u.displayName || handle, handle, u.email || "user@google.com", "Google", false);
+      } catch (err) {
+        showToast("Google sign-in cancelled.");
+      }
     };
 
-    window.saveManualVisitorPass = async (e) => {
+    window.submitZapporaAuth = async (e) => {
       e.preventDefault();
-      const name = document.getElementById("vpName").value.trim();
-      const email = document.getElementById("vpEmail").value.trim();
-      if (name.length < 2 || !email.includes("@")) return showToast("Enter valid name and email.");
-      await completeVisitorPass(name, email, "EmailPass");
+      const email = document.getElementById("regEmail").value.trim();
+      const pass = document.getElementById("regPassword").value;
+
+      if (currentAuthMode === "register") {
+        const rawUser = document.getElementById("regUsername").value.trim();
+        const repeatPass = document.getElementById("regRepeatPassword").value;
+        const isCreator = document.getElementById("chkCreator").checked;
+
+        if (!rawUser || rawUser.length < 3) {
+          showToast("Username must be at least 3 characters.");
+          return;
+        }
+        if (pass !== repeatPass) {
+          showToast("Passwords do not match!");
+          return;
+        }
+        const cleanHandle = rawUser.toLowerCase().replace(/[^a-z0-9_]/g, "");
+        try {
+          const cred = await createUserWithEmailAndPassword(auth, email, pass);
+          await updateProfile(cred.user, { displayName: rawUser });
+          if (isCreator) {
+            await setDoc(doc(db, "developers", cred.user.uid), {
+              uid: cred.user.uid,
+              username: cleanHandle,
+              studioName: rawUser,
+              email: email,
+              banned: false,
+              createdAt: Date.now()
+            }, { merge: true });
+          }
+        } catch (err) {
+          // Even if email already exists in Firebase Auth, allow local/visitor session
+        }
+        await saveVisitorIdentity(rawUser, cleanHandle, email, "ZapporaAccount", isCreator);
+      } else {
+        try {
+          const cred = await signInWithEmailAndPassword(auth, email, pass);
+          const u = cred.user;
+          const handle = (u.displayName || email.split("@")[0]).toLowerCase().replace(/[^a-z0-9_]/g, "");
+          await saveVisitorIdentity(u.displayName || handle, handle, email, "ZapporaLogin", false);
+        } catch (err) {
+          const handle = email.split("@")[0].toLowerCase().replace(/[^a-z0-9_]/g, "");
+          await saveVisitorIdentity(handle, handle, email, "EmailLogin", false);
+        }
+      }
     };
 
-    // 2. PLAY STORE STYLE INSTALL & RE-DOWNLOAD SYSTEM (1 Unique Count Per App, Re-install if deleted)
-    function isAppInstalledOnDevice(appId) {
-      return localStorage.getItem("zappora_installed_" + appId) === "1";
-    }
-
-    window.triggerPlayStoreDownload = (appId) => {
+    // DIRECT 1-CLICK APK DOWNLOAD (No Login Required, Always "Download APK", Counts Every Download)
+    window.directDownloadApk = (appId, e) => {
+      if (e) e.stopPropagation();
       const appItem = activeCatalog.find(i => i.id === appId);
       if (!appItem) return;
-
-      // Require Visitor Pass before downloading
-      if (!currentVisitor || !currentVisitor.email) {
-        showToast("Please enter your Name & Email to download.");
-        window.openVisitorPassModal(() => window.triggerPlayStoreDownload(appId));
-        return;
-      }
 
       const dlUrl = safeUrl(appItem.downloadUrl, "");
       if (!dlUrl || dlUrl === "#") return;
 
-      // Check if already downloaded once by this user
-      if (isAppInstalledOnDevice(appId)) {
-        const reinstall = confirm(
-          `"${appItem.title}" is already marked as Installed on your account.\n\nDid you delete it from your phone and want to download the APK again?`
-        );
-        if (!reinstall) return;
-        // Re-download APK without inflating the global download counter
-        window.open(dlUrl, "_blank", "noopener,noreferrer");
-        showToast("Re-downloading APK package...");
-        return;
-      }
-
-      // First-time download: mark as Installed, increment counter ONCE, and start download
-      localStorage.setItem("zappora_installed_" + appId, "1");
+      // Increment download counter immediately
       appItem.downloads = (parseInt(appItem.downloads, 10) || 0) + 1;
       localStorage.setItem("zappora_catalog_cache", JSON.stringify(activeCatalog));
 
-      renderApps();
       if (currentModalApp && currentModalApp.id === appId) {
         document.getElementById("mDownloads").innerText = appItem.downloads;
-        updateModalDownloadButton(appItem);
+        document.getElementById("metaDownloads").innerText = `${appItem.downloads.toLocaleString()}+ downloads`;
       }
 
+      // Trigger direct download without login popup
       window.open(dlUrl, "_blank", "noopener,noreferrer");
       showToast(`Downloading ${appItem.title}...`);
 
       updateDoc(doc(db, "apps", appId), { downloads: increment(1) }).catch(() => {});
     };
 
-    function updateModalDownloadButton(appItem) {
-      const dlBtn = document.getElementById("mDownloadBtn");
-      if (isAppInstalledOnDevice(appItem.id)) {
-        dlBtn.innerText = "✓ Installed (Re-download)";
-        dlBtn.classList.add("installed");
-      } else {
-        dlBtn.innerText = "Download APK";
-        dlBtn.classList.remove("installed");
-      }
-      dlBtn.onclick = () => window.triggerPlayStoreDownload(appItem.id);
-    }
-
-    // 3. INSTANT 0-SECOND CACHE LOAD + PARALLEL FIREBASE SYNC
+    // INSTANT CACHE + FIREBASE SYNC
     async function loadCatalog() {
       initVisitorSession();
 
-      // Step A: Render Immediately from Local Cache or version.json (0ms wait)
       const cached = localStorage.getItem("zappora_catalog_cache");
       if (cached) {
         try {
@@ -512,7 +896,6 @@
         } catch (e) {}
       }
 
-      // Step B: Parallel Firebase Sync in background
       try {
         const [cfgSnap, devSnap, appSnap] = await Promise.all([
           getDoc(doc(db, "settings", "platform_config")),
@@ -579,15 +962,19 @@
         document.getElementById("spotIcon").src = safeUrl(spot.icon, "favicon.png");
         document.getElementById("spotTitle").innerText = spot.title;
         document.getElementById("spotDesc").innerText = spot.desc;
+        document.getElementById("spotClickArea").onclick = () => window.openModal(spot.id);
+
         const dlBtn = document.getElementById("spotDlBtn");
-        dlBtn.innerText = isAppInstalledOnDevice(spot.id) ? "✓ Installed" : "Download APK";
-        dlBtn.onclick = () => window.triggerPlayStoreDownload(spot.id);
+        dlBtn.innerText = "Download APK";
+        dlBtn.onclick = (e) => window.directDownloadApk(spot.id, e);
 
         const webBtn = document.getElementById("spotWebBtn");
         if (spot.webUrl && safeUrl(spot.webUrl) !== "#") {
           webBtn.style.display = "inline-block";
           webBtn.href = safeUrl(spot.webUrl);
           webBtn.innerText = spot.category === "Game" ? "Web Play" : "Web View";
+        } else {
+          webBtn.style.display = "none";
         }
       }
 
@@ -595,7 +982,7 @@
       if (storeApp && !sessionStorage.getItem("hide_zappora_bar")) {
         const bar = document.getElementById("floatingAppBar");
         const btn = document.getElementById("floatingAppBtn");
-        btn.onclick = () => window.triggerPlayStoreDownload(storeApp.id);
+        btn.onclick = (e) => window.directDownloadApk(storeApp.id, e);
         bar.style.display = "flex";
       }
     }
@@ -630,6 +1017,7 @@
       renderApps();
     };
 
+    // CLEAN APP CARD RENDERER (Image 2 Style)
     function renderApps() {
       const container = document.getElementById("appsContainer");
       const loadMoreWrap = document.getElementById("loadMoreWrap");
@@ -643,13 +1031,11 @@
 
       currentFilteredList.slice(0, visibleLimit).forEach(app => {
         const badgeClass = app.category === "Game" ? "badge-game" : "badge-app";
-        const totalDl = parseInt(app.downloads, 10) || 0;
         const avgRating = getAppRating(app);
         const devName = app.developerName || "Zappora Official";
         const blueTickHtml = isDevVerified(app) ? '<span class="verified-tick" title="Verified Publisher">✓</span>' : "";
         const cleanWebUrl = safeUrl(app.webUrl, "");
         const webBtnLabel = app.category === "Game" ? "Web Play" : "Web View";
-        const installed = isAppInstalledOnDevice(app.id);
 
         const webButtonHtml = cleanWebUrl
           ? `<a href="${escapeHTML(cleanWebUrl)}" class="btn-web" target="_blank" rel="noopener noreferrer">${webBtnLabel}</a>`
@@ -669,29 +1055,22 @@
                 <div class="badge-row">
                   <span class="badge ${badgeClass}">${escapeHTML(app.category)}</span>
                   <span class="rating-pill">★ ${escapeHTML(avgRating)}</span>
-                  <span class="dl-pill" id="dl-count-${escapeHTML(app.id)}">DL: ${totalDl}</span>
                 </div>
               </div>
             </div>
             <p class="app-desc">${escapeHTML(app.desc)}</p>
           </div>
           <div class="card-footer">
-            <div class="meta-specs">
-              <span>v${escapeHTML(app.versionName)}</span>
-              <span>${escapeHTML(app.size)}</span>
-            </div>
             <div class="card-actions">
-              <button type="button" class="btn-download ${installed ? 'installed' : ''}">${installed ? '✓ Installed' : 'Download APK'}</button>
+              <button type="button" class="btn-download">Download APK</button>
               ${webButtonHtml}
-              <button type="button" class="btn-info">Info</button>
             </div>
           </div>
         `;
 
         card.querySelector(".dev-label").addEventListener("click", (e) => window.filterByDeveloper(devName, e));
         card.querySelector(".card-actions").addEventListener("click", (e) => e.stopPropagation());
-        card.querySelector(".btn-download").addEventListener("click", () => window.triggerPlayStoreDownload(app.id));
-        card.querySelector(".btn-info").addEventListener("click", () => window.openModal(app.id));
+        card.querySelector(".btn-download").addEventListener("click", (e) => window.directDownloadApk(app.id, e));
         container.appendChild(card);
       });
 
@@ -738,7 +1117,6 @@
       document.querySelectorAll("#starPicker .star-btn").forEach((btn, idx) => btn.classList.toggle("selected", idx < count));
     };
 
-    // 4. ONE-TIME RATING CHECK (Hides rating box permanently once user rates that app)
     function hasUserRatedApp(appItem) {
       if (!appItem) return false;
       if (localStorage.getItem("zappora_rated_" + appItem.id) === "1") return true;
@@ -757,8 +1135,8 @@
     window.submitAppReview = async () => {
       if (!currentModalApp) return;
       if (!currentVisitor || !currentVisitor.email) {
-        showToast("Please verify your Name & Email to submit a rating.");
-        window.openVisitorPassModal(() => window.submitAppReview());
+        showToast("Please Log In or Register to post a review.");
+        window.openAuthModal("register", () => window.submitAppReview());
         return;
       }
       if (hasUserRatedApp(currentModalApp)) {
@@ -805,30 +1183,6 @@
       } catch (e) {}
     };
 
-    window.reportCurrentAppIssue = async () => {
-      if (!currentModalApp) return;
-      if (!currentVisitor || !currentVisitor.email) {
-        showToast("Please verify your Name & Email to report an issue.");
-        window.openVisitorPassModal(() => window.reportCurrentAppIssue());
-        return;
-      }
-      const reason = prompt(`Describe the issue with ${currentModalApp.title}:`);
-      if (!reason || reason.trim().length < 4) return;
-      const reportId = `rep_${Date.now()}`;
-      try {
-        await setDoc(doc(db, "reports", reportId), {
-          id: reportId,
-          appId: currentModalApp.id,
-          appTitle: currentModalApp.title,
-          reason: reason.trim().slice(0, 450),
-          reporterName: currentVisitor.name,
-          reporterEmail: currentVisitor.email,
-          createdAt: Date.now()
-        });
-        showToast("Report sent to Zappora HQ!");
-      } catch (err) { showToast("Could not send report."); }
-    };
-
     function renderModalReviews() {
       const box = document.getElementById("mReviewsList");
       const list = currentModalApp.reviews || [];
@@ -850,6 +1204,7 @@
       }).join("");
     }
 
+    // POPUP MODAL (Image 3 Top Stats + All Screenshots + Image 1 About Grid)
     window.openModal = (id) => {
       const app = activeCatalog.find(item => item.id === id);
       if (!app) return;
@@ -867,20 +1222,30 @@
       badge.innerText = app.category;
       badge.className = "badge " + (app.category === "Game" ? "badge-game" : "badge-app");
 
+      const dlTotal = parseInt(app.downloads, 10) || 0;
       document.getElementById("mVersion").innerText = "v" + app.versionName;
       document.getElementById("mSize").innerText = app.size;
-      document.getElementById("mDownloads").innerText = parseInt(app.downloads, 10) || 0;
+      document.getElementById("mDownloads").innerText = dlTotal;
       document.getElementById("mRating").innerText = "★ " + getAppRating(app);
-      document.getElementById("mDesc").innerText = app.desc;
 
+      // Image 1 Style "About this game / app" Metadata
+      document.getElementById("mAboutHeading").innerText = app.category === "Game" ? "About this game" : "About this app";
+      document.getElementById("mDesc").innerText = app.desc;
+      document.getElementById("metaVersion").innerText = app.versionName || "1.0.0";
+      document.getElementById("metaUpdatedOn").innerText = formatDisplayDate(app.updatedAt, "Oct 2026");
+      document.getElementById("metaDownloads").innerText = `${dlTotal.toLocaleString()}+ downloads`;
+      document.getElementById("metaReleasedOn").innerText = formatDisplayDate(app.createdAt || app.updatedAt, "2026");
+      document.getElementById("metaOfferedBy").innerText = devName;
+
+      // Render ALL Uploaded Screenshots cleanly
       const ssWrapper = document.getElementById("mScreenshotsWrapper");
       const ssList = document.getElementById("mScreenshotsList");
       ssList.innerHTML = "";
-      if (Array.isArray(app.screenshots) && app.screenshots.length > 0) {
+      const parsedShots = parseScreenshotsList(app.screenshots);
+
+      if (parsedShots.length > 0) {
         ssWrapper.style.display = "block";
-        app.screenshots.forEach(url => {
-          const validImg = safeUrl(url, "");
-          if (!validImg) return;
+        parsedShots.forEach(validImg => {
           const img = document.createElement("img");
           img.src = validImg;
           img.loading = "lazy";
@@ -888,23 +1253,31 @@
           img.onclick = () => window.openLightbox(validImg);
           ssList.appendChild(img);
         });
-      } else ssWrapper.style.display = "none";
+      } else {
+        ssWrapper.style.display = "none";
+      }
 
       const notesSec = document.getElementById("mNotesSection");
       if (app.releaseNotes && app.releaseNotes.trim() !== "") {
         notesSec.style.display = "block";
         document.getElementById("mNotes").innerText = app.releaseNotes;
-      } else notesSec.style.display = "none";
+      } else {
+        notesSec.style.display = "none";
+      }
 
-      updateModalDownloadButton(app);
+      const dlBtn = document.getElementById("mDownloadBtn");
+      dlBtn.innerText = "Download APK";
+      dlBtn.onclick = (e) => window.directDownloadApk(app.id, e);
 
       const webBtn = document.getElementById("mWebBtn");
       const cleanWeb = safeUrl(app.webUrl, "");
       if (cleanWeb) {
-        webBtn.style.display = "block";
+        webBtn.style.display = "inline-flex";
         webBtn.href = cleanWeb;
         webBtn.innerText = app.category === "Game" ? "Web Play" : "Web View";
-      } else webBtn.style.display = "none";
+      } else {
+        webBtn.style.display = "none";
+      }
 
       updateVisitorUI();
       window.selectStar(5);
