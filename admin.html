@@ -1044,11 +1044,38 @@
       }
     }
 
+    // EMAILJS AUTO-WELCOME EMAIL SENDER
+    async function sendZapporaWelcomeEmail(name, username, email) {
+      if (!email || !email.includes("@")) return;
+      try {
+        await fetch("https://api.emailjs.com/api/v1.0/email/send", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            service_id: "service_7i1a1fw",
+            template_id: "template_4z4t99l",
+            user_id: "Hofgdvgh3S8kT3xpN",
+            template_params: {
+              user_name: name || username || "Developer",
+              username: username || "dev",
+              to_email: email.trim()
+            }
+          })
+        });
+      } catch (err) {
+        console.warn("Welcome email skipped:", err);
+      }
+    } 
+    
     async function ensureDeveloperProfile(user) {
       const devRef = doc(db, "developers", user.uid);
       const devSnap = await getDoc(devRef);
       if (devSnap.exists()) {
         currentDeveloperDoc = devSnap.data();
+        if (!currentDeveloperDoc.welcomeEmailSent && user.email) {
+          sendZapporaWelcomeEmail(currentDeveloperDoc.studioName, currentDeveloperDoc.username, user.email);
+          await updateDoc(devRef, { welcomeEmailSent: true }).catch(() => {});
+        }
       } else {
         const baseHandle = (user.email ? user.email.split("@")[0] : "dev").toLowerCase().replace(/[^a-z0-9_]/g, "") + "_" + Math.floor(100 + Math.random() * 899);
         const newDoc = {
@@ -1058,17 +1085,20 @@
           email: user.email || "",
           website: "",
           banned: false,
+          welcomeEmailSent: true,
           createdAt: Date.now()
         };
         await setDoc(devRef, newDoc);
         currentDeveloperDoc = newDoc;
+        if (user.email) {
+          sendZapporaWelcomeEmail(newDoc.studioName, newDoc.username, user.email);
+        }
       }
 
       document.getElementById("profUsername").value = currentDeveloperDoc.username || "";
       document.getElementById("profStudioName").value = currentDeveloperDoc.studioName || "";
       document.getElementById("profWebsite").value = currentDeveloperDoc.website || "";
     }
-
     window.toggleProfileCard = () => {
       const card = document.getElementById("profileCard");
       card.style.display = card.style.display === "none" ? "block" : "none";
