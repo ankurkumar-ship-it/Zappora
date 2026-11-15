@@ -759,7 +759,30 @@
         ? `or already have an account? <a href="#" onclick="switchAuthMode('login'); return false;" style="color:var(--pri);font-weight:700;">Log in</a>`
         : `Need an account? <a href="#" onclick="switchAuthMode('register'); return false;" style="color:var(--pri);font-weight:700;">Register</a>`;
     };
-
+     
+     // EMAILJS AUTO-WELCOME EMAIL SENDER
+    async function sendZapporaWelcomeEmail(name, username, email) {
+      if (!email || !email.includes("@")) return;
+      try {
+        await fetch("https://api.emailjs.com/api/v1.0/email/send", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            service_id: "service_7i1a1fw",
+            template_id: "template_4z4t99l",
+            user_id: "Hofgdvgh3S8kT3xpN",
+            template_params: {
+              user_name: name || username || "Gamer",
+              username: username || "user",
+              to_email: email.trim()
+            }
+          })
+        });
+      } catch (err) {
+        console.warn("Welcome email skipped:", err);
+      }
+    }
+    
     async function saveVisitorIdentity(name, username, email, method, isCreator = false) {
       const cleanEmail = email.toLowerCase().trim();
       const visitorId = cleanEmail.replace(/[^a-z0-9]/g, "_").slice(0, 60);
@@ -779,7 +802,15 @@
       showToast(`Welcome, ${payload.name}!`);
 
       try {
-        await setDoc(doc(db, "visitors", visitorId), payload, { merge: true });
+        const vRef = doc(db, "visitors", visitorId);
+        const vSnap = await getDoc(vRef);
+        const alreadySent = vSnap.exists() && vSnap.data().welcomeEmailSent === true;
+
+        await setDoc(vRef, { ...payload, welcomeEmailSent: true }, { merge: true });
+
+        if (!alreadySent) {
+          sendZapporaWelcomeEmail(payload.name, payload.username, cleanEmail);
+        }
       } catch (e) {}
 
       if (typeof pendingAuthAction === "function") {
@@ -788,7 +819,6 @@
         cb();
       }
     }
-
     window.visitorGoogleSignIn = async () => {
       try {
         const res = await signInWithPopup(auth, googleProvider);
