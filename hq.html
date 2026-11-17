@@ -3,26 +3,26 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Zappora Master Control Center</title>
+  <title>Zappora HQ — Master Administration & Security Command</title>
   <link rel="icon" type="image/png" href="favicon.png" />
   <style>
     :root {
-      --bg-body: #090d16;
-      --bg-sidebar: #0f172a;
-      --bg-surface: #1e293b;
-      --bg-elevated: #334155;
-      --border-line: #334155;
+      --bg: #070b14;
+      --sidebar: #0b1120;
+      --surface: #111827;
+      --surface-hover: #1e293b;
+      --border: #1f2937;
       --primary: #38bdf8;
       --primary-dark: #0284c7;
-      --text-main: #f8fafc;
-      --text-muted: #94a3b8;
+      --text: #f8fafc;
+      --muted: #94a3b8;
       --success: #10b981;
-      --success-bg: rgba(16, 185, 129, 0.12);
+      --success-bg: rgba(16, 185, 129, 0.14);
       --warning: #f59e0b;
-      --warning-bg: rgba(245, 158, 11, 0.12);
+      --warning-bg: rgba(245, 158, 11, 0.14);
       --danger: #ef4444;
-      --danger-bg: rgba(239, 68, 68, 0.12);
-      --radius: 10px;
+      --danger-bg: rgba(239, 68, 68, 0.14);
+      --radius: 12px;
     }
 
     * {
@@ -33,236 +33,283 @@
     }
 
     body {
-      background-color: var(--bg-body);
-      color: var(--text-main);
+      background: var(--bg);
+      color: var(--text);
       min-height: 100vh;
       display: flex;
       flex-direction: column;
     }
 
+    /* Auth Gate */
     .auth-gate {
       max-width: 420px;
-      width: 92%;
+      width: calc(100% - 32px);
       margin: 80px auto;
-      background: var(--bg-sidebar);
-      border: 1px solid var(--border-line);
-      border-radius: 14px;
-      padding: 34px 28px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 32px 26px;
+      text-align: center;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+    }
+
+    .auth-gate img {
+      width: 52px;
+      height: 52px;
+      border-radius: 12px;
+      margin-bottom: 12px;
+      border: 1px solid var(--border);
     }
 
     .auth-gate h1 {
       font-size: 1.35rem;
       font-weight: 800;
       margin-bottom: 6px;
-      color: var(--text-main);
     }
 
     .auth-gate p {
       font-size: 0.85rem;
-      color: var(--text-muted);
-      margin-bottom: 24px;
+      color: var(--muted);
+      margin-bottom: 20px;
     }
 
-    .form-group {
-      margin-bottom: 16px;
-    }
-
-    .form-group label {
-      display: block;
-      font-size: 0.78rem;
+    .btn-primary {
+      background: var(--primary-dark);
+      color: #fff;
+      border: none;
+      padding: 11px 18px;
+      border-radius: 9px;
       font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-      color: var(--text-muted);
-      margin-bottom: 6px;
-    }
-
-    .form-control {
-      width: 100%;
-      padding: 11px 14px;
-      border-radius: 8px;
-      border: 1px solid var(--border-line);
-      background: var(--bg-surface);
-      color: var(--text-main);
-      font-size: 0.9rem;
-      outline: none;
-    }
-
-    .form-control:focus {
-      border-color: var(--primary);
-    }
-
-    .btn {
-      padding: 10px 18px;
-      border-radius: 8px;
-      font-size: 0.84rem;
-      font-weight: 700;
-      border: 1px solid transparent;
+      font-size: 0.88rem;
       cursor: pointer;
-      transition: 0.15s;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
+      transition: 0.2s;
     }
 
-    .btn-primary { background: var(--primary-dark); color: #ffffff; }
-    .btn-primary:hover { background: #0369a1; }
-    .btn-outline { background: transparent; border-color: var(--border-line); color: var(--text-main); }
-    .btn-outline:hover { background: var(--bg-surface); }
-    .btn-success { background: var(--success-bg); color: var(--success); border-color: rgba(16, 185, 129, 0.3); }
-    .btn-warning { background: var(--warning-bg); color: var(--warning); border-color: rgba(245, 158, 11, 0.3); }
-    .btn-danger { background: var(--danger-bg); color: var(--danger); border-color: rgba(239, 68, 68, 0.3); }
+    .btn-primary:hover {
+      background: var(--primary);
+      color: #070b14;
+    }
 
+    /* Main HQ Layout */
     .hq-layout {
       display: none;
       min-height: 100vh;
-    }
-
-    .hq-layout.active {
-      display: grid;
       grid-template-columns: 250px 1fr;
     }
 
     .sidebar {
-      background: var(--bg-sidebar);
-      border-right: 1px solid var(--border-line);
-      padding: 24px 16px;
+      background: var(--sidebar);
+      border-right: 1px solid var(--border);
+      padding: 20px 14px;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
+      position: sticky;
+      top: 0;
+      height: 100vh;
     }
 
-    .brand-box {
+    .hq-brand {
       display: flex;
       align-items: center;
-      gap: 12px;
-      padding: 0 8px 22px;
-      border-bottom: 1px solid var(--border-line);
-      margin-bottom: 20px;
+      gap: 10px;
+      padding: 6px 10px 18px;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 14px;
     }
 
-    .brand-box img {
+    .hq-brand img {
       width: 36px;
       height: 36px;
-      border-radius: 8px;
+      border-radius: 9px;
     }
 
-    .brand-box div h2 {
-      font-size: 1rem;
-      font-weight: 800;
+    .hq-brand div strong {
+      display: block;
+      font-size: 1.05rem;
       letter-spacing: 0.4px;
+      color: var(--primary);
     }
 
-    .brand-box div span {
+    .hq-brand div span {
       font-size: 0.7rem;
-      color: var(--primary);
+      color: var(--muted);
       text-transform: uppercase;
       font-weight: 700;
-      letter-spacing: 0.6px;
     }
 
     .nav-list {
-      list-style: none;
       display: flex;
       flex-direction: column;
-      gap: 6px;
+      gap: 4px;
     }
 
-    .nav-btn {
-      width: 100%;
-      text-align: left;
-      padding: 11px 14px;
-      border-radius: 8px;
-      background: transparent;
-      border: none;
-      color: var(--text-muted);
-      font-size: 0.88rem;
+    .nav-item {
+      padding: 10px 12px;
+      border-radius: 9px;
+      color: var(--muted);
+      font-size: 0.86rem;
       font-weight: 600;
       cursor: pointer;
+      border: 1px solid transparent;
+      text-align: left;
+      background: transparent;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
       transition: 0.15s;
     }
 
-    .nav-btn:hover {
-      background: rgba(255, 255, 255, 0.04);
-      color: var(--text-main);
+    .nav-item:hover {
+      background: var(--surface);
+      color: var(--text);
     }
 
-    .nav-btn.active {
-      background: var(--bg-surface);
+    .nav-item.active {
+      background: rgba(56, 189, 248, 0.12);
       color: var(--primary);
-      border-left: 3px solid var(--primary);
+      border-color: rgba(56, 189, 248, 0.3);
     }
 
+    .nav-count {
+      font-size: 0.7rem;
+      padding: 2px 7px;
+      border-radius: 12px;
+      background: var(--surface-hover);
+      color: var(--text);
+      font-weight: 700;
+    }
+
+    .sidebar-footer {
+      border-top: 1px solid var(--border);
+      padding-top: 14px;
+      font-size: 0.76rem;
+      color: var(--muted);
+    }
+
+    .sidebar-footer strong {
+      display: block;
+      color: var(--text);
+      margin-bottom: 4px;
+      word-break: break-all;
+    }
+
+    /* Main Content */
     .main-area {
-      padding: 28px 32px;
-      overflow-y: auto;
+      padding: 24px 28px 60px;
+      overflow-x: hidden;
     }
 
     .topbar {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding-bottom: 20px;
-      border-bottom: 1px solid var(--border-line);
-      margin-bottom: 26px;
       flex-wrap: wrap;
-      gap: 14px;
+      gap: 12px;
+      margin-bottom: 22px;
     }
 
-    .topbar h1 {
-      font-size: 1.45rem;
+    .topbar h2 {
+      font-size: 1.35rem;
       font-weight: 800;
     }
 
-    .metrics-grid {
+    .topbar-actions {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .btn-ghost {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: 8px 13px;
+      border-radius: 8px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      text-decoration: none;
+      cursor: pointer;
+    }
+
+    .btn-ghost:hover {
+      border-color: var(--primary);
+      color: var(--primary);
+    }
+
+    /* Top 6 Metrics Row */
+    .stats-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(165px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(155px, 1fr));
       gap: 14px;
-      margin-bottom: 28px;
-    }
-
-    .metric-box {
-      background: var(--bg-sidebar);
-      border: 1px solid var(--border-line);
-      border-radius: var(--radius);
-      padding: 16px;
-    }
-
-    .metric-box span {
-      font-size: 0.7rem;
-      text-transform: uppercase;
-      letter-spacing: 0.6px;
-      color: var(--text-muted);
-      font-weight: 700;
-    }
-
-    .metric-box h3 {
-      font-size: 1.65rem;
-      font-weight: 800;
-      margin-top: 6px;
-    }
-
-    .panel {
-      background: var(--bg-sidebar);
-      border: 1px solid var(--border-line);
-      border-radius: var(--radius);
-      padding: 22px;
       margin-bottom: 24px;
+    }
+
+    .stat-box {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 16px 18px;
+    }
+
+    .stat-box span {
+      display: block;
+      font-size: 0.7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      color: var(--muted);
+      letter-spacing: 0.5px;
+      margin-bottom: 6px;
+    }
+
+    .stat-box strong {
+      font-size: 1.75rem;
+      font-weight: 800;
+    }
+
+    /* Section Panels */
+    .hq-panel {
+      display: none;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 20px;
+      margin-bottom: 22px;
+    }
+
+    .hq-panel.active {
+      display: block;
     }
 
     .panel-header {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 18px;
       flex-wrap: wrap;
       gap: 12px;
+      margin-bottom: 16px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--border);
     }
 
-    .panel-header h2 {
-      font-size: 1.08rem;
+    .panel-header h3 {
+      font-size: 1.05rem;
       font-weight: 700;
+    }
+
+    .search-input {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: 9px 14px;
+      border-radius: 8px;
+      font-size: 0.84rem;
+      min-width: 240px;
+      outline: none;
+    }
+
+    .search-input:focus {
+      border-color: var(--primary);
     }
 
     .table-wrap {
@@ -273,12 +320,12 @@
       width: 100%;
       border-collapse: collapse;
       text-align: left;
-      font-size: 0.86rem;
+      font-size: 0.85rem;
     }
 
     th, td {
       padding: 13px 14px;
-      border-bottom: 1px solid var(--border-line);
+      border-bottom: 1px solid var(--border);
       vertical-align: middle;
     }
 
@@ -286,432 +333,404 @@
       font-size: 0.72rem;
       text-transform: uppercase;
       letter-spacing: 0.5px;
-      color: var(--text-muted);
-      background: rgba(255, 255, 255, 0.02);
+      color: var(--muted);
+      font-weight: 700;
     }
 
-    .badge {
+    tr:hover td {
+      background: rgba(255, 255, 255, 0.015);
+    }
+
+    .pill {
       display: inline-block;
       padding: 3px 9px;
       border-radius: 20px;
-      font-size: 0.7rem;
-      font-weight: 700;
+      font-size: 0.68rem;
+      font-weight: 800;
       text-transform: uppercase;
       letter-spacing: 0.4px;
     }
 
-    .badge-active, .badge-approved { background: var(--success-bg); color: var(--success); }
-    .badge-pending { background: var(--warning-bg); color: var(--warning); }
-    .badge-banned, .badge-rejected { background: var(--danger-bg); color: var(--danger); }
+    .pill-ok { background: var(--success-bg); color: var(--success); border: 1px solid rgba(16, 185, 129, 0.3); }
+    .pill-warn { background: var(--warning-bg); color: var(--warning); border: 1px solid rgba(245, 158, 11, 0.3); }
+    .pill-err { background: var(--danger-bg); color: var(--danger); border: 1px solid rgba(239, 68, 68, 0.3); }
+    .pill-info { background: rgba(56, 189, 248, 0.14); color: var(--primary); border: 1px solid rgba(56, 189, 248, 0.3); }
 
-    .tab-section { display: none; }
-    .tab-section.active { display: block; }
-
-    .modal-backdrop {
-      position: fixed;
-      inset: 0;
-      background: rgba(0, 0, 0, 0.78);
-      display: none;
-      align-items: center;
-      justify-content: center;
-      z-index: 9999;
-      padding: 16px;
-    }
-
-    .modal-backdrop.open { display: flex; }
-
-    .modal-card {
-      background: var(--bg-sidebar);
-      border: 1px solid var(--border-line);
-      border-radius: 14px;
-      max-width: 720px;
-      width: 100%;
-      padding: 26px;
-      max-height: 90vh;
-      overflow-y: auto;
-    }
-
-    .dossier-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 12px;
-      background: var(--bg-surface);
-      padding: 16px;
-      border-radius: 10px;
-      margin: 16px 0;
-    }
-
-    .dossier-item span {
-      display: block;
-      font-size: 0.7rem;
-      color: var(--text-muted);
-      text-transform: uppercase;
+    .btn-act {
+      padding: 6px 11px;
+      border-radius: 7px;
+      font-size: 0.75rem;
       font-weight: 700;
+      cursor: pointer;
+      border: 1px solid var(--border);
+      background: var(--surface-hover);
+      color: var(--text);
+      margin-right: 4px;
+      margin-bottom: 4px;
+      transition: 0.15s;
     }
 
-    .dossier-item strong {
-      font-size: 0.9rem;
-      color: var(--text-main);
-      word-break: break-all;
-    }
+    .btn-act:hover { border-color: var(--primary); }
+    .btn-act.ok { background: var(--success-bg); color: var(--success); border-color: rgba(16, 185, 129, 0.35); }
+    .btn-act.warn { background: var(--warning-bg); color: var(--warning); border-color: rgba(245, 158, 11, 0.35); }
+    .btn-act.err { background: var(--danger-bg); color: var(--danger); border-color: rgba(239, 68, 68, 0.35); }
+    .btn-act.active-pin { background: rgba(245, 158, 11, 0.25); color: #fcd34d; border-color: #f59e0b; }
 
-    .log-item {
-      padding: 12px 14px;
-      border-bottom: 1px solid var(--border-line);
+    .app-row-cell {
       display: flex;
-      justify-content: space-between;
-      font-size: 0.85rem;
-      gap: 12px;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .app-row-cell img {
+      width: 38px;
+      height: 38px;
+      border-radius: 8px;
+      object-fit: cover;
+      border: 1px solid var(--border);
+    }
+
+    .control-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 16px;
+    }
+
+    .control-card {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 18px;
+    }
+
+    .control-card h4 {
+      font-size: 0.95rem;
+      margin-bottom: 6px;
+      color: var(--primary);
+    }
+
+    .control-card p {
+      font-size: 0.8rem;
+      color: var(--muted);
+      margin-bottom: 14px;
+      line-height: 1.5;
+    }
+
+    .form-input {
+      width: 100%;
+      padding: 10px 12px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      color: var(--text);
+      font-size: 0.86rem;
+      margin-bottom: 10px;
+      outline: none;
+    }
+
+    .toast {
+      position: fixed;
+      bottom: 22px;
+      right: 22px;
+      background: var(--primary-dark);
+      color: #fff;
+      padding: 11px 18px;
+      border-radius: 10px;
+      font-size: 0.84rem;
+      font-weight: 700;
+      display: none;
+      z-index: 9999;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
     }
 
     @media (max-width: 820px) {
-      .hq-layout.active { grid-template-columns: 1fr; }
-      .sidebar { border-right: none; border-bottom: 1px solid var(--border-line); }
+      .hq-layout { grid-template-columns: 1fr; }
+      .sidebar { position: static; height: auto; }
+      .main-area { padding: 16px; }
     }
   </style>
 </head>
 <body>
 
-  <div id="authGate" class="auth-gate">
-    <h1>Zappora Master HQ</h1>
-    <p>Restricted Command Center. Only the primary owner UID is permitted.</p>
-
-    <button type="button" class="btn btn-outline" style="width: 100%; margin-bottom: 16px;" onclick="masterGoogleLogin()">
-      Authenticate with Owner Google Account
+  <!-- Super Admin Authentication Gate -->
+  <div id="hqAuthGate" class="auth-gate">
+    <img src="favicon.png" alt="Zappora HQ" onerror="this.src='logo.png'" />
+    <h1>Zappora HQ Command</h1>
+    <p id="hqGateStatus">Verifying Super Administrator credentials...</p>
+    <button id="hqGoogleLoginBtn" class="btn-primary" onclick="hqSignIn()" style="display:none; width:100%;">
+      Authenticate with Super Admin Google Account
     </button>
-
-    <form onsubmit="masterEmailLogin(event)">
-      <div class="form-group">
-        <label>Administrator Email</label>
-        <input type="email" id="hqEmail" class="form-control" required />
-      </div>
-      <div class="form-group">
-        <label>Master Password</label>
-        <input type="password" id="hqPassword" class="form-control" required />
-      </div>
-      <button type="submit" class="btn btn-primary" style="width: 100%;">Unlock Command Center</button>
-    </form>
-    <p id="gateError" style="color: var(--danger); font-size: 0.82rem; margin-top: 14px; text-align: center;"></p>
+    <div style="margin-top:16px;">
+      <a href="admin.html" style="color:var(--primary); font-size:0.82rem; text-decoration:none; font-weight:600;">← Return to Developer Console</a>
+    </div>
   </div>
 
-  <div id="hqWorkspace" class="hq-layout">
+  <!-- Master HQ Layout -->
+  <div id="hqMainLayout" class="hq-layout">
     <aside class="sidebar">
       <div>
-        <div class="brand-box">
+        <div class="hq-brand">
           <img src="favicon.png" alt="Zappora" onerror="this.src='logo.png'" />
           <div>
-            <h2>ZAPPORA HQ</h2>
-            <span>Master Terminal</span>
+            <strong>ZAPPORA HQ</strong>
+            <span>Master Control v2.0</span>
           </div>
         </div>
 
-        <ul class="nav-list">
-          <li><button class="nav-btn active" onclick="switchHqTab('overview', this)">System Overview</button></li>
-          <li><button class="nav-btn" onclick="switchHqTab('developers', this)">Developer Registry</button></li>
-          <li><button class="nav-btn" onclick="switchHqTab('visitors', this)">Store Visitors</button></li>
-          <li><button class="nav-btn" onclick="switchHqTab('moderation', this)">App Moderation</button></li>
-          <li><button class="nav-btn" onclick="switchHqTab('reports', this)">Issue Reports</button></li>
-          <li><button class="nav-btn" onclick="switchHqTab('activity', this)">Activity & Audit Log</button></li>
-          <li><button class="nav-btn" onclick="switchHqTab('settings', this)">Platform Controls</button></li>
-        </ul>
+        <nav class="nav-list">
+          <button class="nav-item active" id="nav-visitors" onclick="switchHqTab('visitors')">
+            <span>Store Visitors</span>
+            <span class="nav-count" id="navCountVisitors">0</span>
+          </button>
+          <button class="nav-item" id="nav-devs" onclick="switchHqTab('devs')">
+            <span>Developer Registry</span>
+            <span class="nav-count" id="navCountDevs">0</span>
+          </button>
+          <button class="nav-item" id="nav-moderation" onclick="switchHqTab('moderation')">
+            <span>App &amp; Game Moderation</span>
+            <span class="nav-count" id="navCountApps">0</span>
+          </button>
+          <button class="nav-item" id="nav-pending" onclick="switchHqTab('pending')">
+            <span>Pending Queue</span>
+            <span class="nav-count" id="navCountPending">0</span>
+          </button>
+          <button class="nav-item" id="nav-reports" onclick="switchHqTab('reports')">
+            <span>Issue Reports</span>
+            <span class="nav-count" id="navCountReports">0</span>
+          </button>
+          <button class="nav-item" id="nav-audit" onclick="switchHqTab('audit')">
+            <span>Security Audit Logs</span>
+            <span class="nav-count" id="navCountAudit">0</span>
+          </button>
+          <button class="nav-item" id="nav-controls" onclick="switchHqTab('controls')">
+            <span>Platform &amp; Backups</span>
+          </button>
+        </nav>
       </div>
 
-      <div style="border-top: 1px solid var(--border-line); padding-top: 16px;">
-        <div id="ownerEmailDisplay" style="font-size: 0.75rem; color: var(--text-muted); margin-bottom: 10px; word-break: break-all;"></div>
-        <button class="btn btn-danger" style="width: 100%;" onclick="logoutHq()">Terminate Session</button>
+      <div class="sidebar-footer">
+        <span>SUPER ADMIN SESSION</span>
+        <strong id="hqAdminEmail">Loading...</strong>
+        <button class="btn-act err" style="width:100%; margin-top:8px;" onclick="hqSignOut()">Sign Out</button>
       </div>
     </aside>
 
     <main class="main-area">
       <div class="topbar">
-        <div>
-          <h1 id="pageTitle">System Overview</h1>
-          <span style="font-size: 0.82rem; color: var(--text-muted);">Real-time telemetry, visitor directory, and developer oversight</span>
-        </div>
-        <div style="display: flex; gap: 10px;">
-          <button class="btn btn-outline" onclick="refreshAllData()">Refresh Telemetry</button>
-          <button class="btn btn-primary" onclick="exportFullDatabaseBackup()">Export JSON Backup</button>
+        <h2 id="hqPanelTitle">Master System Overview</h2>
+        <div class="topbar-actions">
+          <button class="btn-ghost" onclick="refreshAllHqData()">↻ Refresh Live Data</button>
+          <a href="admin.html" class="btn-ghost">Developer Console</a>
+          <a href="index.html" target="_blank" class="btn-ghost">Live Storefront ↗</a>
         </div>
       </div>
 
-      <div class="metrics-grid">
-        <div class="metric-box">
+      <!-- Top 6 KPI Cards -->
+      <div class="stats-grid">
+        <div class="stat-box">
           <span>Developers</span>
-          <h3 id="kpiDevs">0</h3>
+          <strong id="kpiDevs">0</strong>
         </div>
-        <div class="metric-box">
+        <div class="stat-box">
           <span>Store Visitors</span>
-          <h3 id="kpiVisitors" style="color: var(--primary);">0</h3>
+          <strong id="kpiVisitors" style="color:var(--primary);">0</strong>
         </div>
-        <div class="metric-box">
+        <div class="stat-box">
           <span>Total Apps</span>
-          <h3 id="kpiApps">0</h3>
+          <strong id="kpiApps">0</strong>
         </div>
-        <div class="metric-box">
+        <div class="stat-box">
           <span>Pending Apps</span>
-          <h3 id="kpiPending" style="color: var(--warning);">0</h3>
+          <strong id="kpiPending" style="color:var(--warning);">0</strong>
         </div>
-        <div class="metric-box">
+        <div class="stat-box">
           <span>Open Reports</span>
-          <h3 id="kpiReports" style="color: var(--danger);">0</h3>
+          <strong id="kpiReports" style="color:var(--danger);">0</strong>
         </div>
-        <div class="metric-box">
+        <div class="stat-box">
           <span>Downloads</span>
-          <h3 id="kpiDownloads" style="color: var(--success);">0</h3>
+          <strong id="kpiDownloads" style="color:var(--success);">0</strong>
         </div>
       </div>
 
-      <!-- TAB 1: OVERVIEW -->
-      <section id="tab-overview" class="tab-section active">
-        <div class="panel">
-          <div class="panel-header">
-            <h2>Pending Approval Queue</h2>
-          </div>
-          <div class="table-wrap">
-            <table>
-              <thead>
-                <tr>
-                  <th>Application</th>
-                  <th>Developer</th>
-                  <th>Category</th>
-                  <th>Version</th>
-                  <th>Package Size</th>
-                  <th>Decision</th>
-                </tr>
-              </thead>
-              <tbody id="pendingQueueBody"></tbody>
-            </table>
-          </div>
+      <!-- PANEL 1: VERIFIED STORE VISITORS -->
+      <section class="hq-panel active" id="panel-visitors">
+        <div class="panel-header">
+          <h3>Verified Store Visitors (Name &amp; Email Records)</h3>
+          <input type="text" id="searchVisitors" class="search-input" placeholder="Search visitor name or email..." oninput="renderVisitorsTable()" />
         </div>
-
-        <div class="panel">
-          <div class="panel-header">
-            <h2>Recently Registered Developers</h2>
-          </div>
-          <div class="table-wrap">
-            <table>
-              <thead>
-                <tr>
-                  <th>Studio / Name</th>
-                  <th>Handle</th>
-                  <th>Email Address</th>
-                  <th>Verified</th>
-                  <th>Status</th>
-                  <th>Inspect</th>
-                </tr>
-              </thead>
-              <tbody id="recentDevsBody"></tbody>
-            </table>
-          </div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Visitor Name</th>
+                <th>Email Address</th>
+                <th>Auth Method</th>
+                <th>Last Active</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody id="visitorsTableBody"></tbody>
+          </table>
         </div>
       </section>
 
-      <!-- TAB 2: DEVELOPERS -->
-      <section id="tab-developers" class="tab-section">
-        <div class="panel">
-          <div class="panel-header">
-            <h2>Complete Developer Directory</h2>
-            <input type="text" id="devSearch" class="form-control" style="max-width: 300px;" placeholder="Search name, @handle, email, UID..." oninput="renderDevelopersTable()" />
-          </div>
-          <div class="table-wrap">
-            <table>
-              <thead>
-                <tr>
-                  <th>Developer / Studio</th>
-                  <th>Username</th>
-                  <th>Email</th>
-                  <th>Blue Tick</th>
-                  <th>Apps</th>
-                  <th>Downloads</th>
-                  <th>Status</th>
-                  <th>Actions</th>
-                </tr>
-              </thead>
-              <tbody id="allDevsBody"></tbody>
-            </table>
-          </div>
+      <!-- PANEL 2: DEVELOPER REGISTRY -->
+      <section class="hq-panel" id="panel-devs">
+        <div class="panel-header">
+          <h3>Registered Indie Developers &amp; Verification Control</h3>
+          <input type="text" id="searchDevs" class="search-input" placeholder="Search studio, @username, or email..." oninput="renderDevsTable()" />
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Studio / Handle</th>
+                <th>Email Address</th>
+                <th>Verification</th>
+                <th>Account Status</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="devsTableBody"></tbody>
+          </table>
         </div>
       </section>
 
-      <!-- TAB 3: STORE VISITORS -->
-      <section id="tab-visitors" class="tab-section">
-        <div class="panel">
-          <div class="panel-header">
-            <h2>Verified Store Visitors (Name & Email Records)</h2>
-            <input type="text" id="visitorSearch" class="form-control" style="max-width: 300px;" placeholder="Search visitor name or email..." oninput="renderVisitorsTable()" />
-          </div>
-          <div class="table-wrap">
-            <table>
-              <thead>
-                <tr>
-                  <th>Visitor Name</th>
-                  <th>Email Address</th>
-                  <th>Auth Method</th>
-                  <th>Last Active</th>
-                  <th>Action</th>
-                </tr>
-              </thead>
-              <tbody id="allVisitorsBody"></tbody>
-            </table>
-          </div>
+      <!-- PANEL 3: ALL APPS & FEATURED / EDITOR'S CHOICE MODERATION -->
+      <section class="hq-panel" id="panel-moderation">
+        <div class="panel-header">
+          <h3>Catalog Moderation, Spotlight Pinning &amp; SHA-256 Status</h3>
+          <input type="text" id="searchModApps" class="search-input" placeholder="Search title, package ID, or developer..." oninput="renderModerationTable()" />
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Application</th>
+                <th>Category &amp; Ver</th>
+                <th>Status</th>
+                <th>Views / DL</th>
+                <th>Store Pins &amp; Moderation</th>
+              </tr>
+            </thead>
+            <tbody id="moderationTableBody"></tbody>
+          </table>
         </div>
       </section>
 
-      <!-- TAB 4: APP MODERATION -->
-      <section id="tab-moderation" class="tab-section">
-        <div class="panel">
-          <div class="panel-header">
-            <h2>Global Application Catalog</h2>
-            <input type="text" id="appSearch" class="form-control" style="max-width: 300px;" placeholder="Search title, ID, developer..." oninput="renderAppsTable()" />
-          </div>
-          <div class="table-wrap">
-            <table>
-              <thead>
-                <tr>
-                  <th>Title & ID</th>
-                  <th>Publisher</th>
-                  <th>Version</th>
-                  <th>Downloads</th>
-                  <th>Status</th>
-                  <th>Master Actions</th>
-                </tr>
-              </thead>
-              <tbody id="allAppsBody"></tbody>
-            </table>
-          </div>
+      <!-- PANEL 4: PENDING APPROVAL QUEUE -->
+      <section class="hq-panel" id="panel-pending">
+        <div class="panel-header">
+          <h3>Pending Verification &amp; Approval Queue</h3>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Application</th>
+                <th>Developer</th>
+                <th>APK Link &amp; SHA-256</th>
+                <th>Submitted</th>
+                <th>Decision</th>
+              </tr>
+            </thead>
+            <tbody id="pendingTableBody"></tbody>
+          </table>
         </div>
       </section>
 
-      <!-- TAB 5: ISSUE REPORTS -->
-      <section id="tab-reports" class="tab-section">
-        <div class="panel">
-          <div class="panel-header">
-            <h2>User Submitted App & Link Reports</h2>
-          </div>
-          <div class="table-wrap">
-            <table>
-              <thead>
-                <tr>
-                  <th>Application</th>
-                  <th>Issue Description</th>
-                  <th>Reported By (Name & Email)</th>
-                  <th>Submitted</th>
-                  <th>Action</th>
-                </tr>
-              </thead>
-              <tbody id="allReportsBody"></tbody>
-            </table>
-          </div>
+      <!-- PANEL 5: ISSUE REPORTS -->
+      <section class="hq-panel" id="panel-reports">
+        <div class="panel-header">
+          <h3>User-Submitted App &amp; Security Reports</h3>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Target App ID</th>
+                <th>Reporter Email</th>
+                <th>Reason / Details</th>
+                <th>Reported At</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody id="reportsTableBody"></tbody>
+          </table>
         </div>
       </section>
 
-      <!-- TAB 6: ACTIVITY STREAM -->
-      <section id="tab-activity" class="tab-section">
-        <div class="panel">
-          <div class="panel-header">
-            <h2>Platform Chronological Activity Stream</h2>
-          </div>
-          <div id="activityStreamBox"></div>
+      <!-- PANEL 6: SECURITY & ACTIVITY AUDIT LOGS -->
+      <section class="hq-panel" id="panel-audit">
+        <div class="panel-header">
+          <h3>Immutable Security &amp; Administration Audit Logs</h3>
+          <input type="text" id="searchAudit" class="search-input" placeholder="Filter by action, target ID, or email..." oninput="renderAuditTable()" />
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Action Event</th>
+                <th>Target Resource</th>
+                <th>Details</th>
+                <th>Actor Email</th>
+                <th>Timestamp</th>
+              </tr>
+            </thead>
+            <tbody id="auditTableBody"></tbody>
+          </table>
         </div>
       </section>
 
-      <!-- TAB 7: PLATFORM SETTINGS -->
-      <section id="tab-settings" class="tab-section">
-        <div class="panel">
-          <div class="panel-header">
-            <h2>Remote Store & Console Configuration</h2>
+      <!-- PANEL 7: PLATFORM CONTROLS & JSON BACKUP / RESTORE -->
+      <section class="hq-panel" id="panel-controls">
+        <div class="panel-header">
+          <h3>Global Platform Controls, Maintenance &amp; Database Backup</h3>
+        </div>
+        <div class="control-grid">
+          <div class="control-card">
+            <h4>Global Storefront Announcement</h4>
+            <p>Display a top banner across the main Zappora Storefront (`index.html`). Leave empty to hide.</p>
+            <input type="text" id="cfgAnnouncement" class="form-input" maxlength="180" placeholder="e.g. Zappora Store v2.0 is live with verified SHA-256 APKs!" />
+            <button class="btn-primary" onclick="savePlatformSettings()">Save Announcement</button>
           </div>
-          <form onsubmit="saveGlobalSettings(event)">
-            <div class="form-group">
-              <label>Global Store Announcement Banner (Shown on Storefront)</label>
-              <input type="text" id="cfgBanner" class="form-control" maxlength="200" placeholder="Leave blank to hide banner" />
-            </div>
-            <div class="form-group">
-              <label>Developer Registration Policy</label>
-              <select id="cfgRegOpen" class="form-control">
-                <option value="true">Open — Allow new developers to sign up</option>
-                <option value="false">Closed — Block new developer registrations</option>
-              </select>
-            </div>
-            <div class="form-group">
-              <label>Storefront Maintenance Mode</label>
-              <select id="cfgMaintenance" class="form-control">
-                <option value="false">Normal Operation (Store Live)</option>
-                <option value="true">Maintenance Active (Temporarily lock public downloads)</option>
-              </select>
-            </div>
-            <button type="submit" class="btn btn-primary">Apply Platform Configuration</button>
-          </form>
+
+          <div class="control-card">
+            <h4>Maintenance &amp; Registration Switches</h4>
+            <p>Control public store availability and whether new indie developers can register in `admin.html`.</p>
+            <label style="display:flex;align-items:center;gap:8px;margin-bottom:10px;font-size:0.85rem;cursor:pointer;">
+              <input type="checkbox" id="cfgMaintenance" />
+              <span>Enable Storefront Maintenance Mode</span>
+            </label>
+            <label style="display:flex;align-items:center;gap:8px;margin-bottom:14px;font-size:0.85rem;cursor:pointer;">
+              <input type="checkbox" id="cfgRegOpen" checked />
+              <span>Allow New Developer Registrations</span>
+            </label>
+            <button class="btn-primary" onclick="savePlatformSettings()">Update Switches</button>
+          </div>
+
+          <div class="control-card">
+            <h4>Full JSON Database Backup &amp; Export</h4>
+            <p>Download a complete snapshot of `apps`, `developers`, `visitors`, `reports`, and `platform_config` as a JSON file.</p>
+            <button class="btn-primary" onclick="exportFullDatabaseBackup()" style="width:100%; margin-bottom:12px;">
+              ⬇ Export Complete HQ Backup (.json)
+            </button>
+            <label style="display:block;font-size:0.76rem;color:var(--muted);margin-bottom:6px;">Restore Apps Catalog from Backup JSON:</label>
+            <input type="file" id="restoreBackupFile" accept=".json" onchange="restoreFromBackupJson(event)" style="font-size:0.78rem;color:var(--muted);width:100%;" />
+          </div>
         </div>
       </section>
     </main>
   </div>
 
-  <!-- DEVELOPER DOSSIER MODAL -->
-  <div id="dossierModal" class="modal-backdrop" onclick="closeDossier()">
-    <div class="modal-card" onclick="event.stopPropagation()">
-      <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-line); padding-bottom: 14px;">
-        <h2 id="dStudioName">Developer Dossier</h2>
-        <button class="btn btn-outline" onclick="closeDossier()">Close</button>
-      </div>
-
-      <div class="dossier-grid">
-        <div class="dossier-item">
-          <span>Developer Handle</span>
-          <strong id="dUsername">-</strong>
-        </div>
-        <div class="dossier-item">
-          <span>Registered Email</span>
-          <strong id="dEmail">-</strong>
-        </div>
-        <div class="dossier-item">
-          <span>Firebase Account UID</span>
-          <strong id="dUid">-</strong>
-        </div>
-        <div class="dossier-item">
-          <span>Account Created</span>
-          <strong id="dCreated">-</strong>
-        </div>
-        <div class="dossier-item">
-          <span>Verified Blue Tick</span>
-          <strong id="dVerified">-</strong>
-        </div>
-        <div class="dossier-item">
-          <span>Account Standing</span>
-          <strong id="dStatus">-</strong>
-        </div>
-      </div>
-
-      <div style="display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 20px;">
-        <button class="btn btn-primary" id="dVerifyBtn" onclick="toggleVerifyCurrentDev()">Grant / Revoke Blue Tick</button>
-        <button class="btn btn-warning" id="dBanBtn" onclick="toggleBanCurrentDev()">Suspend / Unban Developer</button>
-        <button class="btn btn-danger" onclick="unpublishAllDevApps()">Reject All Apps by Developer</button>
-        <button class="btn btn-danger" onclick="deleteDeveloperRecord()">Remove Developer Profile</button>
-      </div>
-
-      <h3 style="font-size: 0.95rem; margin-bottom: 10px;">Applications Submitted by This Developer</h3>
-      <div class="table-wrap">
-        <table>
-          <thead>
-            <tr>
-              <th>App Title</th>
-              <th>Category</th>
-              <th>Version</th>
-              <th>Downloads</th>
-              <th>Status</th>
-            </tr>
-          </thead>
-          <tbody id="dAppsList"></tbody>
-        </table>
-      </div>
-    </div>
-  </div>
+  <div class="toast" id="hqToast">Updated!</div>
 
   <script type="module">
+    import { ZAPPORA_CONFIG } from "./config.js";
     import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
     import {
       getAuth,
-      signInWithEmailAndPassword,
       GoogleAuthProvider,
       signInWithPopup,
       signOut,
@@ -722,32 +741,24 @@
       collection,
       doc,
       getDoc,
-      setDoc,
       getDocs,
+      setDoc,
+      addDoc,
       updateDoc,
       deleteDoc
     } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
 
-    const firebaseConfig = {
-      apiKey: "AIzaSyDRsTWsXM7NB2EyL6RYOQ6OFL5mAnzaicc",
-      authDomain: "zappora-store.firebaseapp.com",
-      projectId: "zappora-store",
-      storageBucket: "zappora-store.firebasestorage.app",
-      messagingSenderId: "461582949255",
-      appId: "1:461582949255:web:cb7ee3bbf8d54b24879122",
-      measurementId: "G-ZH4T3SV0NE"
-    };
-
-    const app = initializeApp(firebaseConfig);
+    const app = initializeApp(ZAPPORA_CONFIG.firebase);
     const auth = getAuth(app);
     const db = getFirestore(app);
     const googleProvider = new GoogleAuthProvider();
 
-    let developersList = [];
+    let currentAdmin = null;
     let visitorsList = [];
+    let devsList = [];
     let appsList = [];
     let reportsList = [];
-    let selectedDeveloper = null;
+    let auditList = [];
 
     function escapeHTML(str) {
       return String(str ?? "")
@@ -758,528 +769,471 @@
         .replace(/'/g, "&#39;");
     }
 
-    window.masterGoogleLogin = async () => {
+    function showToast(msg) {
+      const t = document.getElementById("hqToast");
+      t.innerText = msg;
+      t.style.display = "block";
+      setTimeout(() => { t.style.display = "none"; }, 2800);
+    }
+
+    function formatTime(ts) {
+      if (!ts) return "—";
+      const d = new Date(Number(ts));
+      return isNaN(d.getTime()) ? "—" : d.toLocaleString();
+    }
+
+    async function logHqAudit(action, targetId, details = "") {
+      if (!currentAdmin) return;
+      try {
+        await addDoc(collection(db, "audit_logs"), {
+          action: String(action).slice(0, 80),
+          targetId: String(targetId || "").slice(0, 80),
+          details: String(details || "").slice(0, 300),
+          actorUid: currentAdmin.uid,
+          actorEmail: currentAdmin.email || "",
+          timestamp: Date.now()
+        });
+      } catch (e) {}
+    }
+
+    window.hqSignIn = async () => {
       try {
         await signInWithPopup(auth, googleProvider);
-      } catch (err) {
-        document.getElementById("gateError").innerText = err.message;
+      } catch (e) {
+        document.getElementById("hqGateStatus").innerText = "Authentication failed: " + e.message;
       }
     };
 
-    window.masterEmailLogin = async (e) => {
-      e.preventDefault();
-      const email = document.getElementById("hqEmail").value.trim();
-      const pass = document.getElementById("hqPassword").value;
-      try {
-        await signInWithEmailAndPassword(auth, email, pass);
-      } catch (err) {
-        document.getElementById("gateError").innerText = err.message;
-      }
-    };
-
-    window.logoutHq = async () => {
+    window.hqSignOut = async () => {
       await signOut(auth);
+      window.location.href = "admin.html";
     };
 
     onAuthStateChanged(auth, async (user) => {
+      const gate = document.getElementById("hqAuthGate");
+      const layout = document.getElementById("hqMainLayout");
+      const status = document.getElementById("hqGateStatus");
+      const loginBtn = document.getElementById("hqGoogleLoginBtn");
+
       if (!user) {
-        document.getElementById("authGate").style.display = "block";
-        document.getElementById("hqWorkspace").classList.remove("active");
+        gate.style.display = "block";
+        layout.style.display = "none";
+        status.innerText = "Sign in with your authorized Super Administrator account to access Zappora HQ.";
+        loginBtn.style.display = "inline-block";
         return;
       }
 
-      const cfgRef = doc(db, "settings", "admin_config");
-      const cfgSnap = await getDoc(cfgRef);
+      try {
+        const cfgSnap = await getDoc(doc(db, "settings", "admin_config"));
+        if (!cfgSnap.exists() || cfgSnap.data().superAdminUid !== user.uid) {
+          status.innerText = "ACCESS DENIED: Your account (" + (user.email || user.uid) + ") is not authorized as Super Administrator.";
+          loginBtn.style.display = "none";
+          await signOut(auth);
+          return;
+        }
 
-      if (!cfgSnap.exists()) {
-        await setDoc(cfgRef, {
-          superAdminUid: user.uid,
-          superAdminEmail: user.email,
-          lockedAt: Date.now()
-        });
-      } else if (cfgSnap.data().superAdminUid !== user.uid) {
-        await signOut(auth);
-        document.getElementById("gateError").innerText = "Access Denied: Your UID is not authorized for Master HQ.";
-        return;
+        currentAdmin = user;
+        document.getElementById("hqAdminEmail").innerText = user.email || user.uid;
+        gate.style.display = "none";
+        layout.style.display = "grid";
+        await window.refreshAllHqData();
+      } catch (err) {
+        status.innerText = "Verification error: " + err.message;
       }
-
-      document.getElementById("authGate").style.display = "none";
-      document.getElementById("hqWorkspace").classList.add("active");
-      document.getElementById("ownerEmailDisplay").innerText = "Owner: " + user.email;
-
-      await refreshAllData();
     });
 
-    window.switchHqTab = (tabId, btn) => {
-      document.querySelectorAll(".tab-section").forEach(s => s.classList.remove("active"));
-      document.getElementById("tab-" + tabId).classList.add("active");
-      document.querySelectorAll(".nav-btn").forEach(b => b.classList.remove("active"));
-      btn.classList.add("active");
-      document.getElementById("pageTitle").innerText = btn.innerText;
+    window.switchHqTab = (tab) => {
+      document.querySelectorAll(".nav-item").forEach(b => b.classList.remove("active"));
+      document.querySelectorAll(".hq-panel").forEach(p => p.classList.remove("active"));
+
+      const navBtn = document.getElementById("nav-" + tab);
+      const panel = document.getElementById("panel-" + tab);
+      if (navBtn) navBtn.classList.add("active");
+      if (panel) panel.classList.add("active");
     };
 
-    window.refreshAllData = async () => {
-      const devSnap = await getDocs(collection(db, "developers"));
-      developersList = [];
-      devSnap.forEach(d => developersList.push(d.data()));
+    window.refreshAllHqData = async () => {
+      try {
+        const [visSnap, devSnap, appSnap, repSnap, audSnap, cfgSnap] = await Promise.all([
+          getDocs(collection(db, "visitors")),
+          getDocs(collection(db, "developers")),
+          getDocs(collection(db, "apps")),
+          getDocs(collection(db, "reports")),
+          getDocs(collection(db, "audit_logs")),
+          getDoc(doc(db, "settings", "platform_config"))
+        ]);
 
-      const visSnap = await getDocs(collection(db, "visitors"));
-      visitorsList = [];
-      visSnap.forEach(v => visitorsList.push(v.data()));
+        visitorsList = [];
+        visSnap.forEach(d => visitorsList.push({ _docId: d.id, ...d.data() }));
+        visitorsList.sort((a, b) => (b.lastActive || 0) - (a.lastActive || 0));
 
-      const appSnap = await getDocs(collection(db, "apps"));
-      appsList = [];
-      appSnap.forEach(a => appsList.push(a.data()));
+        devsList = [];
+        devSnap.forEach(d => devsList.push({ _docId: d.id, ...d.data() }));
+        devsList.sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
 
-      const repSnap = await getDocs(collection(db, "reports"));
-      reportsList = [];
-      repSnap.forEach(r => reportsList.push(r.data()));
+        appsList = [];
+        appSnap.forEach(d => appsList.push({ _docId: d.id, ...d.data() }));
+        appsList.sort((a, b) => (b.updatedAt || 0) - (a.updatedAt || 0));
 
-      const sysSnap = await getDoc(doc(db, "settings", "platform_config"));
-      if (sysSnap.exists()) {
-        const sys = sysSnap.data();
-        document.getElementById("cfgBanner").value = sys.announcement || "";
-        document.getElementById("cfgRegOpen").value = String(sys.registrationOpen !== false);
-        document.getElementById("cfgMaintenance").value = String(sys.maintenance === true);
+        reportsList = [];
+        repSnap.forEach(d => reportsList.push({ _docId: d.id, ...d.data() }));
+        reportsList.sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
+
+        auditList = [];
+        audSnap.forEach(d => auditList.push({ _docId: d.id, ...d.data() }));
+        auditList.sort((a, b) => (b.timestamp || 0) - (a.timestamp || 0));
+
+        if (cfgSnap.exists()) {
+          const cfg = cfgSnap.data();
+          document.getElementById("cfgAnnouncement").value = cfg.announcement || "";
+          document.getElementById("cfgMaintenance").checked = cfg.maintenance === true;
+          document.getElementById("cfgRegOpen").checked = cfg.registrationOpen !== false;
+        }
+
+        const pendingApps = appsList.filter(a => a.status !== "approved");
+        const totalDl = appsList.reduce((acc, a) => acc + (parseInt(a.downloads, 10) || 0), 0);
+
+        document.getElementById("kpiDevs").innerText = devsList.length;
+        document.getElementById("kpiVisitors").innerText = visitorsList.length;
+        document.getElementById("kpiApps").innerText = appsList.length;
+        document.getElementById("kpiPending").innerText = pendingApps.length;
+        document.getElementById("kpiReports").innerText = reportsList.length;
+        document.getElementById("kpiDownloads").innerText = totalDl;
+
+        document.getElementById("navCountVisitors").innerText = visitorsList.length;
+        document.getElementById("navCountDevs").innerText = devsList.length;
+        document.getElementById("navCountApps").innerText = appsList.length;
+        document.getElementById("navCountPending").innerText = pendingApps.length;
+        document.getElementById("navCountReports").innerText = reportsList.length;
+        document.getElementById("navCountAudit").innerText = auditList.length;
+
+        window.renderVisitorsTable();
+        window.renderDevsTable();
+        window.renderModerationTable();
+        window.renderPendingTable();
+        window.renderReportsTable();
+        window.renderAuditTable();
+      } catch (e) {
+        showToast("Error loading data: " + e.message);
       }
-
-      updateMetricsAndViews();
     };
 
-    function updateMetricsAndViews() {
-      document.getElementById("kpiDevs").innerText = developersList.length;
-      document.getElementById("kpiVisitors").innerText = visitorsList.length;
-      document.getElementById("kpiApps").innerText = appsList.length;
-      document.getElementById("kpiPending").innerText = appsList.filter(a => a.status !== "approved").length;
-      document.getElementById("kpiReports").innerText = reportsList.length;
-      document.getElementById("kpiDownloads").innerText = appsList.reduce((acc, a) => acc + (parseInt(a.downloads, 10) || 0), 0);
-
-      renderOverviewTables();
-      renderDevelopersTable();
-      renderVisitorsTable();
-      renderAppsTable();
-      renderReportsTable();
-      renderActivityStream();
-    }
-
-    function renderOverviewTables() {
-      const pendingBody = document.getElementById("pendingQueueBody");
-      const pendingApps = appsList.filter(a => a.status !== "approved");
-      pendingBody.innerHTML = "";
-
-      if (pendingApps.length === 0) {
-        pendingBody.innerHTML = '<tr><td colspan="6" style="text-align:center; color: var(--text-muted);">All submissions have been reviewed.</td></tr>';
-      } else {
-        pendingApps.forEach(a => {
-          const tr = document.createElement("tr");
-          tr.innerHTML = `
-            <td><strong>${escapeHTML(a.title)}</strong><div style="font-size:0.75rem; color:var(--text-muted);">ID: ${escapeHTML(a.id)}</div></td>
-            <td>${escapeHTML(a.developerName || "Unknown")} (@${escapeHTML(a.developerUsername || "dev")})</td>
-            <td>${escapeHTML(a.category)}</td>
-            <td>v${escapeHTML(a.versionName)}</td>
-            <td>${escapeHTML(a.size)}</td>
-            <td class="decision-cell"></td>
-          `;
-          const cell = tr.querySelector(".decision-cell");
-          const btnApp = document.createElement("button");
-          btnApp.className = "btn btn-success";
-          btnApp.innerText = "Approve";
-          btnApp.onclick = () => window.setAppStatus(a.id, "approved");
-
-          const btnRej = document.createElement("button");
-          btnRej.className = "btn btn-danger";
-          btnRej.style.marginLeft = "6px";
-          btnRej.innerText = "Reject";
-          btnRej.onclick = () => window.setAppStatus(a.id, "rejected");
-
-          cell.append(btnApp, btnRej);
-          pendingBody.appendChild(tr);
-        });
-      }
-
-      const recentBody = document.getElementById("recentDevsBody");
-      recentBody.innerHTML = "";
-      const sortedDevs = [...developersList].sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0)).slice(0, 6);
-
-      if (sortedDevs.length === 0) {
-        recentBody.innerHTML = '<tr><td colspan="6" style="text-align:center; color: var(--text-muted);">No registered developers found.</td></tr>';
-      } else {
-        sortedDevs.forEach(d => {
-          const badge = d.banned
-            ? '<span class="badge badge-banned">Suspended</span>'
-            : '<span class="badge badge-active">Active</span>';
-          const vBadge = d.verified
-            ? '<span class="badge badge-approved">Verified ✓</span>'
-            : '<span style="color:var(--text-muted); font-size:0.75rem;">Standard</span>';
-          const tr = document.createElement("tr");
-          tr.innerHTML = `
-            <td><strong>${escapeHTML(d.studioName || "-")}</strong></td>
-            <td>@${escapeHTML(d.username || "-")}</td>
-            <td>${escapeHTML(d.email || "-")}</td>
-            <td>${vBadge}</td>
-            <td>${badge}</td>
-            <td class="inspect-cell"></td>
-          `;
-          const btn = document.createElement("button");
-          btn.className = "btn btn-outline";
-          btn.innerText = "View Dossier";
-          btn.onclick = () => window.openDossier(d.uid);
-          tr.querySelector(".inspect-cell").appendChild(btn);
-          recentBody.appendChild(tr);
-        });
-      }
-    }
-
-    window.renderDevelopersTable = () => {
-      const q = (document.getElementById("devSearch").value || "").toLowerCase().trim();
-      const tbody = document.getElementById("allDevsBody");
-      tbody.innerHTML = "";
-
-      const filtered = developersList.filter(d =>
-        String(d.studioName || "").toLowerCase().includes(q) ||
-        String(d.username || "").toLowerCase().includes(q) ||
-        String(d.email || "").toLowerCase().includes(q) ||
-        String(d.uid || "").toLowerCase().includes(q)
-      );
-
-      filtered.forEach(d => {
-        const devApps = appsList.filter(a => a.developerUid === d.uid);
-        const totalDl = devApps.reduce((s, a) => s + (parseInt(a.downloads, 10) || 0), 0);
-        const badge = d.banned
-          ? '<span class="badge badge-banned">Suspended</span>'
-          : '<span class="badge badge-active">Active</span>';
-        const vBadge = d.verified
-          ? '<span class="badge badge-approved">Verified ✓</span>'
-          : '<span style="color:var(--text-muted); font-size:0.75rem;">No</span>';
-
-        const tr = document.createElement("tr");
-        tr.innerHTML = `
-          <td><strong>${escapeHTML(d.studioName || "-")}</strong></td>
-          <td>@${escapeHTML(d.username || "-")}</td>
-          <td>${escapeHTML(d.email || "-")}</td>
-          <td>${vBadge}</td>
-          <td>${devApps.length}</td>
-          <td>${totalDl}</td>
-          <td>${badge}</td>
-          <td class="act-cell"></td>
-        `;
-        const btn = document.createElement("button");
-        btn.className = "btn btn-outline";
-        btn.innerText = "Full Dossier";
-        btn.onclick = () => window.openDossier(d.uid);
-        tr.querySelector(".act-cell").appendChild(btn);
-        tbody.appendChild(tr);
-      });
-    };
-
+    // 1. Render Visitors
     window.renderVisitorsTable = () => {
-      const q = (document.getElementById("visitorSearch").value || "").toLowerCase().trim();
-      const tbody = document.getElementById("allVisitorsBody");
-      tbody.innerHTML = "";
-
-      const sorted = [...visitorsList].sort((a, b) => (b.lastActive || 0) - (a.lastActive || 0));
-      const filtered = sorted.filter(v =>
+      const q = (document.getElementById("searchVisitors").value || "").toLowerCase().trim();
+      const tbody = document.getElementById("visitorsTableBody");
+      const filtered = visitorsList.filter(v =>
         String(v.name || "").toLowerCase().includes(q) ||
         String(v.email || "").toLowerCase().includes(q)
       );
 
       if (filtered.length === 0) {
-        tbody.innerHTML = '<tr><td colspan="5" style="text-align:center; color: var(--text-muted);">No visitor records found yet.</td></tr>';
+        tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;color:var(--muted);">No visitor records found.</td></tr>';
         return;
       }
 
-      filtered.forEach(v => {
-        const tr = document.createElement("tr");
-        tr.innerHTML = `
-          <td><strong>${escapeHTML(v.name)}</strong></td>
-          <td>${escapeHTML(v.email)}</td>
-          <td><span class="badge badge-active">${escapeHTML(v.authMethod || "Pass")}</span></td>
-          <td>${escapeHTML(v.lastActive ? new Date(v.lastActive).toLocaleString() : "-")}</td>
-          <td class="v-cell"></td>
-        `;
-        const delBtn = document.createElement("button");
-        delBtn.className = "btn btn-danger";
-        delBtn.innerText = "Remove";
-        delBtn.onclick = async () => {
-          await deleteDoc(doc(db, "visitors", v.id));
-          await refreshAllData();
-        };
-        tr.querySelector(".v-cell").appendChild(delBtn);
-        tbody.appendChild(tr);
-      });
+      tbody.innerHTML = filtered.map(v => `
+        <tr>
+          <td><strong>${escapeHTML(v.name || "Visitor")}</strong></td>
+          <td>${escapeHTML(v.email || "—")}</td>
+          <td><span class="pill pill-ok">${escapeHTML(v.authMethod || "EMAIL")}</span></td>
+          <td style="color:var(--muted);">${escapeHTML(formatTime(v.lastActive))}</td>
+          <td>
+            <button class="btn-act err" onclick="removeVisitorRecord('${escapeHTML(v._docId)}')">Remove</button>
+          </td>
+        </tr>
+      `).join("");
     };
 
-    window.renderReportsTable = () => {
-      const tbody = document.getElementById("allReportsBody");
-      tbody.innerHTML = "";
+    window.removeVisitorRecord = async (docId) => {
+      if (!confirm("Remove this visitor record from Firestore?")) return;
+      await deleteDoc(doc(db, "visitors", docId));
+      await logHqAudit("VISITOR_REMOVE", docId, "Removed visitor record");
+      showToast("Visitor removed.");
+      await window.refreshAllHqData();
+    };
 
-      const sorted = [...reportsList].sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
-      if (sorted.length === 0) {
-        tbody.innerHTML = '<tr><td colspan="5" style="text-align:center; color: var(--text-muted);">Zero open issue reports.</td></tr>';
+    // 2. Render Developers
+    window.renderDevsTable = () => {
+      const q = (document.getElementById("searchDevs").value || "").toLowerCase().trim();
+      const tbody = document.getElementById("devsTableBody");
+      const filtered = devsList.filter(d =>
+        String(d.studioName || "").toLowerCase().includes(q) ||
+        String(d.username || "").toLowerCase().includes(q) ||
+        String(d.email || "").toLowerCase().includes(q)
+      );
+
+      if (filtered.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;color:var(--muted);">No developers found.</td></tr>';
         return;
       }
 
-      sorted.forEach(r => {
-        const tr = document.createElement("tr");
-        tr.innerHTML = `
-          <td><strong>${escapeHTML(r.appTitle)}</strong><div style="font-size:0.74rem; color:var(--text-muted);">ID: ${escapeHTML(r.appId)}</div></td>
-          <td>${escapeHTML(r.reason)}</td>
-          <td><strong>${escapeHTML(r.reporterName)}</strong><div style="font-size:0.75rem; color:var(--primary);">${escapeHTML(r.reporterEmail)}</div></td>
-          <td>${escapeHTML(r.createdAt ? new Date(r.createdAt).toLocaleString() : "-")}</td>
-          <td class="r-cell"></td>
+      tbody.innerHTML = filtered.map(d => {
+        const verPill = d.verified
+          ? '<span class="pill pill-info">✓ Verified</span>'
+          : '<span class="pill pill-warn">Unverified</span>';
+        const banPill = d.banned
+          ? '<span class="pill pill-err">Suspended</span>'
+          : '<span class="pill pill-ok">Active</span>';
+
+        return `
+          <tr>
+            <td>
+              <strong>${escapeHTML(d.studioName || "Studio")}</strong>
+              <div style="font-size:0.75rem;color:var(--primary);">@${escapeHTML(d.username || "dev")}</div>
+            </td>
+            <td>${escapeHTML(d.email || "—")}</td>
+            <td>${verPill}</td>
+            <td>${banPill}</td>
+            <td>
+              <button class="btn-act ok" onclick="toggleDevVerified('${escapeHTML(d._docId)}', ${!d.verified})">
+                ${d.verified ? "Revoke Tick" : "✓ Verify Dev"}
+              </button>
+              <button class="btn-act ${d.banned ? 'ok' : 'err'}" onclick="toggleDevBan('${escapeHTML(d._docId)}', ${!d.banned})">
+                ${d.banned ? "Restore" : "Suspend"}
+              </button>
+            </td>
+          </tr>
         `;
-        const resolveBtn = document.createElement("button");
-        resolveBtn.className = "btn btn-success";
-        resolveBtn.innerText = "Resolve / Dismiss";
-        resolveBtn.onclick = async () => {
-          await deleteDoc(doc(db, "reports", r.id));
-          await refreshAllData();
-        };
-        tr.querySelector(".r-cell").appendChild(resolveBtn);
-        tbody.appendChild(tr);
-      });
+      }).join("");
     };
 
-    window.renderAppsTable = () => {
-      const q = (document.getElementById("appSearch").value || "").toLowerCase().trim();
-      const tbody = document.getElementById("allAppsBody");
-      tbody.innerHTML = "";
+    window.toggleDevVerified = async (uid, nextState) => {
+      await updateDoc(doc(db, "developers", uid), { verified: nextState });
+      await logHqAudit(nextState ? "DEV_VERIFY" : "DEV_UNVERIFY", uid, `Verified=${nextState}`);
+      showToast(nextState ? "Developer Verified ✓" : "Verification revoked");
+      await window.refreshAllHqData();
+    };
 
+    window.toggleDevBan = async (uid, nextBan) => {
+      if (nextBan && !confirm("Suspend this developer account?")) return;
+      await updateDoc(doc(db, "developers", uid), { banned: nextBan });
+      await logHqAudit(nextBan ? "DEV_SUSPEND" : "DEV_RESTORE", uid, `Banned=${nextBan}`);
+      showToast(nextBan ? "Developer suspended." : "Developer restored.");
+      await window.refreshAllHqData();
+    };
+
+    // 3. Render Moderation Table (Featured & Editor's Choice Pins)
+    window.renderModerationTable = () => {
+      const q = (document.getElementById("searchModApps").value || "").toLowerCase().trim();
+      const tbody = document.getElementById("moderationTableBody");
       const filtered = appsList.filter(a =>
         String(a.title || "").toLowerCase().includes(q) ||
         String(a.id || "").toLowerCase().includes(q) ||
         String(a.developerName || "").toLowerCase().includes(q)
       );
 
-      filtered.forEach(a => {
-        let badge = '<span class="badge badge-pending">Pending</span>';
-        if (a.status === "approved") badge = '<span class="badge badge-approved">Approved</span>';
-        if (a.status === "rejected") badge = '<span class="badge badge-rejected">Rejected</span>';
+      if (filtered.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;color:var(--muted);">No applications found.</td></tr>';
+        return;
+      }
 
-        const dlCount = parseInt(a.downloads, 10) || 0;
-        const tr = document.createElement("tr");
-        tr.innerHTML = `
-          <td><strong>${escapeHTML(a.title)}</strong><div style="font-size:0.75rem; color:var(--text-muted);">ID: ${escapeHTML(a.id)} (${escapeHTML(a.category)})</div></td>
-          <td>${escapeHTML(a.developerName || "Zappora")} (@${escapeHTML(a.developerUsername || "admin")})</td>
-          <td>v${escapeHTML(a.versionName)} (${escapeHTML(a.size)})</td>
-          <td class="dl-cell"><strong>${dlCount}</strong> </td>
-          <td>${badge}</td>
-          <td class="m-cell"></td>
-        `;
+      tbody.innerHTML = filtered.map(a => {
+        const stPill = a.status === "approved"
+          ? '<span class="pill pill-ok">Approved</span>'
+          : (a.status === "rejected" ? '<span class="pill pill-err">Rejected</span>' : '<span class="pill pill-warn">Pending</span>');
+        const shaBadge = a.sha256 ? '<span class="pill pill-info" title="SHA-256 Verified">SHA-256 ✓</span>' : '';
 
-        const btnSetDl = document.createElement("button");
-        btnSetDl.className = "btn btn-outline";
-        btnSetDl.style.cssText = "padding: 2px 7px; font-size: 0.7rem; margin-left: 6px;";
-        btnSetDl.innerText = "Set";
-        btnSetDl.onclick = () => window.overrideDownloads(a.id, dlCount);
-        tr.querySelector(".dl-cell").appendChild(btnSetDl);
-
-        const mCell = tr.querySelector(".m-cell");
-        if (a.status !== "approved") {
-          const b1 = document.createElement("button");
-          b1.className = "btn btn-success";
-          b1.style.marginRight = "4px";
-          b1.innerText = "Approve";
-          b1.onclick = () => window.setAppStatus(a.id, "approved");
-          mCell.appendChild(b1);
-        }
-        if (a.status !== "rejected") {
-          const b2 = document.createElement("button");
-          b2.className = "btn btn-warning";
-          b2.style.marginRight = "4px";
-          b2.innerText = "Reject";
-          b2.onclick = () => window.setAppStatus(a.id, "rejected");
-          mCell.appendChild(b2);
-        }
-        const b3 = document.createElement("button");
-        b3.className = "btn btn-danger";
-        b3.innerText = "Delete";
-        b3.onclick = () => window.removeAppPermanently(a.id);
-        mCell.appendChild(b3);
-
-        tbody.appendChild(tr);
-      });
-    };
-
-    function renderActivityStream() {
-      const box = document.getElementById("activityStreamBox");
-      const events = [];
-
-      developersList.forEach(d => {
-        if (d.createdAt) {
-          events.push({
-            time: d.createdAt,
-            label: `[DEV] Registered: ${d.studioName} (@${d.username}) — ${d.email}`
-          });
-        }
-      });
-
-      visitorsList.forEach(v => {
-        if (v.lastActive) {
-          events.push({
-            time: v.lastActive,
-            label: `[VISITOR] Store Pass Activated: ${v.name} (${v.email})`
-          });
-        }
-      });
-
-      appsList.forEach(a => {
-        if (a.updatedAt) {
-          events.push({
-            time: a.updatedAt,
-            label: `[APP] Submitted/Updated: ${a.title} (v${a.versionName}) by ${a.developerName} [${a.status}]`
-          });
-        }
-      });
-
-      reportsList.forEach(r => {
-        if (r.createdAt) {
-          events.push({
-            time: r.createdAt,
-            label: `[REPORT] Issue on ${r.appTitle}: "${r.reason}" by ${r.reporterName} (${r.reporterEmail})`
-          });
-        }
-      });
-
-      events.sort((a, b) => b.time - a.time);
-
-      box.innerHTML = events.length === 0
-        ? '<p style="color: var(--text-muted);">No recorded activity yet.</p>'
-        : events.slice(0, 60).map(ev => `
-          <div class="log-item">
-            <span>${escapeHTML(ev.label)}</span>
-            <span style="color: var(--text-muted); font-size: 0.78rem; white-space: nowrap;">${escapeHTML(new Date(ev.time).toLocaleString())}</span>
-          </div>
-        `).join("");
-    }
-
-    window.openDossier = (uid) => {
-      const dev = developersList.find(d => d.uid === uid);
-      if (!dev) return;
-      selectedDeveloper = dev;
-
-      document.getElementById("dStudioName").innerText = dev.studioName || "Developer Dossier";
-      document.getElementById("dUsername").innerText = "@" + (dev.username || "unknown");
-      document.getElementById("dEmail").innerText = dev.email || "N/A";
-      document.getElementById("dUid").innerText = dev.uid;
-      document.getElementById("dCreated").innerText = dev.createdAt ? new Date(dev.createdAt).toLocaleString() : "Legacy Account";
-      document.getElementById("dVerified").innerText = dev.verified ? "VERIFIED PUBLISHER ✓" : "STANDARD DEVELOPER";
-      document.getElementById("dVerified").style.color = dev.verified ? "var(--primary)" : "var(--text-muted)";
-      document.getElementById("dStatus").innerText = dev.banned ? "SUSPENDED / BANNED" : "ACTIVE GOOD STANDING";
-      document.getElementById("dStatus").style.color = dev.banned ? "var(--danger)" : "var(--success)";
-
-      document.getElementById("dVerifyBtn").innerText = dev.verified ? "Revoke Blue Tick" : "Grant Verified Blue Tick ✓";
-      document.getElementById("dBanBtn").innerText = dev.banned ? "Restore / Unban Developer" : "Suspend / Ban Developer";
-
-      const devApps = appsList.filter(a => a.developerUid === uid);
-      const listBody = document.getElementById("dAppsList");
-      listBody.innerHTML = devApps.length === 0
-        ? '<tr><td colspan="5" style="text-align:center; color: var(--text-muted);">No applications submitted by this account.</td></tr>'
-        : devApps.map(a => `
+        return `
           <tr>
-            <td><strong>${escapeHTML(a.title)}</strong></td>
-            <td>${escapeHTML(a.category)}</td>
-            <td>v${escapeHTML(a.versionName)}</td>
-            <td>${parseInt(a.downloads, 10) || 0}</td>
-            <td>${escapeHTML(String(a.status || "pending").toUpperCase())}</td>
+            <td>
+              <div class="app-row-cell">
+                <img src="${escapeHTML(a.icon || 'favicon.png')}" onerror="this.src='favicon.png'" />
+                <div>
+                  <strong>${escapeHTML(a.title)}</strong> ${shaBadge}
+                  <div style="font-size:0.74rem;color:var(--muted);">by ${escapeHTML(a.developerName || 'Zappora Official')}</div>
+                </div>
+              </div>
+            </td>
+            <td>${escapeHTML(a.category)} • v${escapeHTML(a.versionName)}</td>
+            <td>${stPill}</td>
+            <td>${parseInt(a.views, 10) || 0} views / <strong>${parseInt(a.downloads, 10) || 0} DL</strong></td>
+            <td>
+              <button class="btn-act ${a.featured ? 'active-pin' : ''}" onclick="toggleAppPin('${escapeHTML(a.id)}', 'featured', ${!a.featured})">
+                ${a.featured ? "★ Featured" : "☆ Feature"}
+              </button>
+              <button class="btn-act ${a.editorsChoice ? 'active-pin' : ''}" onclick="toggleAppPin('${escapeHTML(a.id)}', 'editorsChoice', ${!a.editorsChoice})">
+                ${a.editorsChoice ? "🏆 Choice" : "🏆 Make Choice"}
+              </button>
+              ${a.status !== "approved" ? `<button class="btn-act ok" onclick="hqApproveApp('${escapeHTML(a.id)}')">Approve</button>` : ""}
+              <button class="btn-act err" onclick="hqDeleteApp('${escapeHTML(a.id)}')">Delete</button>
+            </td>
           </tr>
-        `).join("");
-
-      document.getElementById("dossierModal").classList.add("open");
+        `;
+      }).join("");
     };
 
-    window.closeDossier = () => {
-      document.getElementById("dossierModal").classList.remove("open");
+    window.toggleAppPin = async (appId, field, nextVal) => {
+      await updateDoc(doc(db, "apps", appId), { [field]: nextVal });
+      await logHqAudit("APP_PIN_UPDATE", appId, `${field}=${nextVal}`);
+      showToast("Storefront pin updated!");
+      await window.refreshAllHqData();
     };
 
-    window.toggleVerifyCurrentDev = async () => {
-      if (!selectedDeveloper) return;
-      const newVerifiedState = !selectedDeveloper.verified;
-      await updateDoc(doc(db, "developers", selectedDeveloper.uid), { verified: newVerifiedState });
-      await refreshAllData();
-      window.openDossier(selectedDeveloper.uid);
+    window.hqApproveApp = async (appId) => {
+      await updateDoc(doc(db, "apps", appId), { status: "approved", rejectReason: "" });
+      await logHqAudit("APP_APPROVE", appId, "Approved via HQ");
+      showToast("Application approved!");
+      await window.refreshAllHqData();
     };
 
-    window.toggleBanCurrentDev = async () => {
-      if (!selectedDeveloper) return;
-      const newBanState = !selectedDeveloper.banned;
-      await updateDoc(doc(db, "developers", selectedDeveloper.uid), { banned: newBanState });
-      await refreshAllData();
-      window.openDossier(selectedDeveloper.uid);
+    window.hqRejectApp = async (appId) => {
+      const reason = prompt("Enter rejection reason for developer:", "Policy or package verification issue");
+      if (reason === null) return;
+      await updateDoc(doc(db, "apps", appId), { status: "rejected", rejectReason: reason });
+      await logHqAudit("APP_REJECT", appId, reason);
+      showToast("Application rejected.");
+      await window.refreshAllHqData();
     };
 
-    window.unpublishAllDevApps = async () => {
-      if (!selectedDeveloper) return;
-      if (!confirm("Reject and unpublish all applications belonging to this developer?")) return;
-      const devApps = appsList.filter(a => a.developerUid === selectedDeveloper.uid);
-      for (const appItem of devApps) {
-        await updateDoc(doc(db, "apps", appItem.id), {
-          status: "rejected",
-          rejectReason: "Account suspended by Master Administrator"
-        });
-      }
-      await refreshAllData();
-      window.openDossier(selectedDeveloper.uid);
-    };
-
-    window.deleteDeveloperRecord = async () => {
-      if (!selectedDeveloper) return;
-      if (!confirm("Permanently delete this developer profile from database?")) return;
-      await deleteDoc(doc(db, "developers", selectedDeveloper.uid));
-      window.closeDossier();
-      await refreshAllData();
-    };
-
-    window.setAppStatus = async (appId, status) => {
-      let reason = "";
-      if (status === "rejected") {
-        reason = prompt("Specify rejection reason for developer:", "Policy violation or broken package link");
-        if (reason === null) return;
-      }
-      await updateDoc(doc(db, "apps", appId), { status, rejectReason: reason, updatedAt: Date.now() });
-      await refreshAllData();
-    };
-
-    window.overrideDownloads = async (appId, currentVal) => {
-      const input = prompt("Set new download counter value:", currentVal);
-      if (input === null) return;
-      const parsed = parseInt(input, 10);
-      if (isNaN(parsed) || parsed < 0) return;
-      await updateDoc(doc(db, "apps", appId), { downloads: parsed });
-      await refreshAllData();
-    };
-
-    window.removeAppPermanently = async (appId) => {
-      if (!confirm("Permanently remove this application from the catalog?")) return;
+    window.hqDeleteApp = async (appId) => {
+      if (!confirm("Permanently delete app '" + appId + "' from Zappora?")) return;
       await deleteDoc(doc(db, "apps", appId));
-      await refreshAllData();
+      await logHqAudit("APP_DELETE", appId, "Deleted from HQ");
+      showToast("Application deleted.");
+      await window.refreshAllHqData();
     };
 
-    window.saveGlobalSettings = async (e) => {
-      e.preventDefault();
-      await setDoc(doc(db, "settings", "platform_config"), {
-        announcement: document.getElementById("cfgBanner").value.trim(),
-        registrationOpen: document.getElementById("cfgRegOpen").value === "true",
-        maintenance: document.getElementById("cfgMaintenance").value === "true",
+    // 4. Render Pending Queue
+    window.renderPendingTable = () => {
+      const tbody = document.getElementById("pendingTableBody");
+      const pending = appsList.filter(a => a.status !== "approved");
+
+      if (pending.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;color:var(--muted);">All caught up! Zero pending applications.</td></tr>';
+        return;
+      }
+
+      tbody.innerHTML = pending.map(a => `
+        <tr>
+          <td><strong>${escapeHTML(a.title)}</strong> (v${escapeHTML(a.versionName)})</td>
+          <td>${escapeHTML(a.developerName || "Indie Dev")}</td>
+          <td>
+            <a href="${escapeHTML(a.downloadUrl || '#')}" target="_blank" rel="noopener noreferrer" style="color:var(--primary);font-size:0.8rem;">Inspect APK Link ↗</a>
+            <div style="font-family:monospace;font-size:0.7rem;color:var(--muted);">${escapeHTML(a.sha256 ? a.sha256.slice(0, 24) + "..." : "No SHA-256")}</div>
+          </td>
+          <td style="color:var(--muted);">${escapeHTML(formatTime(a.updatedAt))}</td>
+          <td>
+            <button class="btn-act ok" onclick="hqApproveApp('${escapeHTML(a.id)}')">Approve</button>
+            <button class="btn-act warn" onclick="hqRejectApp('${escapeHTML(a.id)}')">Reject</button>
+          </td>
+        </tr>
+      `).join("");
+    };
+
+    // 5. Render Issue Reports
+    window.renderReportsTable = () => {
+      const tbody = document.getElementById("reportsTableBody");
+      if (reportsList.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;color:var(--muted);">Zero open issue reports.</td></tr>';
+        return;
+      }
+
+      tbody.innerHTML = reportsList.map(r => `
+        <tr>
+          <td><strong>${escapeHTML(r.appId)}</strong></td>
+          <td>${escapeHTML(r.reporterEmail)}</td>
+          <td>${escapeHTML(r.reason)}</td>
+          <td style="color:var(--muted);">${escapeHTML(formatTime(r.createdAt))}</td>
+          <td>
+            <button class="btn-act ok" onclick="resolveReport('${escapeHTML(r._docId)}')">Resolve &amp; Dismiss</button>
+          </td>
+        </tr>
+      `).join("");
+    };
+
+    window.resolveReport = async (repId) => {
+      await deleteDoc(doc(db, "reports", repId));
+      await logHqAudit("REPORT_RESOLVE", repId, "Resolved report");
+      showToast("Report resolved.");
+      await window.refreshAllHqData();
+    };
+
+    // 6. Render Security Audit Logs
+    window.renderAuditTable = () => {
+      const q = (document.getElementById("searchAudit").value || "").toLowerCase().trim();
+      const tbody = document.getElementById("auditTableBody");
+      const filtered = auditList.filter(l =>
+        String(l.action || "").toLowerCase().includes(q) ||
+        String(l.targetId || "").toLowerCase().includes(q) ||
+        String(l.actorEmail || "").toLowerCase().includes(q)
+      );
+
+      if (filtered.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;color:var(--muted);">No audit logs recorded yet.</td></tr>';
+        return;
+      }
+
+      tbody.innerHTML = filtered.slice(0, 100).map(l => `
+        <tr>
+          <td><span class="pill pill-info">${escapeHTML(l.action)}</span></td>
+          <td><strong>${escapeHTML(l.targetId)}</strong></td>
+          <td style="color:var(--muted);">${escapeHTML(l.details || "—")}</td>
+          <td>${escapeHTML(l.actorEmail || l.actorUid)}</td>
+          <td style="color:var(--muted);">${escapeHTML(formatTime(l.timestamp))}</td>
+        </tr>
+      `).join("");
+    };
+
+    // 7. Save Platform Settings & Backup/Restore
+    window.savePlatformSettings = async () => {
+      const payload = {
+        announcement: document.getElementById("cfgAnnouncement").value.trim(),
+        maintenance: document.getElementById("cfgMaintenance").checked,
+        registrationOpen: document.getElementById("cfgRegOpen").checked,
         updatedAt: Date.now()
-      });
-      alert("Platform configuration saved and applied.");
+      };
+      await setDoc(doc(db, "settings", "platform_config"), payload, { merge: true });
+      await logHqAudit("PLATFORM_CONFIG_UPDATE", "platform_config", `Maint=${payload.maintenance}, Reg=${payload.registrationOpen}`);
+      showToast("Platform settings saved!");
     };
 
     window.exportFullDatabaseBackup = () => {
-      const backupPayload = {
+      const backupObj = {
         exportedAt: new Date().toISOString(),
-        developers: developersList,
-        visitors: visitorsList,
+        platform: "Zappora 2.0",
         apps: appsList,
+        developers: devsList,
+        visitors: visitorsList,
         reports: reportsList
       };
-      const blob = new Blob([JSON.stringify(backupPayload, null, 2)], { type: "application/json" });
+      const blob = new Blob([JSON.stringify(backupObj, null, 2)], { type: "application/json" });
       const url = URL.createObjectURL(blob);
       const a = document.createElement("a");
       a.href = url;
-      a.download = `zappora_master_backup_${Date.now()}.json`;
+      a.download = `zappora_hq_backup_${new Date().toISOString().slice(0, 10)}.json`;
+      document.body.appendChild(a);
       a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+      logHqAudit("DATABASE_BACKUP_EXPORT", "full_json", `Exported ${appsList.length} apps`);
+      showToast("Backup JSON downloaded!");
+    };
+
+    window.restoreFromBackupJson = (event) => {
+      const file = event.target.files[0];
+      if (!file) return;
+      if (!confirm("Restore apps catalog from selected backup JSON file?")) return;
+
+      const reader = new FileReader();
+      reader.onload = async (e) => {
+        try {
+          const data = JSON.parse(e.target.result);
+          const list = Array.isArray(data.apps) ? data.apps : (Array.isArray(data) ? data : []);
+          for (const item of list) {
+            if (!item.id) continue;
+            const cleanItem = { ...item };
+            delete cleanItem._docId;
+            await setDoc(doc(db, "apps", item.id), cleanItem, { merge: true });
+          }
+          await logHqAudit("DATABASE_RESTORE", "apps", `Restored ${list.length} apps from JSON`);
+          showToast(`Restored ${list.length} applications!`);
+          await window.refreshAllHqData();
+        } catch (err) {
+          alert("Invalid backup JSON file: " + err.message);
+        }
+      };
+      reader.readAsText(file);
     };
   </script>
 </body>
