@@ -17,176 +17,204 @@
   <style>
     :root {
       --bg:#f8fafc; --surf:#ffffff; --hover:#f1f5f9; --pri:#0284c7; --pri-d:#0369a1;
-      --pri-l:#e0f2fe; --bdr:#e2e8f0; --txt:#0f172a; --muted:#64748b; --game:#0369a1;
-      --app:#0d9488; --app-bg:#ccfbf1; --web-bg:#0f172a; --web-txt:#ffffff; --star:#f59e0b;
-      --ok:#10b981; --ok-bg:#dcfce7; --err:#dc2626; --wish:#e11d48;
-      --shadow-card:0 2px 6px rgba(0,0,0,0.04);
-      --shadow-hover:0 12px 22px -4px rgba(2,132,199,0.14);
+      --pri-l:#e0f2fe; --bdr:#e2e8f0; --txt:#0f172a; --muted:#64748b;
+      --web-bg:#0f172a; --web-txt:#ffffff;
+      --ok:#059669; --ok-bg:#ecfdf5; --err:#dc2626;
+      --shadow-card:0 1px 3px rgba(15,23,42,0.04);
+      --shadow-hover:0 12px 24px -6px rgba(15,23,42,0.08);
     }
     body.dark-mode {
       --bg:#0b1120; --surf:#1e293b; --hover:#334155; --pri:#38bdf8; --pri-d:#0284c7;
-      --pri-l:rgba(56,189,248,0.15); --bdr:#334155; --txt:#f8fafc; --muted:#94a3b8;
-      --game:#38bdf8; --app:#2dd4bf; --app-bg:rgba(45,212,191,0.15); --web-bg:#334155; --web-txt:#38bdf8;
-      --shadow-card:0 4px 10px rgba(0,0,0,0.3);
-      --shadow-hover:0 12px 24px -4px rgba(56,189,248,0.22);
+      --pri-l:rgba(56,189,248,0.14); --bdr:#334155; --txt:#f8fafc; --muted:#94a3b8;
+      --web-bg:#334155; --web-txt:#f8fafc;
+      --shadow-card:0 4px 10px rgba(0,0,0,0.28);
+      --shadow-hover:0 12px 24px -4px rgba(0,0,0,0.45);
     }
-    * { box-sizing:border-box; margin:0; padding:0; font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif; }
-    body { background:var(--bg); color:var(--txt); padding:18px 14px 100px; transition:0.2s; }
-    .container { max-width:1060px; margin:0 auto; }
-    .announcement-bar { display:none; background:linear-gradient(90deg,#0284c7,#2563eb); color:#fff; padding:10px 16px; border-radius:10px; margin-bottom:16px; font-size:0.86rem; font-weight:700; text-align:center; }
+    * { box-sizing:border-box; margin:0; padding:0; font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Inter,Roboto,sans-serif; }
+    body { background:var(--bg); color:var(--txt); padding:18px 14px 100px; transition:background 0.2s,color 0.2s; }
+    .container { max-width:1080px; margin:0 auto; }
+    .announcement-bar { display:none; background:var(--pri-d); color:#fff; padding:10px 16px; border-radius:10px; margin-bottom:16px; font-size:0.85rem; font-weight:600; text-align:center; }
 
     /* Navbar */
     .navbar { display:flex; justify-content:space-between; align-items:center; padding:8px 0 18px; border-bottom:1px solid var(--bdr); margin-bottom:22px; flex-wrap:wrap; gap:10px; }
     .brand { display:flex; align-items:center; gap:10px; text-decoration:none; }
-    .brand img { width:38px; height:38px; border-radius:9px; object-fit:cover; }
-    .brand span { font-weight:800; font-size:1.35rem; color:var(--pri); letter-spacing:0.4px; }
+    .brand img { width:38px; height:38px; border-radius:9px; object-fit:cover; border:1px solid var(--bdr); }
+    .brand span { font-weight:800; font-size:1.32rem; color:var(--txt); letter-spacing:-0.3px; }
+    .brand span em { font-style:normal; color:var(--pri); }
     .nav-right { display:flex; align-items:center; gap:8px; flex-wrap:wrap; }
-    .btn-auth-nav { background:var(--surf); border:1px solid var(--bdr); color:var(--txt); font-size:0.8rem; font-weight:700; padding:8px 13px; border-radius:9px; cursor:pointer; transition:0.2s; }
-    .btn-auth-nav:hover { border-color:var(--pri); color:var(--pri); }
-    .btn-publish { background:var(--pri-l); color:var(--pri); text-decoration:none; font-size:0.82rem; font-weight:700; padding:8px 13px; border-radius:9px; transition:0.2s; }
+    .btn-auth-nav { background:var(--surf); border:1px solid var(--bdr); color:var(--txt); font-size:0.8rem; font-weight:600; padding:8px 13px; border-radius:8px; cursor:pointer; transition:0.15s; }
+    .btn-auth-nav:hover { background:var(--hover); border-color:#cbd5e1; }
+    .btn-publish { background:var(--pri-l); color:var(--pri-d); text-decoration:none; font-size:0.8rem; font-weight:700; padding:8px 13px; border-radius:8px; transition:0.15s; }
+    body.dark-mode .btn-publish { color:var(--pri); }
     .btn-publish:hover { background:var(--pri); color:#fff; }
-    .theme-btn { background:var(--surf); border:1px solid var(--bdr); color:var(--txt); padding:8px 11px; border-radius:9px; cursor:pointer; font-size:0.78rem; font-weight:700; }
+    .theme-btn { background:var(--surf); border:1px solid var(--bdr); color:var(--txt); padding:8px 12px; border-radius:8px; cursor:pointer; font-size:0.78rem; font-weight:600; }
 
-    .verified-tick { display:inline-flex; align-items:center; justify-content:center; width:15px; height:15px; border-radius:50%; background:#0284c7; color:#fff; font-size:0.6rem; font-weight:900; margin-left:4px; vertical-align:middle; }
+    .verified-tick { display:inline-flex; align-items:center; justify-content:center; width:14px; height:14px; border-radius:50%; background:var(--pri); color:#fff; font-size:0.56rem; font-weight:900; margin-left:4px; vertical-align:middle; }
 
     /* Spotlight Banner */
-    .spotlight-banner { display:none; background:linear-gradient(135deg,#0f172a 0%,#0369a1 100%); border-radius:16px; padding:22px; color:#fff; margin-bottom:22px; box-shadow:0 12px 24px -6px rgba(2,132,199,0.3); }
+    .spotlight-banner { display:none; background:linear-gradient(135deg,#0f172a 0%,#1e293b 100%); border:1px solid #334155; border-radius:16px; padding:22px; color:#fff; margin-bottom:22px; box-shadow:var(--shadow-card); }
     .spotlight-inner { display:flex; align-items:center; justify-content:space-between; gap:18px; flex-wrap:wrap; }
     .spotlight-left { display:flex; align-items:center; gap:16px; flex:1; min-width:250px; cursor:pointer; }
-    .spotlight-icon { width:76px; height:76px; border-radius:16px; object-fit:cover; border:2px solid rgba(255,255,255,0.25); flex-shrink:0; }
-    .spotlight-tag { display:inline-block; background:rgba(56,189,248,0.25); color:#7dd3fc; font-size:0.68rem; font-weight:800; padding:3px 9px; border-radius:20px; text-transform:uppercase; margin-bottom:5px; }
-    .spotlight-left h2 { font-size:1.35rem; font-weight:800; margin-bottom:4px; }
-    .spotlight-left p { font-size:0.85rem; color:#cbd5e1; max-width:500px; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; }
+    .spotlight-icon { width:74px; height:74px; border-radius:15px; object-fit:cover; border:1px solid rgba(255,255,255,0.18); flex-shrink:0; }
+    .spotlight-tag { display:inline-block; background:rgba(56,189,248,0.18); color:#7dd3fc; font-size:0.66rem; font-weight:700; padding:3px 9px; border-radius:6px; text-transform:uppercase; letter-spacing:0.4px; margin-bottom:5px; }
+    .spotlight-left h2 { font-size:1.3rem; font-weight:800; margin-bottom:4px; letter-spacing:-0.2px; }
+    .spotlight-left p { font-size:0.84rem; color:#cbd5e1; max-width:520px; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; }
     .spotlight-actions { display:flex; gap:10px; flex-wrap:wrap; }
-    .btn-spot-dl { background:#38bdf8; color:#0f172a; font-weight:800; font-size:0.86rem; padding:11px 18px; border-radius:9px; border:none; cursor:pointer; text-decoration:none; }
-    .btn-spot-web { background:rgba(255,255,255,0.14); color:#fff; font-weight:700; font-size:0.86rem; padding:11px 16px; border-radius:9px; text-decoration:none; border:1px solid rgba(255,255,255,0.25); }
+    .btn-spot-dl { background:var(--pri); color:#fff; font-weight:700; font-size:0.84rem; padding:10px 18px; border-radius:8px; border:none; cursor:pointer; text-decoration:none; }
+    .btn-spot-web { background:rgba(255,255,255,0.1); color:#fff; font-weight:600; font-size:0.84rem; padding:10px 16px; border-radius:8px; text-decoration:none; border:1px solid rgba(255,255,255,0.2); }
 
     /* Search & Filters */
     .controls { display:flex; gap:10px; margin-bottom:14px; flex-wrap:wrap; }
     .search-box { flex:1; min-width:220px; }
-    .search-box input, .filter-select { width:100%; padding:11px 14px; border-radius:10px; border:1px solid var(--bdr); background:var(--surf); color:var(--txt); font-size:0.9rem; outline:none; }
+    .search-box input, .filter-select { width:100%; padding:10px 14px; border-radius:9px; border:1px solid var(--bdr); background:var(--surf); color:var(--txt); font-size:0.88rem; outline:none; transition:border-color 0.15s; }
+    .search-box input:focus, .filter-select:focus { border-color:var(--pri); }
     .filter-select { width:auto; font-weight:600; cursor:pointer; }
 
-    /* Phase 2 Navigation Tabs & Category Pills */
-    .section-tabs { display:flex; gap:8px; margin-bottom:14px; overflow-x:auto; padding-bottom:4px; }
-    .sec-tab { padding:8px 15px; border-radius:10px; font-size:0.82rem; font-weight:700; cursor:pointer; border:1px solid var(--bdr); background:var(--surf); color:var(--muted); white-space:nowrap; transition:0.2s; }
+    /* Clean Dashboard Navigation Tabs (No Emojis) */
+    .section-tabs { display:flex; gap:8px; margin-bottom:12px; overflow-x:auto; padding-bottom:4px; scrollbar-width:thin; }
+    .sec-tab { padding:8px 14px; border-radius:8px; font-size:0.8rem; font-weight:600; cursor:pointer; border:1px solid var(--bdr); background:var(--surf); color:var(--muted); white-space:nowrap; transition:all 0.15s; }
+    .sec-tab:hover { color:var(--txt); background:var(--hover); }
     .sec-tab.active { background:var(--pri); color:#fff; border-color:var(--pri); }
 
     .category-pills { display:flex; gap:8px; margin-bottom:18px; overflow-x:auto; }
-    .pill { padding:6px 15px; border-radius:20px; font-size:0.8rem; font-weight:700; cursor:pointer; border:1px solid var(--bdr); background:var(--surf); color:var(--muted); white-space:nowrap; }
-    .pill.active { background:var(--pri-l); color:var(--pri); border-color:var(--pri); }
+    .pill { padding:6px 14px; border-radius:8px; font-size:0.78rem; font-weight:600; cursor:pointer; border:1px solid var(--bdr); background:var(--surf); color:var(--muted); white-space:nowrap; transition:0.15s; }
+    .pill.active { background:var(--pri-l); color:var(--pri-d); border-color:var(--pri); font-weight:700; }
+    body.dark-mode .pill.active { color:var(--pri); }
 
-    .dev-filter-bar { display:none; align-items:center; justify-content:space-between; background:var(--pri-l); border:1px solid var(--pri); color:var(--txt); padding:10px 16px; border-radius:10px; margin-bottom:18px; font-size:0.86rem; font-weight:700; }
+    .dev-filter-bar { display:none; align-items:center; justify-content:space-between; background:var(--pri-l); border:1px solid var(--pri); color:var(--txt); padding:10px 16px; border-radius:9px; margin-bottom:18px; font-size:0.84rem; font-weight:600; }
 
-    /* Clean App Cards + Wishlist Heart */
-    .grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(285px,1fr)); gap:18px; }
-    .card { position:relative; background:var(--surf); border:1px solid var(--bdr); border-radius:15px; padding:18px; display:flex; flex-direction:column; justify-content:space-between; box-shadow:var(--shadow-card); transition:transform 0.2s,box-shadow 0.2s,border-color 0.2s; cursor:pointer; }
-    .card:hover { transform:translateY(-3px); box-shadow:var(--shadow-hover); border-color:var(--pri); }
-    .btn-wish-card { position:absolute; top:14px; right:14px; background:var(--hover); border:1px solid var(--bdr); width:32px; height:32px; border-radius:50%; display:flex; align-items:center; justify-content:center; cursor:pointer; font-size:0.9rem; color:var(--muted); transition:0.2s; }
-    .btn-wish-card.active { color:var(--wish); background:#ffe4e6; border-color:#fecdd3; }
-    .card-header { display:flex; gap:13px; align-items:center; margin-bottom:12px; padding-right:32px; }
-    .app-icon { width:60px; height:60px; border-radius:14px; object-fit:cover; background:var(--hover); border:1px solid var(--bdr); flex-shrink:0; }
-    .app-title-block h2 { font-size:1.06rem; font-weight:700; margin-bottom:2px; word-break:break-word; }
-    .dev-label { font-size:0.75rem; color:var(--pri); margin-bottom:6px; font-weight:600; display:inline-block; }
-    .dev-label:hover { text-decoration:underline; }
-    .badge-row { display:flex; align-items:center; gap:6px; flex-wrap:wrap; }
-    .badge { font-size:0.65rem; font-weight:700; padding:3px 8px; border-radius:5px; text-transform:uppercase; }
-    .badge-game { background:var(--pri-l); color:var(--game); }
-    .badge-app { background:var(--app-bg); color:var(--app); }
-    .badge-choice { background:#fef3c7; color:#b45309; }
-    .rating-pill { font-size:0.7rem; font-weight:700; color:#b45309; background:#fef3c7; padding:3px 8px; border-radius:5px; }
-    .app-desc { color:var(--muted); font-size:0.88rem; line-height:1.5; margin-bottom:16px; display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical; overflow:hidden; flex-grow:1; word-break:break-word; }
+    /* Play Store + Dashboard Styled Cards (No Rainbow Pills or Emojis) */
+    .grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(285px,1fr)); gap:16px; }
+    .card { position:relative; background:var(--surf); border:1px solid var(--bdr); border-radius:14px; padding:18px; display:flex; flex-direction:column; justify-content:space-between; box-shadow:var(--shadow-card); transition:transform 0.18s,box-shadow 0.18s,border-color 0.18s; cursor:pointer; }
+    .card:hover { transform:translateY(-2px); box-shadow:var(--shadow-hover); border-color:#cbd5e1; }
+    body.dark-mode .card:hover { border-color:#475569; }
+
+    .btn-wish-card { position:absolute; top:14px; right:14px; background:transparent; border:1px solid var(--bdr); width:30px; height:30px; border-radius:8px; display:flex; align-items:center; justify-content:center; cursor:pointer; color:var(--muted); transition:0.15s; }
+    .btn-wish-card:hover { background:var(--hover); color:var(--txt); }
+    .btn-wish-card.active { color:var(--pri); background:var(--pri-l); border-color:var(--pri); }
+
+    .card-header { display:flex; gap:13px; align-items:flex-start; margin-bottom:12px; padding-right:34px; }
+    .app-icon { width:58px; height:58px; border-radius:13px; object-fit:cover; background:var(--hover); border:1px solid var(--bdr); flex-shrink:0; }
+    .app-title-block h2 { font-size:1.02rem; font-weight:700; color:var(--txt); margin-bottom:2px; line-height:1.25; word-break:break-word; }
+    .dev-label { font-size:0.76rem; color:var(--muted); margin-bottom:5px; font-weight:500; display:inline-block; }
+    .dev-label:hover { color:var(--pri); text-decoration:underline; }
+
+    /* Google Play Store Style Clean Metadata Line: "4.6 ★ • Game • 8.5 MB" */
+    .play-meta-row { display:flex; align-items:center; gap:6px; flex-wrap:wrap; font-size:0.76rem; color:var(--muted); font-weight:600; }
+    .play-rating { display:inline-flex; align-items:center; gap:3px; color:var(--txt); font-weight:700; }
+    .play-star-svg { width:12px; height:12px; fill:currentColor; color:var(--txt); }
+    .meta-dot { color:#cbd5e1; }
+    .meta-tag-subtle { background:var(--hover); color:var(--muted); padding:1px 7px; border-radius:4px; font-size:0.68rem; font-weight:600; border:1px solid var(--bdr); }
+
+    .app-desc { color:var(--muted); font-size:0.85rem; line-height:1.5; margin-bottom:16px; display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical; overflow:hidden; flex-grow:1; word-break:break-word; }
     .card-footer { border-top:1px solid var(--bdr); padding-top:12px; }
     .card-actions { display:flex; gap:8px; align-items:center; }
-    .btn-download { flex:1; display:inline-flex; align-items:center; justify-content:center; text-align:center; background:#0284c7; color:#fff; text-decoration:none; font-weight:700; font-size:0.86rem; padding:11px 12px; border-radius:9px; border:none; cursor:pointer; white-space:nowrap; transition:background 0.15s; }
-    .btn-download:hover { background:#0369a1; }
-    .btn-web { flex:0.9; display:inline-flex; align-items:center; justify-content:center; text-align:center; background:var(--web-bg); color:var(--web-txt); text-decoration:none; font-weight:700; font-size:0.85rem; padding:11px 12px; border-radius:9px; border:1px solid var(--bdr); white-space:nowrap; }
+    .btn-download { flex:1; display:inline-flex; align-items:center; justify-content:center; text-align:center; background:var(--pri); color:#fff; text-decoration:none; font-weight:600; font-size:0.84rem; padding:10px 12px; border-radius:8px; border:none; cursor:pointer; white-space:nowrap; transition:background 0.15s; }
+    .btn-download:hover { background:var(--pri-d); }
+    .btn-web { flex:0.85; display:inline-flex; align-items:center; justify-content:center; text-align:center; background:var(--hover); color:var(--txt); text-decoration:none; font-weight:600; font-size:0.84rem; padding:10px 12px; border-radius:8px; border:1px solid var(--bdr); white-space:nowrap; transition:0.15s; }
+    .btn-web:hover { border-color:var(--pri); color:var(--pri); }
 
     .load-more-wrap { text-align:center; margin-top:24px; display:none; }
-    .btn-load-more { padding:11px 24px; border-radius:9px; border:1px solid var(--pri); background:var(--surf); color:var(--pri); font-weight:700; cursor:pointer; }
+    .btn-load-more { padding:10px 22px; border-radius:8px; border:1px solid var(--bdr); background:var(--surf); color:var(--txt); font-weight:600; cursor:pointer; }
 
     /* Floating App Bar */
-    .floating-app-bar { position:fixed; bottom:14px; left:50%; transform:translateX(-50%); width:calc(100% - 28px); max-width:540px; background:#0f172a; color:#fff; border:1px solid #334155; border-radius:14px; padding:11px 15px; display:none; align-items:center; justify-content:space-between; gap:10px; z-index:9000; }
+    .floating-app-bar { position:fixed; bottom:14px; left:50%; transform:translateX(-50%); width:calc(100% - 28px); max-width:540px; background:#0f172a; color:#fff; border:1px solid #334155; border-radius:12px; padding:11px 15px; display:none; align-items:center; justify-content:space-between; gap:10px; z-index:9000; }
     .floating-left { display:flex; align-items:center; gap:10px; }
     .floating-left img { width:36px; height:36px; border-radius:8px; }
     .floating-left div strong { display:block; font-size:0.84rem; }
     .floating-left div span { font-size:0.72rem; color:#94a3b8; }
-    .btn-float-install { background:#38bdf8; color:#0f172a; border:none; font-size:0.78rem; font-weight:800; padding:8px 13px; border-radius:8px; cursor:pointer; }
-    .btn-float-close { background:transparent; border:none; color:#94a3b8; font-size:0.95rem; cursor:pointer; padding:4px; }
+    .btn-float-install { background:var(--pri); color:#fff; border:none; font-size:0.78rem; font-weight:700; padding:8px 13px; border-radius:7px; cursor:pointer; }
+    .btn-float-close { background:transparent; border:none; color:#94a3b8; font-size:0.9rem; cursor:pointer; padding:4px; }
 
-    .toast-msg { position:fixed; bottom:80px; left:50%; transform:translateX(-50%); background:#0f172a; color:#fff; padding:10px 20px; border-radius:30px; font-size:0.84rem; font-weight:700; z-index:30000; display:none; box-shadow:0 10px 25px rgba(0,0,0,0.25); }
+    .toast-msg { position:fixed; bottom:80px; left:50%; transform:translateX(-50%); background:#0f172a; color:#fff; padding:10px 18px; border-radius:8px; font-size:0.82rem; font-weight:600; z-index:30000; display:none; box-shadow:0 10px 25px rgba(0,0,0,0.25); }
 
     /* Modals */
-    .modal-overlay { position:fixed; inset:0; background:rgba(15,23,42,0.75); backdrop-filter:blur(4px); display:none; align-items:center; justify-content:center; z-index:10000; padding:14px; }
+    .modal-overlay { position:fixed; inset:0; background:rgba(15,23,42,0.65); backdrop-filter:blur(3px); display:none; align-items:center; justify-content:center; z-index:10000; padding:14px; }
     .modal-overlay.open { display:flex; }
-    .modal-box { background:var(--surf); border:1px solid var(--bdr); border-radius:18px; max-width:650px; width:100%; padding:24px; max-height:92vh; overflow-y:auto; position:relative; }
-    .modal-close { position:absolute; top:16px; right:16px; background:var(--hover); border:none; color:var(--txt); width:34px; height:34px; border-radius:50%; cursor:pointer; font-weight:700; font-size:0.95rem; }
+    .modal-box { background:var(--surf); border:1px solid var(--bdr); border-radius:16px; max-width:660px; width:100%; padding:24px; max-height:92vh; overflow-y:auto; position:relative; box-shadow:0 20px 45px -15px rgba(15,23,42,0.18); }
+    .modal-close { position:absolute; top:16px; right:16px; background:var(--hover); border:1px solid var(--bdr); color:var(--txt); width:32px; height:32px; border-radius:8px; cursor:pointer; font-weight:700; font-size:0.85rem; }
     .modal-header { display:flex; gap:15px; align-items:center; margin-bottom:16px; padding-right:36px; }
-    .modal-icon { width:72px; height:72px; border-radius:15px; object-fit:cover; border:1px solid var(--bdr); flex-shrink:0; }
+    .modal-icon { width:70px; height:70px; border-radius:14px; object-fit:cover; border:1px solid var(--bdr); flex-shrink:0; }
 
-    .modal-stats { display:grid; grid-template-columns:repeat(4,1fr); gap:8px; background:var(--bg); padding:12px; border-radius:12px; border:1px solid var(--bdr); margin-bottom:18px; text-align:center; }
-    .modal-stats div span { display:block; font-size:0.68rem; color:var(--muted); text-transform:uppercase; font-weight:600; margin-bottom:2px; }
-    .modal-stats div strong { font-size:0.92rem; color:var(--txt); }
+    .modal-stats { display:grid; grid-template-columns:repeat(4,1fr); gap:8px; background:var(--bg); padding:12px; border-radius:10px; border:1px solid var(--bdr); margin-bottom:16px; text-align:center; }
+    .modal-stats div span { display:block; font-size:0.68rem; color:var(--muted); text-transform:uppercase; font-weight:600; margin-bottom:2px; letter-spacing:0.3px; }
+    .modal-stats div strong { font-size:0.9rem; color:var(--txt); }
 
-    .btn-share { padding:11px 14px; border-radius:9px; border:1px solid var(--bdr); background:var(--hover); color:var(--txt); font-weight:700; font-size:0.84rem; cursor:pointer; }
+    /* Clean Single-Row Modal Actions */
+    .modal-action-row { display:flex; gap:8px; margin-bottom:20px; flex-wrap:wrap; align-items:center; }
+    .btn-secondary-act { padding:10px 13px; border-radius:8px; border:1px solid var(--bdr); background:var(--surf); color:var(--txt); font-weight:600; font-size:0.8rem; cursor:pointer; display:inline-flex; align-items:center; gap:5px; transition:0.15s; }
+    .btn-secondary-act:hover { background:var(--hover); border-color:#cbd5e1; }
+    .btn-secondary-act.active { border-color:var(--pri); color:var(--pri-d); background:var(--pri-l); }
+    body.dark-mode .btn-secondary-act.active { color:var(--pri); }
 
     /* Screenshots Slider */
     .screenshots-wrapper { margin-bottom:20px; }
-    .screenshots-wrapper h4, .modal-section h4 { font-size:0.86rem; color:var(--pri); margin-bottom:8px; text-transform:uppercase; letter-spacing:0.3px; }
+    .screenshots-wrapper h4, .modal-section h4 { font-size:0.8rem; color:var(--muted); font-weight:700; margin-bottom:8px; text-transform:uppercase; letter-spacing:0.4px; }
     .screenshots-slider { display:flex; gap:12px; overflow-x:auto; padding-bottom:8px; }
-    .screenshot-item { height:210px; width:auto; border-radius:12px; object-fit:cover; border:1px solid var(--bdr); cursor:zoom-in; flex-shrink:0; }
+    .screenshot-item { height:205px; width:auto; border-radius:10px; object-fit:cover; border:1px solid var(--bdr); cursor:zoom-in; flex-shrink:0; }
 
     .modal-section { margin-bottom:18px; }
-    .modal-section p { font-size:0.9rem; color:var(--muted); line-height:1.6; white-space:pre-line; word-break:break-word; }
+    .modal-section p { font-size:0.88rem; color:var(--muted); line-height:1.6; white-space:pre-line; word-break:break-word; }
 
     /* Play Store Style "About this Game/App" Metadata Grid */
-    .about-meta-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:14px 22px; margin-top:14px; padding-top:14px; border-top:1px solid var(--bdr); }
-    .about-meta-item span { display:block; font-size:0.78rem; font-weight:700; color:var(--txt); margin-bottom:2px; }
-    .about-meta-item strong { display:block; font-size:0.83rem; font-weight:500; color:var(--muted); word-break:break-all; }
+    .about-meta-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:12px 22px; margin-top:14px; padding-top:14px; border-top:1px solid var(--bdr); }
+    .about-meta-item span { display:block; font-size:0.75rem; font-weight:600; color:var(--txt); margin-bottom:2px; }
+    .about-meta-item strong { display:block; font-size:0.82rem; font-weight:500; color:var(--muted); word-break:break-all; }
 
-    /* SHA-256 & Privacy Box */
-    .security-box { background:var(--bg); border:1px solid var(--bdr); border-radius:10px; padding:12px 14px; margin-top:14px; font-size:0.8rem; }
-    .sha-code { font-family:monospace; font-size:0.74rem; color:var(--pri); word-break:break-all; background:var(--surf); padding:6px 8px; border-radius:6px; border:1px solid var(--bdr); margin-top:4px; display:block; }
+    /* SHA-256 Box */
+    .security-box { background:var(--bg); border:1px solid var(--bdr); border-radius:10px; padding:12px 14px; margin-top:14px; font-size:0.78rem; }
+    .sha-code { font-family:monospace; font-size:0.73rem; color:var(--muted); word-break:break-all; background:var(--surf); padding:6px 8px; border-radius:6px; border:1px solid var(--bdr); margin-top:6px; display:block; }
 
     /* Similar Apps Horizontal Strip */
-    .similar-strip { display:grid; grid-template-columns:repeat(auto-fill,minmax(160px,1fr)); gap:10px; margin-top:8px; }
-    .sim-card { background:var(--bg); border:1px solid var(--bdr); border-radius:10px; padding:10px; display:flex; align-items:center; gap:9px; cursor:pointer; transition:0.15s; }
-    .sim-card:hover { border-color:var(--pri); }
-    .sim-card img { width:38px; height:38px; border-radius:8px; object-fit:cover; flex-shrink:0; }
-    .sim-card div strong { display:block; font-size:0.78rem; color:var(--txt); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width:95px; }
-    .sim-card div span { font-size:0.68rem; color:var(--muted); }
+    .similar-strip { display:grid; grid-template-columns:repeat(auto-fill,minmax(170px,1fr)); gap:10px; margin-top:8px; }
+    .sim-card { background:var(--bg); border:1px solid var(--bdr); border-radius:10px; padding:10px; display:flex; align-items:center; gap:10px; cursor:pointer; transition:0.15s; }
+    .sim-card:hover { border-color:var(--pri); background:var(--hover); }
+    .sim-card img { width:40px; height:40px; border-radius:9px; object-fit:cover; flex-shrink:0; border:1px solid var(--bdr); }
+    .sim-card div strong { display:block; font-size:0.8rem; color:var(--txt); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width:105px; }
+    .sim-card div span { font-size:0.72rem; color:var(--muted); font-weight:600; }
 
-    /* Reviews Section */
-    .reviews-box { border-top:1px solid var(--bdr); padding-top:16px; margin-top:16px; }
-    .star-picker { display:flex; gap:5px; margin-bottom:8px; }
-    .star-btn { font-size:1.4rem; cursor:pointer; color:#cbd5e1; background:none; border:none; }
-    .star-btn.selected { color:var(--star); }
+    /* Google Play Store Style Ratings & Histogram Breakdown */
+    .reviews-box { border-top:1px solid var(--bdr); padding-top:18px; margin-top:18px; }
+    .play-rating-summary { display:grid; grid-template-columns:115px 1fr; gap:20px; align-items:center; margin:12px 0 18px; background:var(--bg); border:1px solid var(--bdr); border-radius:12px; padding:16px; }
+    .play-score-big { font-size:2.75rem; font-weight:700; color:var(--txt); line-height:1; letter-spacing:-1px; }
+    .play-score-stars { color:var(--pri); font-size:0.88rem; margin:6px 0 4px; letter-spacing:1px; }
+    .play-score-count { font-size:0.74rem; color:var(--muted); font-weight:500; }
+    .play-bars { display:flex; flex-direction:column; gap:6px; }
+    .play-bar-row { display:flex; align-items:center; gap:10px; font-size:0.74rem; font-weight:600; color:var(--muted); }
+    .play-bar-row span { width:10px; text-align:right; }
+    .play-bar-track { flex:1; height:8px; background:var(--bdr); border-radius:99px; overflow:hidden; }
+    .play-bar-fill { height:100%; background:var(--pri); border-radius:99px; width:0%; transition:width 0.3s ease; }
+
+    .star-picker { display:flex; gap:4px; margin-bottom:8px; }
+    .star-btn { font-size:1.35rem; cursor:pointer; color:#cbd5e1; background:none; border:none; }
+    .star-btn.selected { color:var(--pri); }
     .review-form-row { display:flex; gap:8px; margin-bottom:12px; flex-wrap:wrap; }
-    .review-input { padding:10px 12px; border-radius:8px; border:1px solid var(--bdr); background:var(--bg); color:var(--txt); font-size:0.85rem; outline:none; }
-    .btn-post-review { padding:10px 16px; background:var(--pri); color:#fff; border:none; border-radius:8px; font-size:0.84rem; font-weight:700; cursor:pointer; }
-    .review-item { background:var(--bg); border:1px solid var(--bdr); border-radius:9px; padding:10px 12px; margin-bottom:8px; font-size:0.83rem; }
+    .review-input { padding:9px 12px; border-radius:8px; border:1px solid var(--bdr); background:var(--bg); color:var(--txt); font-size:0.84rem; outline:none; }
+    .review-input:focus { border-color:var(--pri); }
+    .btn-post-review { padding:9px 16px; background:var(--pri); color:#fff; border:none; border-radius:8px; font-size:0.82rem; font-weight:600; cursor:pointer; }
+    .review-item { background:var(--bg); border:1px solid var(--bdr); border-radius:9px; padding:10px 12px; margin-bottom:8px; font-size:0.82rem; }
 
     /* Two-Column Login / Register Modal */
     .auth-modal-card { max-width:780px; padding:0; overflow:hidden; }
     .auth-modal-header { padding:20px 26px; border-bottom:1px solid var(--bdr); display:flex; justify-content:space-between; align-items:center; }
-    .auth-modal-header h2 { font-size:1.25rem; font-weight:800; }
+    .auth-modal-header h2 { font-size:1.2rem; font-weight:800; }
     .auth-split { display:grid; grid-template-columns:1.15fr 0.85fr; }
     .auth-left { padding:24px 26px; border-right:1px solid var(--bdr); }
     .auth-right { padding:24px 26px; background:var(--bg); font-size:0.84rem; color:var(--muted); line-height:1.55; }
-    .auth-right h3 { font-size:1rem; color:var(--txt); margin-bottom:8px; font-weight:800; }
-    .auth-right h4 { font-size:0.88rem; color:var(--txt); margin:14px 0 4px; font-weight:700; }
+    .auth-right h3 { font-size:0.98rem; color:var(--txt); margin-bottom:8px; font-weight:700; }
+    .auth-right h4 { font-size:0.86rem; color:var(--txt); margin:14px 0 4px; font-weight:700; }
     .auth-field { margin-bottom:14px; }
-    .auth-field label { display:block; font-size:0.78rem; font-weight:700; color:var(--txt); margin-bottom:5px; }
-    .auth-field input { width:100%; padding:10px 12px; border-radius:7px; border:1px solid var(--bdr); background:var(--surf); color:var(--txt); font-size:0.88rem; outline:none; }
+    .auth-field label { display:block; font-size:0.78rem; font-weight:600; color:var(--txt); margin-bottom:5px; }
+    .auth-field input { width:100%; padding:10px 12px; border-radius:8px; border:1px solid var(--bdr); background:var(--surf); color:var(--txt); font-size:0.88rem; outline:none; }
     .auth-field input:focus { border-color:var(--pri); }
-    .profile-url-preview { background:var(--bg); border:1px solid var(--bdr); padding:8px 12px; border-radius:7px; font-size:0.8rem; color:var(--muted); margin-top:6px; word-break:break-all; }
+    .profile-url-preview { background:var(--bg); border:1px solid var(--bdr); padding:8px 12px; border-radius:7px; font-size:0.78rem; color:var(--muted); margin-top:6px; word-break:break-all; }
     .about-you-box { border:1px solid var(--bdr); border-radius:8px; padding:12px; margin-bottom:14px; background:var(--bg); }
     .about-you-box strong { display:block; font-size:0.78rem; margin-bottom:8px; color:var(--txt); }
     .check-row { display:flex; align-items:flex-start; gap:8px; font-size:0.8rem; color:var(--txt); margin-bottom:6px; cursor:pointer; }
     .check-row input { margin-top:3px; }
-    .btn-create-acc { background:#e11d48; color:#fff; border:none; padding:11px 20px; border-radius:7px; font-weight:700; font-size:0.88rem; cursor:pointer; }
-    .btn-create-acc:hover { background:#be123c; }
-    .btn-google-quick { width:100%; padding:10px; border-radius:7px; border:1px solid var(--bdr); background:var(--surf); color:var(--txt); font-weight:700; font-size:0.84rem; cursor:pointer; margin-bottom:14px; display:flex; align-items:center; justify-content:center; gap:8px; }
+    .btn-create-acc { background:var(--pri); color:#fff; border:none; padding:10px 20px; border-radius:8px; font-weight:700; font-size:0.86rem; cursor:pointer; }
+    .btn-create-acc:hover { background:var(--pri-d); }
+    .btn-google-quick { width:100%; padding:10px; border-radius:8px; border:1px solid var(--bdr); background:var(--surf); color:var(--txt); font-weight:600; font-size:0.84rem; cursor:pointer; margin-bottom:14px; display:flex; align-items:center; justify-content:center; gap:8px; }
     @media (max-width:700px) {
       .auth-split { grid-template-columns:1fr; }
       .auth-left { border-right:none; border-bottom:1px solid var(--bdr); }
@@ -195,8 +223,8 @@
     .lightbox-overlay { position:fixed; inset:0; background:rgba(0,0,0,0.92); display:none; align-items:center; justify-content:center; z-index:25000; padding:16px; }
     .lightbox-overlay.open { display:flex; }
     .lightbox-overlay img { max-width:95%; max-height:92vh; border-radius:10px; }
-    .info-box { margin-top:34px; padding:18px; border-radius:12px; background:var(--pri-l); border:1px solid var(--bdr); }
-    footer { text-align:center; margin-top:34px; color:var(--muted); font-size:0.82rem; }
+    .info-box { margin-top:34px; padding:18px; border-radius:12px; background:var(--surf); border:1px solid var(--bdr); }
+    footer { text-align:center; margin-top:34px; color:var(--muted); font-size:0.8rem; }
   </style>
 </head>
 <body>
@@ -205,12 +233,12 @@
     <header class="navbar">
       <a href="#" class="brand" onclick="clearDevFilter()">
         <img src="favicon.png" alt="Zappora" onerror="this.src='logo.png'" />
-        <span>ZAPPORA</span>
+        <span>ZAPPORA <em>STORE</em></span>
       </a>
       <div class="nav-right">
         <button type="button" class="btn-auth-nav" id="navLoginBtn" onclick="openAuthModal('login')">Log In</button>
         <button type="button" class="btn-auth-nav" id="navRegisterBtn" onclick="openAuthModal('register')">Register</button>
-        <a href="admin.html" class="btn-publish">+ Publish App</a>
+        <a href="admin.html" class="btn-publish">Developer Console</a>
         <button class="theme-btn" id="themeToggle" onclick="toggleTheme()">Dark</button>
       </div>
     </header>
@@ -249,14 +277,14 @@
       </select>
     </section>
 
-    <!-- Phase 2 Smart Discovery Tabs -->
+    <!-- Clean Emoji-Free Section Tabs -->
     <div class="section-tabs">
       <div class="sec-tab active" id="tab-ALL" onclick="setSectionTab('ALL')">All Releases</div>
-      <div class="sec-tab" id="tab-TRENDING" onclick="setSectionTab('TRENDING')">🔥 Trending</div>
-      <div class="sec-tab" id="tab-CHOICE" onclick="setSectionTab('CHOICE')">🏆 Editor's Choice</div>
-      <div class="sec-tab" id="tab-UPDATED" onclick="setSectionTab('UPDATED')">⚡ Recently Updated</div>
-      <div class="sec-tab" id="tab-WISHLIST" onclick="setSectionTab('WISHLIST')">❤️ Wishlist (<span id="wishCountLabel">0</span>)</div>
-      <div class="sec-tab" id="tab-RECENT" onclick="setSectionTab('RECENT')">🕒 Recently Viewed</div>
+      <div class="sec-tab" id="tab-TRENDING" onclick="setSectionTab('TRENDING')">Trending</div>
+      <div class="sec-tab" id="tab-CHOICE" onclick="setSectionTab('CHOICE')">Editor's Choice</div>
+      <div class="sec-tab" id="tab-UPDATED" onclick="setSectionTab('UPDATED')">Recently Updated</div>
+      <div class="sec-tab" id="tab-WISHLIST" onclick="setSectionTab('WISHLIST')">Saved (<span id="wishCountLabel">0</span>)</div>
+      <div class="sec-tab" id="tab-RECENT" onclick="setSectionTab('RECENT')">Recently Viewed</div>
     </div>
 
     <div class="category-pills">
@@ -267,7 +295,7 @@
 
     <div id="devFilterBar" class="dev-filter-bar">
       <span id="devFilterText">Showing apps by Developer</span>
-      <button onclick="clearDevFilter()" style="background:none;border:none;color:var(--pri-d);font-weight:800;cursor:pointer;">Show All [X]</button>
+      <button onclick="clearDevFilter()" style="background:none;border:none;color:var(--pri-d);font-weight:700;cursor:pointer;">Clear Filter</button>
     </div>
 
     <main class="grid" id="appsContainer"></main>
@@ -277,22 +305,23 @@
     </div>
 
     <section class="info-box">
-      <h3 style="color:var(--pri); margin-bottom:6px;">Installation & Integrity Guide</h3>
-      <ol style="margin-left:18px; color:var(--muted); font-size:0.88rem; line-height:1.55;">
-        <li>Click <strong>Download APK</strong> on any application card for direct instant download.</li>
-        <li>Open any application card to view its <strong>SHA-256 Checksum</strong>, release history, and publisher details.</li>
+      <h3 style="color:var(--txt); font-size:0.95rem; margin-bottom:6px;">Installation &amp; Verification Guide</h3>
+      <ol style="margin-left:18px; color:var(--muted); font-size:0.84rem; line-height:1.6;">
+        <li>Click <strong>Download APK</strong> on any application card for direct instant package download.</li>
+        <li>Select any card to inspect screenshots, rating breakdown, release notes, and <strong>SHA-256 package checksum</strong>.</li>
         <li>Open the downloaded APK file on your Android device to complete installation.</li>
       </ol>
     </section>
+
     <footer>
-      <div style="margin-bottom:8px; display:flex; justify-content:center; gap:14px; flex-wrap:wrap; font-weight:600;">
-        <a href="legal.html#privacy" style="color:var(--pri); text-decoration:none;">Privacy Policy</a>
-        <a href="legal.html#terms" style="color:var(--pri); text-decoration:none;">Terms &amp; Conditions</a>
-        <a href="legal.html#developer" style="color:var(--pri); text-decoration:none;">Developer Policy</a>
-        <a href="legal.html#copyright" style="color:var(--pri); text-decoration:none;">DMCA / Copyright</a>
-        <a href="legal.html#security" style="color:var(--pri); text-decoration:none;">APK Security Policy</a>
+      <div style="margin-bottom:8px; display:flex; justify-content:center; gap:16px; flex-wrap:wrap; font-weight:600;">
+        <a href="legal.html#privacy" style="color:var(--muted); text-decoration:none;">Privacy Policy</a>
+        <a href="legal.html#terms" style="color:var(--muted); text-decoration:none;">Terms of Service</a>
+        <a href="legal.html#developer" style="color:var(--muted); text-decoration:none;">Developer Agreement</a>
+        <a href="legal.html#copyright" style="color:var(--muted); text-decoration:none;">Copyright / DMCA</a>
+        <a href="legal.html#security" style="color:var(--muted); text-decoration:none;">APK Security Policy</a>
       </div>
-      &copy; 2026 Zappora Store. Official Android App &amp; Game Directory. (100% Free Platform)
+      &copy; 2026 Zappora Store. Official Android App &amp; Game Directory.
     </footer>
   </div>
 
@@ -361,7 +390,7 @@
 
             <label class="check-row" id="fieldTermsWrap" style="margin-bottom:14px;">
               <input type="checkbox" id="chkTerms" checked required />
-              <span>I accept the <a href="#" style="color:var(--pri);">Terms of Service</a></span>
+              <span>I accept the <a href="legal.html#terms" style="color:var(--pri);">Terms of Service</a></span>
             </label>
 
             <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;">
@@ -377,11 +406,11 @@
           <h3>Who should register on Zappora?</h3>
           <p><strong>Zappora</strong> was built for Android gamers and independent creators. Downloading APKs is 100% free and instant without registration, but creating an account unlocks verified community features.</p>
 
-          <h4>I want to play games &amp; apps!</h4>
-          <p>Although registration isn't required to download APKs, creating an account gives you the ability to post verified 5-star ratings, save your Wishlist, and build your gamer identity.</p>
+          <h4>I want to play games &amp; apps</h4>
+          <p>Although registration isn't required to download APKs, creating an account gives you the ability to post verified 5-star ratings, save apps, and build your gamer identity.</p>
 
-          <h4>I'm a developer/creator!</h4>
-          <p>Great! Zappora is designed for indie developers of all kinds to quickly distribute their Android APKs and HTML5 web games for free. If you check the creator box, you can also publish directly in the <a href="admin.html" style="color:var(--pri);font-weight:700;">Developer Console</a>.</p>
+          <h4>I'm a developer or creator</h4>
+          <p>Zappora is designed for indie developers to quickly distribute their Android APKs and HTML5 web games for free via the <a href="admin.html" style="color:var(--pri);font-weight:700;">Developer Console</a>.</p>
         </div>
       </div>
     </div>
@@ -394,29 +423,29 @@
       <div class="modal-header">
         <img id="mIcon" src="" alt="App Icon" class="modal-icon" onerror="this.src='favicon.png'" />
         <div>
-          <h2 id="mTitle" style="font-size:1.3rem;margin-bottom:2px;"></h2>
+          <h2 id="mTitle" style="font-size:1.28rem;font-weight:800;margin-bottom:2px;"></h2>
           <div id="mDeveloper" style="font-size:0.82rem;color:var(--pri);font-weight:600;cursor:pointer;margin-bottom:6px;"></div>
-          <div style="display:flex;gap:6px;align-items:center;">
-            <span id="mBadge" class="badge"></span>
-            <span id="mChoiceBadge" class="badge badge-choice" style="display:none;">🏆 Editor's Choice</span>
+          <div class="play-meta-row">
+            <span id="mBadge" class="meta-tag-subtle"></span>
+            <span id="mChoiceBadge" class="meta-tag-subtle" style="display:none; color:var(--pri-d); border-color:var(--pri); background:var(--pri-l);">Editor's Choice</span>
           </div>
         </div>
       </div>
 
       <div class="modal-stats">
-        <div><span>VERSION</span><strong id="mVersion">v1.0</strong></div>
-        <div><span>SIZE</span><strong id="mSize">10MB</strong></div>
+        <div><span>RATING</span><strong id="mRating">5.0 ★</strong></div>
         <div><span>DOWNLOADS</span><strong id="mDownloads">0</strong></div>
-        <div><span>RATING</span><strong id="mRating" style="color:var(--star);">★ 5.0</strong></div>
+        <div><span>SIZE</span><strong id="mSize">10MB</strong></div>
+        <div><span>VERSION</span><strong id="mVersion">v1.0</strong></div>
       </div>
 
-      <div style="display:flex;gap:8px;margin-bottom:20px;flex-wrap:wrap;">
+      <div class="modal-action-row">
         <button id="mDownloadBtn" type="button" class="btn-download">Download APK</button>
         <a id="mWebBtn" href="#" class="btn-web" target="_blank" rel="noopener noreferrer" style="display:none;">Web Play</a>
-        <button id="mWishBtn" type="button" class="btn-share" onclick="toggleWishlistCurrent()">♡ Wishlist</button>
-        <button id="mFollowBtn" type="button" class="btn-share" onclick="toggleFollowCurrentDev()">+ Follow Dev</button>
-        <button type="button" class="btn-share" onclick="shareCurrentApp()">Share</button>
-        <button type="button" class="btn-share" style="color:var(--err);" onclick="reportCurrentApp()">🚩 Report</button>
+        <button id="mWishBtn" type="button" class="btn-secondary-act" onclick="toggleWishlistCurrent()">Save</button>
+        <button id="mFollowBtn" type="button" class="btn-secondary-act" onclick="toggleFollowCurrentDev()">Follow Dev</button>
+        <button type="button" class="btn-secondary-act" onclick="shareCurrentApp()">Share</button>
+        <button type="button" class="btn-secondary-act" onclick="reportCurrentApp()" title="Report an issue with this app">Report</button>
       </div>
 
       <div class="screenshots-wrapper" id="mScreenshotsWrapper" style="display:none;">
@@ -455,35 +484,52 @@
           </div>
         </div>
 
-        <!-- Phase 2 & 6: SHA-256 Package Integrity Verification Box -->
+        <!-- Clean SHA-256 Package Integrity Verification Box -->
         <div class="security-box" id="mShaBox" style="display:none;">
           <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:6px;">
-            <strong style="color:var(--txt);">🛡️ SHA-256 Package Integrity Checksum</strong>
-            <div style="display:flex;gap:10px;">
+            <strong style="color:var(--txt);">SHA-256 Package Checksum</strong>
+            <div style="display:flex;gap:12px;">
               <button type="button" onclick="copyCurrentSha()" style="background:none;border:none;color:var(--pri);font-weight:700;font-size:0.75rem;cursor:pointer;">Copy Hash</button>
-              <a id="mVirusTotalLink" href="#" target="_blank" rel="noopener noreferrer" style="color:var(--ok);font-weight:700;font-size:0.75rem;text-decoration:none;">Verify on VirusTotal ↗</a>
+              <a id="mVirusTotalLink" href="#" target="_blank" rel="noopener noreferrer" style="color:var(--ok);font-weight:700;font-size:0.75rem;text-decoration:none;">Verify on VirusTotal</a>
             </div>
           </div>
           <code class="sha-code" id="mShaValue"></code>
         </div>
-        
+      </div>
+
       <div class="modal-section" id="mNotesSection">
-        <h4>What's New (Release Notes)</h4>
+        <h4>What's New</h4>
         <p id="mNotes"></p>
       </div>
 
-      <!-- Phase 2: Similar Apps / Games -->
       <div class="modal-section" id="mSimilarSection" style="display:none;">
-        <h4>Similar Releases on Zappora</h4>
+        <h4>Similar Releases</h4>
         <div class="similar-strip" id="mSimilarList"></div>
       </div>
 
-      <!-- Ratings & Reviews -->
+      <!-- Google Play Store Style Ratings & Histogram Section -->
       <div class="reviews-box">
-        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;flex-wrap:wrap;">
-          <h4 style="font-size:0.84rem;color:var(--pri);text-transform:uppercase;">Ratings &amp; Reviews</h4>
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;flex-wrap:wrap;">
+          <h4 style="font-size:0.8rem;color:var(--muted);font-weight:700;text-transform:uppercase;">Ratings and reviews</h4>
           <span id="reviewerIdentityLabel" style="font-size:0.74rem;color:var(--muted);font-weight:600;"></span>
         </div>
+
+        <!-- Play Store 5-to-1 Bar Chart Breakdown -->
+        <div class="play-rating-summary">
+          <div>
+            <div class="play-score-big" id="histAvgScore">5.0</div>
+            <div class="play-score-stars" id="histStarsVisual">★★★★★</div>
+            <div class="play-score-count" id="histTotalCount">1 review</div>
+          </div>
+          <div class="play-bars">
+            <div class="play-bar-row"><span>5</span><div class="play-bar-track"><div class="play-bar-fill" id="barFill5"></div></div></div>
+            <div class="play-bar-row"><span>4</span><div class="play-bar-track"><div class="play-bar-fill" id="barFill4"></div></div></div>
+            <div class="play-bar-row"><span>3</span><div class="play-bar-track"><div class="play-bar-fill" id="barFill3"></div></div></div>
+            <div class="play-bar-row"><span>2</span><div class="play-bar-track"><div class="play-bar-fill" id="barFill2"></div></div></div>
+            <div class="play-bar-row"><span>1</span><div class="play-bar-track"><div class="play-bar-fill" id="barFill1"></div></div></div>
+          </div>
+        </div>
+
         <div id="reviewFormBlock">
           <div class="star-picker" id="starPicker">
             <button type="button" class="star-btn selected" onclick="selectStar(1)">★</button>
@@ -493,12 +539,12 @@
             <button type="button" class="star-btn selected" onclick="selectStar(5)">★</button>
           </div>
           <div class="review-form-row">
-            <input type="text" id="revComment" class="review-input" maxlength="240" style="flex:1;min-width:180px;" placeholder="Write a review..." />
+            <input type="text" id="revComment" class="review-input" maxlength="240" style="flex:1;min-width:180px;" placeholder="Write a public review..." />
             <button type="button" class="btn-post-review" onclick="submitAppReview()">Post Review</button>
           </div>
         </div>
-        <div id="alreadyRatedNotice" style="display:none;padding:9px 12px;border-radius:8px;background:var(--ok-bg);color:#15803d;font-size:0.8rem;font-weight:700;margin-bottom:10px;">
-          ✓ You have already rated and reviewed this application.
+        <div id="alreadyRatedNotice" style="display:none;padding:9px 12px;border-radius:8px;background:var(--ok-bg);color:var(--ok);font-size:0.8rem;font-weight:600;margin-bottom:10px;">
+          You have already rated and reviewed this application.
         </div>
         <div id="mReviewsList"></div>
       </div>
@@ -508,7 +554,7 @@
   <div class="lightbox-overlay" id="lightbox" onclick="closeLightbox()">
     <img id="lightboxImg" src="" alt="Fullscreen" />
   </div>
-  <div class="toast-msg" id="toastMsg">Done!</div>
+  <div class="toast-msg" id="toastMsg">Done</div>
 
   <script type="module">
     import { ZAPPORA_CONFIG } from "./config.js";
@@ -535,6 +581,7 @@
       query,
       where
     } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
+
     const app = initializeApp(ZAPPORA_CONFIG.firebase);
     const auth = getAuth(app);
     const db = getFirestore(app);
@@ -557,12 +604,13 @@
     let currentAuthMode = "register";
     let pendingAuthAction = null;
 
-    // Wishlist & Recently Viewed state
     let wishlistIds = [];
     let recentlyViewedIds = [];
+    let followedDevs = [];
     try {
       wishlistIds = JSON.parse(localStorage.getItem("zappora_wishlist") || "[]");
       recentlyViewedIds = JSON.parse(localStorage.getItem("zappora_recent_views") || "[]");
+      followedDevs = JSON.parse(localStorage.getItem("zappora_followed_devs") || "[]");
     } catch (e) {}
 
     function updateWishlistCounter() {
@@ -636,16 +684,15 @@
       setTimeout(() => { t.style.display = "none"; }, 2800);
     }
 
-    // Wishlist Functions
     window.toggleWishlist = (appId, e) => {
       if (e) e.stopPropagation();
       const idx = wishlistIds.indexOf(appId);
       if (idx > -1) {
         wishlistIds.splice(idx, 1);
-        showToast("Removed from Wishlist");
+        showToast("Removed from Saved list");
       } else {
         wishlistIds.unshift(appId);
-        showToast("Saved to Wishlist ❤️");
+        showToast("Saved to your list");
       }
       localStorage.setItem("zappora_wishlist", JSON.stringify(wishlistIds));
       updateWishlistCounter();
@@ -664,28 +711,17 @@
       const btn = document.getElementById("mWishBtn");
       if (!btn || !currentModalApp) return;
       const wished = wishlistIds.includes(currentModalApp.id);
-      btn.innerText = wished ? "❤️ Wishlisted" : "♡ Wishlist";
-      btn.style.color = wished ? "#e11d48" : "";
+      btn.innerText = wished ? "Saved" : "Save";
+      btn.classList.toggle("active", wished);
     }
-
-    window.copyCurrentSha = () => {
-      if (!currentModalApp || !currentModalApp.sha256) return;
-      navigator.clipboard.writeText(currentModalApp.sha256).then(() => {
-        showToast("SHA-256 Checksum Copied!");
-      }).catch(() => {});
-    };
-
-    // PHASE 5: FOLLOW DEVELOPER & REPORT APP TO HQ
-    let followedDevs = [];
-    try { followedDevs = JSON.parse(localStorage.getItem("zappora_followed_devs") || "[]"); } catch (e) {}
 
     function updateFollowButton() {
       const btn = document.getElementById("mFollowBtn");
       if (!btn || !currentModalApp) return;
       const dev = currentModalApp.developerName || "Zappora Official";
       const isFollowing = followedDevs.includes(dev);
-      btn.innerText = isFollowing ? "✓ Following Dev" : "+ Follow Dev";
-      btn.style.color = isFollowing ? "var(--pri)" : "";
+      btn.innerText = isFollowing ? "Following" : "Follow Dev";
+      btn.classList.toggle("active", isFollowing);
     }
 
     window.toggleFollowCurrentDev = () => {
@@ -696,8 +732,8 @@
         followedDevs.splice(idx, 1);
         showToast(`Unfollowed ${dev}`);
       } else {
-          followedDevs.push(dev);
-          showToast(`Following ${dev}! New releases will be highlighted.`);
+        followedDevs.push(dev);
+        showToast(`Following ${dev}`);
       }
       localStorage.setItem("zappora_followed_devs", JSON.stringify(followedDevs));
       updateFollowButton();
@@ -705,7 +741,7 @@
 
     window.reportCurrentApp = async () => {
       if (!currentModalApp) return;
-      const reason = prompt(`Report an issue with "${currentModalApp.title}" (e.g. Broken APK link, copyright, or bug):`);
+      const reason = prompt(`Describe the issue with "${currentModalApp.title}" (broken link, copyright, or bug):`);
       if (!reason || reason.trim().length < 3) return;
       const reporterEmail = (currentVisitor && currentVisitor.email) ? currentVisitor.email : "anonymous@zappora.user";
       try {
@@ -715,18 +751,23 @@
           reporterEmail: reporterEmail,
           createdAt: Date.now()
         });
-        showToast("Report submitted to Zappora HQ. Thank you!");
+        showToast("Issue report submitted to Zappora HQ.");
       } catch (e) {
         showToast("Could not send report. Please try again.");
       }
-    }; 
+    };
 
-    // EMAILJS AUTO-WELCOME EMAIL SENDER
+    window.copyCurrentSha = () => {
+      if (!currentModalApp || !currentModalApp.sha256) return;
+      navigator.clipboard.writeText(currentModalApp.sha256).then(() => {
+        showToast("SHA-256 Checksum Copied");
+      }).catch(() => {});
+    };
+
     async function sendZapporaWelcomeEmail(name, username, email) {
       if (!email || !email.includes("@")) return;
       const sentKey = "zappora_welcome_sent_" + email.toLowerCase().trim();
       if (localStorage.getItem(sentKey) === "1") return;
-
       try {
         const res = await fetch("https://api.emailjs.com/api/v1.0/email/send", {
           method: "POST",
@@ -743,9 +784,7 @@
             }
           })
         });
-        if (res.ok) {
-          localStorage.setItem(sentKey, "1");
-        }
+        if (res.ok) localStorage.setItem(sentKey, "1");
       } catch (err) {}
     }
 
@@ -765,12 +804,12 @@
       if (currentVisitor && currentVisitor.name) {
         loginBtn.innerText = `@${currentVisitor.username || currentVisitor.name}`;
         loginBtn.onclick = () => {
-          if (confirm(`Logged in as ${currentVisitor.name} (${currentVisitor.email}).\nDo you want to log out?`)) {
+          if (confirm(`Signed in as ${currentVisitor.name} (${currentVisitor.email}).\nSign out?`)) {
             localStorage.removeItem("zappora_visitor_pass");
             currentVisitor = null;
             signOut(auth).catch(() => {});
             updateVisitorUI();
-            showToast("Logged out successfully.");
+            showToast("Signed out.");
           }
         };
         regBtn.style.display = "none";
@@ -779,7 +818,7 @@
         loginBtn.innerText = "Log In";
         loginBtn.onclick = () => window.openAuthModal("login");
         regBtn.style.display = "inline-block";
-        if (revLabel) revLabel.innerText = "Login required to post review";
+        if (revLabel) revLabel.innerText = "Sign in to post a review";
       }
     }
 
@@ -828,7 +867,7 @@
       localStorage.setItem("zappora_visitor_pass", JSON.stringify(payload));
       updateVisitorUI();
       window.closeAuthModal();
-      showToast(`Welcome, ${payload.name}!`);
+      showToast(`Welcome, ${payload.name}`);
 
       sendZapporaWelcomeEmail(payload.name, payload.username, cleanEmail);
 
@@ -869,7 +908,7 @@
           return;
         }
         if (pass !== repeatPass) {
-          showToast("Passwords do not match!");
+          showToast("Passwords do not match.");
           return;
         }
         const cleanHandle = rawUser.toLowerCase().replace(/[^a-z0-9_]/g, "");
@@ -902,7 +941,6 @@
       }
     };
 
-    // DIRECT 1-CLICK APK DOWNLOAD
     window.directDownloadApk = (appId, e) => {
       if (e) e.stopPropagation();
       const appItem = activeCatalog.find(i => i.id === appId);
@@ -925,7 +963,6 @@
       updateDoc(doc(db, "apps", appId), { downloads: increment(1) }).catch(() => {});
     };
 
-    // LOAD CATALOG (Queries only 'approved' apps in compliance with Phase 1 Security Rules)
     async function loadCatalog() {
       initVisitorSession();
 
@@ -1079,6 +1116,7 @@
       renderApps();
     };
 
+    // Play Store Styled Card Renderer (Zero Emojis, Clean Typography)
     function renderApps() {
       const container = document.getElementById("appsContainer");
       const loadMoreWrap = document.getElementById("loadMoreWrap");
@@ -1091,11 +1129,9 @@
       }
 
       currentFilteredList.slice(0, visibleLimit).forEach(app => {
-        const badgeClass = app.category === "Game" ? "badge-game" : "badge-app";
         const avgRating = getAppRating(app);
         const devName = app.developerName || "Zappora Official";
         const blueTickHtml = isDevVerified(app) ? '<span class="verified-tick" title="Verified Publisher">✓</span>' : "";
-        const choiceHtml = isEditorsChoice(app) ? '<span class="badge badge-choice">🏆 Choice</span>' : "";
         const isWished = wishlistIds.includes(app.id);
         const cleanWebUrl = safeUrl(app.webUrl, "");
         const webBtnLabel = app.category === "Game" ? "Web Play" : "Web View";
@@ -1104,22 +1140,30 @@
           ? `<a href="${escapeHTML(cleanWebUrl)}" class="btn-web" target="_blank" rel="noopener noreferrer">${webBtnLabel}</a>`
           : "";
 
+        const bookmarkSvg = isWished
+          ? `<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M5 3h14a2 2 0 0 1 2 2v16l-9-4-9 4V5a2 2 0 0 1 2-2z"/></svg>`
+          : `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>`;
+
         const card = document.createElement("article");
         card.className = "card";
         card.addEventListener("click", () => window.openModal(app.id));
 
         card.innerHTML = `
-          <button type="button" class="btn-wish-card ${isWished ? 'active' : ''}" title="Add to Wishlist">${isWished ? '♥' : '♡'}</button>
+          <button type="button" class="btn-wish-card ${isWished ? 'active' : ''}" title="Save application">${bookmarkSvg}</button>
           <div>
             <div class="card-header">
               <img src="${escapeHTML(safeUrl(app.icon, 'favicon.png'))}" alt="${escapeHTML(app.title)}" loading="lazy" decoding="async" class="app-icon" onerror="this.src='favicon.png'" />
               <div class="app-title-block">
                 <h2>${escapeHTML(app.title)}</h2>
-                <div class="dev-label">by ${escapeHTML(devName)}${blueTickHtml}</div>
-                <div class="badge-row">
-                  <span class="badge ${badgeClass}">${escapeHTML(app.category)}</span>
-                  <span class="rating-pill">★ ${escapeHTML(avgRating)}</span>
-                  ${choiceHtml}
+                <div class="dev-label">${escapeHTML(devName)}${blueTickHtml}</div>
+                <div class="play-meta-row">
+                  <span class="play-rating">
+                    ${escapeHTML(avgRating)}
+                    <svg class="play-star-svg" viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+                  </span>
+                  <span class="meta-dot">•</span>
+                  <span>${escapeHTML(app.category)}</span>
+                  ${app.size ? `<span class="meta-dot">•</span><span>${escapeHTML(app.size)}</span>` : ""}
                 </div>
               </div>
             </div>
@@ -1216,6 +1260,35 @@
       document.getElementById("alreadyRatedNotice").style.display = rated ? "block" : "none";
     }
 
+    // Play Store Style Histogram Updater (5, 4, 3, 2, 1 Bars)
+    function renderRatingHistogram(appItem) {
+      const avg = getAppRating(appItem);
+      const reviews = Array.isArray(appItem.reviews) ? appItem.reviews : [];
+      const totalCount = Math.max(parseInt(appItem.ratingCount, 10) || 1, reviews.length || 1);
+
+      const counts = { 5: 0, 4: 0, 3: 0, 2: 0, 1: 0 };
+      if (reviews.length > 0) {
+        reviews.forEach(r => {
+          const s = Math.min(Math.max(parseInt(r.stars, 10) || 5, 1), 5);
+          counts[s] = (counts[s] || 0) + 1;
+        });
+      } else {
+        counts[Math.round(parseFloat(avg)) || 5] = totalCount;
+      }
+
+      const denom = Math.max(reviews.length, 1);
+      document.getElementById("histAvgScore").innerText = avg;
+      const roundedStars = Math.round(parseFloat(avg)) || 5;
+      document.getElementById("histStarsVisual").innerText = "★".repeat(roundedStars) + "☆".repeat(5 - roundedStars);
+      document.getElementById("histTotalCount").innerText = `${totalCount.toLocaleString()} ${totalCount === 1 ? "review" : "reviews"}`;
+
+      for (let star = 1; star <= 5; star++) {
+        const pct = Math.round(((counts[star] || 0) / denom) * 100);
+        const barEl = document.getElementById("barFill" + star);
+        if (barEl) barEl.style.width = `${Math.min(pct, 100)}%`;
+      }
+    }
+
     window.submitAppReview = async () => {
       if (!currentModalApp) return;
       if (!currentVisitor || !currentVisitor.email) {
@@ -1253,8 +1326,9 @@
       localStorage.setItem("zappora_catalog_cache", JSON.stringify(activeCatalog));
 
       updateReviewBoxVisibility();
+      renderRatingHistogram(currentModalApp);
       renderModalReviews();
-      document.getElementById("mRating").innerText = "★ " + getAppRating(currentModalApp);
+      document.getElementById("mRating").innerText = getAppRating(currentModalApp) + " ★";
       window.filterCatalog();
 
       try {
@@ -1263,7 +1337,7 @@
           ratingCount: nextRatingCount,
           reviews: nextReviews
         });
-        showToast("Thank you! Your review is live.");
+        showToast("Review published.");
       } catch (e) {}
     };
 
@@ -1271,7 +1345,7 @@
       const box = document.getElementById("mReviewsList");
       const list = currentModalApp.reviews || [];
       if (list.length === 0) {
-        box.innerHTML = '<p style="font-size:0.8rem;color:var(--muted);">No reviews yet. Be the first to review!</p>';
+        box.innerHTML = '<p style="font-size:0.8rem;color:var(--muted);">No written reviews yet.</p>';
         return;
       }
       box.innerHTML = list.map(r => {
@@ -1279,7 +1353,7 @@
         return `
           <div class="review-item">
             <div style="display:flex;justify-content:space-between;margin-bottom:3px;">
-              <strong>${escapeHTML(r.user)} <span style="color:var(--star);">${"★".repeat(starCount)}</span></strong>
+              <strong>${escapeHTML(r.user)} <span style="color:var(--pri);margin-left:4px;">${"★".repeat(starCount)}</span></strong>
               <span style="font-size:0.72rem;color:var(--muted);">${escapeHTML(r.date || "")}</span>
             </div>
             <p style="color:var(--muted);">${escapeHTML(r.text)}</p>
@@ -1288,17 +1362,14 @@
       }).join("");
     }
 
-    // POPUP MODAL WITH VIEWS COUNTER, SHA-256 HASH & SIMILAR APPS
     window.openModal = (id) => {
       const app = activeCatalog.find(item => item.id === id);
       if (!app) return;
       currentModalApp = app;
 
-      // Track Recently Viewed
       recentlyViewedIds = [id, ...recentlyViewedIds.filter(x => x !== id)].slice(0, 12);
       localStorage.setItem("zappora_recent_views", JSON.stringify(recentlyViewedIds));
 
-      // Atomic +1 View Increment (Once per session per app)
       const viewSessionKey = "zappora_viewed_" + id;
       if (!sessionStorage.getItem(viewSessionKey)) {
         sessionStorage.setItem(viewSessionKey, "1");
@@ -1311,20 +1382,17 @@
       document.getElementById("mIcon").src = safeUrl(app.icon, "favicon.png");
       document.getElementById("mTitle").innerText = app.title;
       const devEl = document.getElementById("mDeveloper");
-      devEl.innerHTML = `Developed by ${escapeHTML(devName)}${tick} (View all)`;
+      devEl.innerHTML = `${escapeHTML(devName)}${tick}`;
       devEl.onclick = (e) => window.filterByDeveloper(devName, e);
 
-      const badge = document.getElementById("mBadge");
-      badge.innerText = app.category;
-      badge.className = "badge " + (app.category === "Game" ? "badge-game" : "badge-app");
-
+      document.getElementById("mBadge").innerText = app.category;
       document.getElementById("mChoiceBadge").style.display = isEditorsChoice(app) ? "inline-block" : "none";
 
       const dlTotal = parseInt(app.downloads, 10) || 0;
       document.getElementById("mVersion").innerText = "v" + app.versionName;
       document.getElementById("mSize").innerText = app.size;
       document.getElementById("mDownloads").innerText = dlTotal;
-      document.getElementById("mRating").innerText = "★ " + getAppRating(app);
+      document.getElementById("mRating").innerText = getAppRating(app) + " ★";
 
       document.getElementById("mAboutHeading").innerText = app.category === "Game" ? "About this game" : "About this app";
       document.getElementById("mDesc").innerText = app.desc;
@@ -1334,7 +1402,6 @@
       document.getElementById("metaReleasedOn").innerText = formatDisplayDate(app.createdAt || app.updatedAt, "2026");
       document.getElementById("metaOfferedBy").innerText = devName;
 
-      // SHA-256 Verification Display
       const shaBox = document.getElementById("mShaBox");
       if (app.sha256 && app.sha256.trim() !== "") {
         shaBox.style.display = "block";
@@ -1344,9 +1411,7 @@
       } else {
         shaBox.style.display = "none";
       }
-      updateFollowButton();
 
-      // Render All Uploaded Screenshots
       const ssWrapper = document.getElementById("mScreenshotsWrapper");
       const ssList = document.getElementById("mScreenshotsList");
       ssList.innerHTML = "";
@@ -1374,7 +1439,6 @@
         notesSec.style.display = "none";
       }
 
-      // Similar Apps / Games Section
       const similarSec = document.getElementById("mSimilarSection");
       const similarList = document.getElementById("mSimilarList");
       const similarItems = activeCatalog
@@ -1388,7 +1452,7 @@
             <img src="${escapeHTML(safeUrl(sim.icon, 'favicon.png'))}" alt="${escapeHTML(sim.title)}" onerror="this.src='favicon.png'" />
             <div>
               <strong>${escapeHTML(sim.title)}</strong>
-              <span>★ ${escapeHTML(getAppRating(sim))} • ${escapeHTML(sim.size || '')}</span>
+              <span>${escapeHTML(getAppRating(sim))} ★ • ${escapeHTML(sim.size || '')}</span>
             </div>
           </div>
         `).join("");
@@ -1411,9 +1475,11 @@
       }
 
       updateModalWishButton();
+      updateFollowButton();
       updateVisitorUI();
       window.selectStar(5);
       updateReviewBoxVisibility();
+      renderRatingHistogram(app);
       renderModalReviews();
       document.getElementById("appModal").classList.add("open");
     };
@@ -1434,7 +1500,7 @@
       }
       try {
         await navigator.clipboard.writeText(shareUrl);
-        showToast("Share Link Copied!");
+        showToast("Share Link Copied");
       } catch (e) {
         const inp = document.createElement("input");
         inp.value = shareUrl;
@@ -1442,7 +1508,7 @@
         inp.select();
         document.execCommand("copy");
         document.body.removeChild(inp);
-        showToast("Share Link Copied!");
+        showToast("Share Link Copied");
       }
     };
 
