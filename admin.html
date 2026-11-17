@@ -326,7 +326,7 @@
 
     .stats-row {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
       gap: 16px;
       margin-bottom: 24px;
     }
@@ -682,11 +682,14 @@
       <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px;">
         <div>
           <h2 style="color: #92400e; margin-bottom: 4px; font-size: 1.05rem;">Super Administrator Controls (Server UID Locked)</h2>
-          <p style="font-size: 0.84rem; color: #b45309;">Protected by Firestore server rules. Only your locked Firebase UID can approve, reject, or manage all submissions.</p>
+          <p style="font-size: 0.84rem; color: #b45309;">Protected by strict Firestore least-privilege rules. Auto-admin creation and client token storage are disabled.</p>
         </div>
-        <button onclick="importVersionJsonToFirebase()" style="padding: 10px 16px; background: #d97706; color: #ffffff; border: none; border-radius: 8px; font-weight: 700; cursor: pointer; font-size: 0.84rem;">
-          Synchronize Legacy version.json
-        </button>
+        <div style="display:flex; gap:8px; flex-wrap:wrap;">
+          <a href="hq.html" style="padding: 10px 16px; background: #0f172a; color: #ffffff; text-decoration: none; border-radius: 8px; font-weight: 700; font-size: 0.84rem;">Open Zappora HQ</a>
+          <button onclick="importVersionJsonToFirebase()" style="padding: 10px 16px; background: #d97706; color: #ffffff; border: none; border-radius: 8px; font-weight: 700; cursor: pointer; font-size: 0.84rem;">
+            Synchronize Legacy version.json
+          </button>
+        </div>
       </div>
     </div>
 
@@ -707,6 +710,10 @@
         <span>Total Downloads</span>
         <h3 id="statDownloads">0</h3>
       </div>
+      <div class="stat-card">
+        <span>Total Store Views</span>
+        <h3 id="statViews" style="color: var(--primary);">0</h3>
+      </div>
     </div>
 
     <div class="card">
@@ -722,7 +729,7 @@
               <th>Category</th>
               <th>Version</th>
               <th>Status</th>
-              <th>Downloads</th>
+              <th>Views / DL</th>
               <th>Actions</th>
             </tr>
           </thead>
@@ -770,7 +777,6 @@
           </div>
         </div>
 
-        <!-- Super Admin Publisher Brand Selector -->
         <div class="form-group" id="publisherBrandGroup" style="display: none; background: #f0f9ff; padding: 14px; border-radius: 10px; border: 1px solid #bae6fd;">
           <label style="color: #0369a1;">Publisher / Developer Brand Name (Owner Control)</label>
           <select id="appPublisherBrand">
@@ -793,18 +799,14 @@
         </div>
 
         <div class="form-group">
-          <label>Android Package (.apk) File & Direct Download URL</label>
+          <label>Android Package (.apk) Integrity Check & Direct Download URL</label>
           <div class="file-dropzone" onclick="document.getElementById('apkFileInput').click()">
-            <input type="file" id="apkFileInput" accept=".apk,.zip" onchange="handleApkFile(event)" />
-            <span class="dropzone-label" id="apkUploadPrompt">Select .apk or .zip Package to Calculate File Size</span>
+            <input type="file" id="apkFileInput" accept=".apk" onchange="handleApkFile(event)" />
+            <span class="dropzone-label" id="apkUploadPrompt">Select .apk Package to Auto-Calculate Size & SHA-256 Checksum</span>
             <div id="apkFileName" style="font-size: 0.84rem; color: var(--primary-dark); font-weight: 600; margin-top: 4px;"></div>
           </div>
-          <input type="url" id="appDownloadUrl" placeholder="https://... Direct APK Download URL (GitHub Releases / Cloud Storage)" required />
-        </div>
-
-        <div class="form-group" id="ghUploadBox" style="display: none; background: #f0f9ff; padding: 14px; border-radius: 10px; border: 1px solid #bae6fd;">
-          <label style="color: #0369a1;">Super Admin GitHub Repository Token (Optional Direct APK Hosting)</label>
-          <input type="password" id="ghToken" placeholder="Enter GitHub Personal Access Token (ghp_...) to upload selected APK automatically" />
+          <input type="url" id="appDownloadUrl" placeholder="https://github.com/.../releases/download/.../app.apk (Direct HTTPS APK URL)" required />
+          <input type="text" id="appSha256" placeholder="SHA-256 Checksum (Auto-generated when you select your .apk file above)" readonly style="margin-top:8px; font-size:0.8rem; background:var(--surface-subtle); color:var(--text-muted);" />
         </div>
 
         <div class="form-group">
@@ -819,7 +821,7 @@
             <span class="dropzone-label" id="ssUploadPrompt">Select Application Screenshots from Device</span>
             <div class="preview-box" id="ssPreviewBox"></div>
           </div>
-          <textarea id="appScreenshots" rows="2" placeholder="Comma-separated Screenshot URLs"></textarea>
+          <textarea id="appScreenshots" rows="2" placeholder="Screenshot URLs or Auto-Compressed Streams"></textarea>
         </div>
 
         <div class="form-group">
@@ -839,6 +841,7 @@
   </div>
 
   <script type="module">
+    import { ZAPPORA_CONFIG } from "./config.js";
     import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
     import {
       getAuth,
@@ -857,6 +860,7 @@
       doc,
       getDoc,
       setDoc,
+      addDoc,
       getDocs,
       deleteDoc,
       updateDoc,
@@ -864,22 +868,13 @@
       where
     } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
 
-    const firebaseConfig = {
-      apiKey: "AIzaSyDRsTWsXM7NB2EyL6RYOQ6OFL5mAnzaicc",
-      authDomain: "zappora-store.firebaseapp.com",
-      projectId: "zappora-store",
-      storageBucket: "zappora-store.firebasestorage.app",
-      messagingSenderId: "461582949255",
-      appId: "1:461582949255:web:cb7ee3bbf8d54b24879122",
-      measurementId: "G-ZH4T3SV0NE"
-    };
-
-    const app = initializeApp(firebaseConfig);
+    const app = initializeApp(ZAPPORA_CONFIG.firebase);
     const auth = getAuth(app);
     const db = getFirestore(app);
     const googleProvider = new GoogleAuthProvider();
 
-    const GITHUB_REPO = "ankurkumar-ship-it/Zappora";
+    // Clean up any legacy token stored in localStorage from older versions
+    localStorage.removeItem("zappora_gh_token");
 
     let authMode = "login";
     let currentUser = null;
@@ -887,7 +882,7 @@
     let isSuperAdmin = false;
     let allApps = [];
     let visibleAppsCache = [];
-    let selectedApkFile = null;
+    let lastSubmitTimestamp = 0;
 
     function escapeHTML(str) {
       return String(str ?? "")
@@ -904,6 +899,46 @@
       if (/^(https?:\/\/|data:image\/)/i.test(s)) return s;
       if (!s.includes(":") && !s.startsWith("//")) return s;
       return fallback;
+    }
+
+    // PHASE 1 SECURITY: Activity & Audit Logger
+    async function logAuditAction(action, targetId, details = "") {
+      if (!currentUser) return;
+      try {
+        await addDoc(collection(db, "audit_logs"), {
+          action: String(action).slice(0, 80),
+          targetId: String(targetId || "").slice(0, 80),
+          details: String(details || "").slice(0, 300),
+          actorUid: currentUser.uid,
+          actorEmail: currentUser.email || "",
+          timestamp: Date.now()
+        });
+      } catch (e) {}
+    }
+
+    // EMAILJS AUTO-WELCOME EMAIL SENDER
+    async function sendZapporaWelcomeEmail(name, username, email) {
+      if (!email || !email.includes("@")) return;
+      const sentKey = "zappora_welcome_sent_" + email.toLowerCase().trim();
+      if (localStorage.getItem(sentKey) === "1") return;
+      try {
+        const res = await fetch("https://api.emailjs.com/api/v1.0/email/send", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            service_id: "service_7i1a1fw",
+            template_id: "template_4z4t99l",
+            user_id: "Hofgdvgh3S8kT3xpN",
+            template_params: {
+              user_name: name || username || "Developer",
+              username: username || "dev",
+              to_email: email.trim(),
+              email: email.trim()
+            }
+          })
+        });
+        if (res.ok) localStorage.setItem(sentKey, "1");
+      } catch (err) {}
     }
 
     function showAuthMessage(text, isError = true) {
@@ -1011,9 +1046,12 @@
             username: username,
             studioName: finalStudio,
             email: email,
+            verified: false,
             banned: false,
+            welcomeEmailSent: true,
             createdAt: Date.now()
           });
+          sendZapporaWelcomeEmail(finalStudio, username, email);
         } else {
           showAuthMessage("Signing in...", false);
           await signInWithEmailAndPassword(auth, email, pass);
@@ -1027,46 +1065,19 @@
       await signOut(auth);
     };
 
+    // PHASE 1 SECURITY: Strictly Read-Only Super Admin Verification (No automatic creation)
     async function verifyStrictSuperAdmin(user) {
-      const configRef = doc(db, "settings", "admin_config");
-      const configSnap = await getDoc(configRef);
-
-      if (!configSnap.exists()) {
-        await setDoc(configRef, {
-          superAdminUid: user.uid,
-          superAdminEmail: user.email,
-          lockedAt: Date.now()
-        });
-        return true;
-      } else {
+      try {
+        const configRef = doc(db, "settings", "admin_config");
+        const configSnap = await getDoc(configRef);
+        if (!configSnap.exists()) return false;
         const data = configSnap.data();
         return data.superAdminUid === user.uid;
+      } catch (e) {
+        return false;
       }
     }
 
-    // EMAILJS AUTO-WELCOME EMAIL SENDER
-    async function sendZapporaWelcomeEmail(name, username, email) {
-      if (!email || !email.includes("@")) return;
-      try {
-        await fetch("https://api.emailjs.com/api/v1.0/email/send", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            service_id: "service_7i1a1fw",
-            template_id: "template_4z4t99l",
-            user_id: "Hofgdvgh3S8kT3xpN",
-            template_params: {
-              user_name: name || username || "Developer",
-              username: username || "dev",
-              to_email: email.trim()
-            }
-          })
-        });
-      } catch (err) {
-        console.warn("Welcome email skipped:", err);
-      }
-    } 
-    
     async function ensureDeveloperProfile(user) {
       const devRef = doc(db, "developers", user.uid);
       const devSnap = await getDoc(devRef);
@@ -1074,7 +1085,6 @@
         currentDeveloperDoc = devSnap.data();
         if (!currentDeveloperDoc.welcomeEmailSent && user.email) {
           sendZapporaWelcomeEmail(currentDeveloperDoc.studioName, currentDeveloperDoc.username, user.email);
-          await updateDoc(devRef, { welcomeEmailSent: true }).catch(() => {});
         }
       } else {
         const baseHandle = (user.email ? user.email.split("@")[0] : "dev").toLowerCase().replace(/[^a-z0-9_]/g, "") + "_" + Math.floor(100 + Math.random() * 899);
@@ -1084,6 +1094,7 @@
           studioName: user.displayName || baseHandle,
           email: user.email || "",
           website: "",
+          verified: false,
           banned: false,
           welcomeEmailSent: true,
           createdAt: Date.now()
@@ -1099,6 +1110,7 @@
       document.getElementById("profStudioName").value = currentDeveloperDoc.studioName || "";
       document.getElementById("profWebsite").value = currentDeveloperDoc.website || "";
     }
+
     window.toggleProfileCard = () => {
       const card = document.getElementById("profileCard");
       card.style.display = card.style.display === "none" ? "block" : "none";
@@ -1123,12 +1135,10 @@
         }
       }
 
-      await setDoc(doc(db, "developers", currentUser.uid), {
-        ...currentDeveloperDoc,
+      await updateDoc(doc(db, "developers", currentUser.uid), {
         username: newHandle,
         studioName: newStudio || newHandle,
-        website: newWeb,
-        banned: currentDeveloperDoc.banned || false
+        website: newWeb
       });
 
       currentDeveloperDoc.username = newHandle;
@@ -1137,6 +1147,7 @@
 
       document.getElementById("welcomeText").innerText = `${currentDeveloperDoc.studioName} (@${currentDeveloperDoc.username}) | ${currentUser.email}`;
       document.getElementById("profileCard").style.display = "none";
+      await logAuditAction("PROFILE_UPDATE", currentUser.uid, `Updated studio to ${currentDeveloperDoc.studioName}`);
       alert("Developer profile updated successfully.");
     };
 
@@ -1162,16 +1173,12 @@
           badge.innerText = "Super Administrator";
           badge.classList.add("admin");
           document.getElementById("superAdminTools").style.display = "block";
-          document.getElementById("ghUploadBox").style.display = "block";
           document.getElementById("publisherBrandGroup").style.display = "block";
           document.getElementById("tableHeading").innerText = "All Developer Submissions (Administrator View)";
-          const savedToken = localStorage.getItem("zappora_gh_token");
-          if (savedToken) document.getElementById("ghToken").value = savedToken;
         } else {
-          badge.innerText = "Verified Developer";
+          badge.innerText = currentDeveloperDoc.verified ? "Verified Developer ✓" : "Standard Developer";
           badge.classList.remove("admin");
           document.getElementById("superAdminTools").style.display = "none";
-          document.getElementById("ghUploadBox").style.display = "none";
           document.getElementById("publisherBrandGroup").style.display = "none";
           document.getElementById("tableHeading").innerText = "Your Submitted Applications";
         }
@@ -1183,21 +1190,25 @@
       }
     });
 
+    // PHASE 1 SECURITY: Least-privilege query (Developers only query their own apps)
     async function loadAppsFromFirebase() {
       const tbody = document.getElementById("catalogTableBody");
       try {
-        const snap = await getDocs(collection(db, "apps"));
+        const appsQuery = isSuperAdmin
+          ? collection(db, "apps")
+          : query(collection(db, "apps"), where("developerUid", "==", currentUser.uid));
+
+        const snap = await getDocs(appsQuery);
         allApps = [];
         snap.forEach(d => allApps.push(d.data()));
 
-        visibleAppsCache = isSuperAdmin
-          ? allApps
-          : allApps.filter(a => a.developerUid === currentUser.uid);
+        visibleAppsCache = allApps;
 
         document.getElementById("statTotal").innerText = visibleAppsCache.length;
         document.getElementById("statApproved").innerText = visibleAppsCache.filter(a => a.status === "approved").length;
         document.getElementById("statPending").innerText = visibleAppsCache.filter(a => a.status !== "approved").length;
         document.getElementById("statDownloads").innerText = visibleAppsCache.reduce((s, a) => s + (parseInt(a.downloads, 10) || 0), 0);
+        document.getElementById("statViews").innerText = visibleAppsCache.reduce((s, a) => s + (parseInt(a.views, 10) || 0), 0);
 
         window.renderAdminTable();
       } catch (err) {
@@ -1227,6 +1238,8 @@
         if (app.status === "rejected") statusBadge = `<span class="status-pill status-rejected" title="${escapeHTML(app.rejectReason || '')}">Rejected</span>`;
 
         const handleText = app.developerUsername ? `(@${escapeHTML(app.developerUsername)})` : "";
+        const viewsCount = parseInt(app.views, 10) || 0;
+        const dlCount = parseInt(app.downloads, 10) || 0;
 
         const row = document.createElement("tr");
         row.innerHTML = `
@@ -1242,7 +1255,7 @@
           <td>${escapeHTML(app.category)}</td>
           <td>v${escapeHTML(app.versionName)}</td>
           <td>${statusBadge}</td>
-          <td><strong>${parseInt(app.downloads, 10) || 0}</strong></td>
+          <td><span style="color:var(--text-muted);font-size:0.8rem;">${viewsCount} views</span> / <strong>${dlCount} DL</strong></td>
           <td class="action-cell"></td>
         `;
 
@@ -1337,19 +1350,37 @@
       });
     };
 
-    window.handleApkFile = (event) => {
+    // PHASE 1 & 6 SECURITY: APK Validation + Automatic Browser SHA-256 Checksum Calculation
+    window.handleApkFile = async (event) => {
       const file = event.target.files[0];
       if (!file) return;
-      selectedApkFile = file;
+
+      if (!file.name.toLowerCase().endsWith(".apk")) {
+        alert("Security Check: Only valid Android Package (.apk) files are allowed.");
+        event.target.value = "";
+        return;
+      }
+
+      const maxBytes = 250 * 1024 * 1024; // 250 MB safety limit
+      if (file.size > maxBytes) {
+        alert("File size exceeds the 250MB maximum limit.");
+        event.target.value = "";
+        return;
+      }
 
       const sizeInMB = (file.size / (1024 * 1024)).toFixed(1) + "MB";
       document.getElementById("appSize").value = sizeInMB;
-      document.getElementById("apkFileName").innerText = `Selected Package: ${file.name} (${sizeInMB})`;
+      document.getElementById("apkFileName").innerText = `Calculating SHA-256 checksum for ${file.name} (${sizeInMB})...`;
 
-      if (isSuperAdmin) {
-        const appId = document.getElementById("appId").value.trim() || "app";
-        const cleanFile = file.name.replace(/[^a-zA-Z0-9._-]/g, "_");
-        document.getElementById("appDownloadUrl").value = `https://raw.githubusercontent.com/${GITHUB_REPO}/main/assets/${appId}/apk/${cleanFile}`;
+      try {
+        const arrayBuffer = await file.arrayBuffer();
+        const hashBuffer = await crypto.subtle.digest("SHA-256", arrayBuffer);
+        const hashArray = Array.from(new Uint8Array(hashBuffer));
+        const sha256Hex = hashArray.map(b => b.toString(16).padStart(2, "0")).join("");
+        document.getElementById("appSha256").value = sha256Hex;
+        document.getElementById("apkFileName").innerText = `Verified Package: ${file.name} (${sizeInMB}) | SHA-256 Ready`;
+      } catch (e) {
+        document.getElementById("apkFileName").innerText = `Selected Package: ${file.name} (${sizeInMB})`;
       }
     };
 
@@ -1361,14 +1392,21 @@
       document.getElementById("iconPreview").style.display = "none";
       document.getElementById("ssPreviewBox").innerHTML = "";
       document.getElementById("apkFileName").innerText = "";
+      document.getElementById("appSha256").value = "";
       document.getElementById("formHeading").innerText = "Submit or Update Application";
       document.getElementById("btnSubmit").innerText = "Submit Application to Catalog";
       document.getElementById("cancelEditBtn").style.display = "none";
-      selectedApkFile = null;
     };
 
     window.handleFormSubmit = async (e) => {
       e.preventDefault();
+
+      // Client-side rate limit (10 seconds cooldown between submissions)
+      if (Date.now() - lastSubmitTimestamp < 10000) {
+        alert("Please wait a few seconds before submitting again.");
+        return;
+      }
+
       const btn = document.getElementById("btnSubmit");
       const log = document.getElementById("statusLog");
       btn.disabled = true;
@@ -1384,40 +1422,10 @@
         }
 
         const cleanDownloadUrl = safeUrl(document.getElementById("appDownloadUrl").value.trim(), "");
-        if (!cleanDownloadUrl) {
-          alert("Please provide a valid HTTPS download URL.");
+        if (!cleanDownloadUrl || !/^https:\/\//i.test(cleanDownloadUrl)) {
+          alert("Security Requirement: Please provide a valid HTTPS download URL.");
           btn.disabled = false;
           return;
-        }
-
-        const token = document.getElementById("ghToken").value.trim();
-
-        if (isSuperAdmin && token && selectedApkFile) {
-          localStorage.setItem("zappora_gh_token", token);
-          log.style.display = "block";
-          log.innerText = "Uploading APK package to GitHub repository...";
-
-          const cleanFile = selectedApkFile.name.replace(/[^a-zA-Z0-9._-]/g, "_");
-          const repoPath = `assets/${appId}/apk/${cleanFile}`;
-          const b64 = await new Promise((res, rej) => {
-            const r = new FileReader();
-            r.onload = () => res(r.result.split(",")[1]);
-            r.onerror = rej;
-            r.readAsDataURL(selectedApkFile);
-          });
-
-          const apiUrl = `https://api.github.com/repos/${GITHUB_REPO}/contents/${repoPath}`;
-          let sha = null;
-          const getR = await fetch(apiUrl, { headers: { Authorization: `Bearer ${token}` } });
-          if (getR.ok) sha = (await getR.json()).sha;
-
-          const body = { message: `Upload APK for ${appId}`, content: b64, branch: "main" };
-          if (sha) body.sha = sha;
-          await fetch(apiUrl, {
-            method: "PUT",
-            headers: { Authorization: `Bearer ${token}`, "Content-Type": "application/json" },
-            body: JSON.stringify(body)
-          });
         }
 
         const rawScreenshots = document.getElementById("appScreenshots").value.trim();
@@ -1428,7 +1436,6 @@
             ).map(s => safeUrl(s.trim(), "")).filter(Boolean)
           : [];
 
-        // Determine Publisher Brand Name
         let finalDevName = existing ? existing.developerName : currentDeveloperDoc.studioName;
         if (isSuperAdmin) {
           const selectedBrand = document.getElementById("appPublisherBrand").value;
@@ -1441,23 +1448,34 @@
           }
         }
 
+        const newVersionName = document.getElementById("appVersionName").value.trim();
+        const newNotes = document.getElementById("appNotes").value.trim();
+        const prevHistory = existing && Array.isArray(existing.versionHistory) ? existing.versionHistory : [];
+        const updatedHistory = [
+          { version: newVersionName, notes: newNotes, date: Date.now() },
+          ...prevHistory.filter(v => v.version !== newVersionName)
+        ].slice(0, 10);
+
         const appData = {
           id: appId,
           title: document.getElementById("appTitle").value.trim(),
           category: document.getElementById("appCategory").value,
-          versionName: document.getElementById("appVersionName").value.trim(),
-          versionCode: 1,
+          versionName: newVersionName,
+          versionCode: existing ? ((parseInt(existing.versionCode, 10) || 1) + 1) : 1,
           size: document.getElementById("appSize").value.trim(),
+          sha256: document.getElementById("appSha256").value.trim() || (existing ? (existing.sha256 || "") : ""),
           downloads: existing ? (parseInt(existing.downloads, 10) || 0) : 0,
+          views: existing ? (parseInt(existing.views, 10) || 0) : 0,
           ratingSum: existing ? (existing.ratingSum || 5) : 5,
           ratingCount: existing ? (existing.ratingCount || 1) : 1,
           reviews: existing ? (existing.reviews || []) : [],
+          versionHistory: updatedHistory,
           desc: document.getElementById("appDesc").value.trim(),
           icon: safeUrl(document.getElementById("appIcon").value.trim(), "favicon.png"),
           downloadUrl: cleanDownloadUrl,
           webUrl: safeUrl(document.getElementById("appWebUrl").value.trim(), ""),
           screenshots: screenshotsArray,
-          releaseNotes: document.getElementById("appNotes").value.trim(),
+          releaseNotes: newNotes,
           developerUid: existing ? existing.developerUid : currentUser.uid,
           developerName: finalDevName,
           developerUsername: existing ? (existing.developerUsername || currentDeveloperDoc.username) : currentDeveloperDoc.username,
@@ -1467,6 +1485,8 @@
         };
 
         await setDoc(doc(db, "apps", appId), appData);
+        lastSubmitTimestamp = Date.now();
+        await logAuditAction(existing ? "APP_UPDATE" : "APP_SUBMIT", appId, `${appData.title} v${newVersionName}`);
 
         window.resetFormState();
 
@@ -1486,6 +1506,7 @@
     window.approveApp = async (id) => {
       if (!isSuperAdmin) return;
       await updateDoc(doc(db, "apps", id), { status: "approved", rejectReason: "" });
+      await logAuditAction("APP_APPROVE", id, "Approved by Super Admin");
       await loadAppsFromFirebase();
     };
 
@@ -1494,12 +1515,14 @@
       const reason = prompt("Specify rejection reason for the developer:", "Invalid package link or policy violation");
       if (reason === null) return;
       await updateDoc(doc(db, "apps", id), { status: "rejected", rejectReason: reason });
+      await logAuditAction("APP_REJECT", id, reason);
       await loadAppsFromFirebase();
     };
 
     window.deleteApp = async (id) => {
       if (confirm("Are you sure you want to permanently delete this application?")) {
         await deleteDoc(doc(db, "apps", id));
+        await logAuditAction("APP_DELETE", id, "Deleted application");
         await loadAppsFromFirebase();
       }
     };
@@ -1519,6 +1542,7 @@
       document.getElementById("appSize").value = item.size;
       document.getElementById("appIcon").value = item.icon;
       document.getElementById("appDownloadUrl").value = item.downloadUrl;
+      document.getElementById("appSha256").value = item.sha256 || "";
       document.getElementById("appWebUrl").value = item.webUrl || "";
       document.getElementById("appScreenshots").value = Array.isArray(item.screenshots) ? item.screenshots.join(" | ") : "";
       document.getElementById("appDesc").value = item.desc;
@@ -1556,9 +1580,11 @@
             developerUsername: currentDeveloperDoc.username || "ankur",
             status: "approved",
             downloads: parseInt(item.downloads, 10) || 0,
+            createdAt: Date.now(),
             updatedAt: Date.now()
           });
         }
+        await logAuditAction("LEGACY_IMPORT", "version.json", `Synchronized ${list.length} apps`);
         alert(`Successfully synchronized ${list.length} applications from version.json.`);
         await loadAppsFromFirebase();
       } catch (err) {
