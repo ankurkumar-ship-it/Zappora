@@ -284,7 +284,16 @@
         <li>Open the downloaded APK file on your Android device to complete installation.</li>
       </ol>
     </section>
-    <footer>&copy; 2026 Zappora Store. Official Android App &amp; Game Directory.</footer>
+    <footer>
+      <div style="margin-bottom:8px; display:flex; justify-content:center; gap:14px; flex-wrap:wrap; font-weight:600;">
+        <a href="legal.html#privacy" style="color:var(--pri); text-decoration:none;">Privacy Policy</a>
+        <a href="legal.html#terms" style="color:var(--pri); text-decoration:none;">Terms &amp; Conditions</a>
+        <a href="legal.html#developer" style="color:var(--pri); text-decoration:none;">Developer Policy</a>
+        <a href="legal.html#copyright" style="color:var(--pri); text-decoration:none;">DMCA / Copyright</a>
+        <a href="legal.html#security" style="color:var(--pri); text-decoration:none;">APK Security Policy</a>
+      </div>
+      &copy; 2026 Zappora Store. Official Android App &amp; Game Directory. (100% Free Platform)
+    </footer>
   </div>
 
   <!-- Floating Install Bar -->
@@ -405,7 +414,9 @@
         <button id="mDownloadBtn" type="button" class="btn-download">Download APK</button>
         <a id="mWebBtn" href="#" class="btn-web" target="_blank" rel="noopener noreferrer" style="display:none;">Web Play</a>
         <button id="mWishBtn" type="button" class="btn-share" onclick="toggleWishlistCurrent()">♡ Wishlist</button>
+        <button id="mFollowBtn" type="button" class="btn-share" onclick="toggleFollowCurrentDev()">+ Follow Dev</button>
         <button type="button" class="btn-share" onclick="shareCurrentApp()">Share</button>
+        <button type="button" class="btn-share" style="color:var(--err);" onclick="reportCurrentApp()">🚩 Report</button>
       </div>
 
       <div class="screenshots-wrapper" id="mScreenshotsWrapper" style="display:none;">
@@ -446,14 +457,16 @@
 
         <!-- Phase 2 & 6: SHA-256 Package Integrity Verification Box -->
         <div class="security-box" id="mShaBox" style="display:none;">
-          <div style="display:flex;justify-content:space-between;align-items:center;">
+          <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:6px;">
             <strong style="color:var(--txt);">🛡️ SHA-256 Package Integrity Checksum</strong>
-            <button type="button" onclick="copyCurrentSha()" style="background:none;border:none;color:var(--pri);font-weight:700;font-size:0.75rem;cursor:pointer;">Copy Hash</button>
+            <div style="display:flex;gap:10px;">
+              <button type="button" onclick="copyCurrentSha()" style="background:none;border:none;color:var(--pri);font-weight:700;font-size:0.75rem;cursor:pointer;">Copy Hash</button>
+              <a id="mVirusTotalLink" href="#" target="_blank" rel="noopener noreferrer" style="color:var(--ok);font-weight:700;font-size:0.75rem;text-decoration:none;">Verify on VirusTotal ↗</a>
+            </div>
           </div>
           <code class="sha-code" id="mShaValue"></code>
         </div>
-      </div>
-
+        
       <div class="modal-section" id="mNotesSection">
         <h4>What's New (Release Notes)</h4>
         <p id="mNotes"></p>
@@ -516,12 +529,12 @@
       doc,
       getDoc,
       setDoc,
+      addDoc,
       updateDoc,
       increment,
       query,
       where
     } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
-
     const app = initializeApp(ZAPPORA_CONFIG.firebase);
     const auth = getAuth(app);
     const db = getFirestore(app);
@@ -661,6 +674,52 @@
         showToast("SHA-256 Checksum Copied!");
       }).catch(() => {});
     };
+
+    // PHASE 5: FOLLOW DEVELOPER & REPORT APP TO HQ
+    let followedDevs = [];
+    try { followedDevs = JSON.parse(localStorage.getItem("zappora_followed_devs") || "[]"); } catch (e) {}
+
+    function updateFollowButton() {
+      const btn = document.getElementById("mFollowBtn");
+      if (!btn || !currentModalApp) return;
+      const dev = currentModalApp.developerName || "Zappora Official";
+      const isFollowing = followedDevs.includes(dev);
+      btn.innerText = isFollowing ? "✓ Following Dev" : "+ Follow Dev";
+      btn.style.color = isFollowing ? "var(--pri)" : "";
+    }
+
+    window.toggleFollowCurrentDev = () => {
+      if (!currentModalApp) return;
+      const dev = currentModalApp.developerName || "Zappora Official";
+      const idx = followedDevs.indexOf(dev);
+      if (idx > -1) {
+        followedDevs.splice(idx, 1);
+        showToast(`Unfollowed ${dev}`);
+      } else {
+          followedDevs.push(dev);
+          showToast(`Following ${dev}! New releases will be highlighted.`);
+      }
+      localStorage.setItem("zappora_followed_devs", JSON.stringify(followedDevs));
+      updateFollowButton();
+    };
+
+    window.reportCurrentApp = async () => {
+      if (!currentModalApp) return;
+      const reason = prompt(`Report an issue with "${currentModalApp.title}" (e.g. Broken APK link, copyright, or bug):`);
+      if (!reason || reason.trim().length < 3) return;
+      const reporterEmail = (currentVisitor && currentVisitor.email) ? currentVisitor.email : "anonymous@zappora.user";
+      try {
+        await addDoc(collection(db, "reports"), {
+          appId: currentModalApp.id,
+          reason: reason.trim().slice(0, 450),
+          reporterEmail: reporterEmail,
+          createdAt: Date.now()
+        });
+        showToast("Report submitted to Zappora HQ. Thank you!");
+      } catch (e) {
+        showToast("Could not send report. Please try again.");
+      }
+    }; 
 
     // EMAILJS AUTO-WELCOME EMAIL SENDER
     async function sendZapporaWelcomeEmail(name, username, email) {
@@ -1280,9 +1339,12 @@
       if (app.sha256 && app.sha256.trim() !== "") {
         shaBox.style.display = "block";
         document.getElementById("mShaValue").innerText = app.sha256;
+        const vtLink = document.getElementById("mVirusTotalLink");
+        if (vtLink) vtLink.href = `https://www.virustotal.com/gui/file/${encodeURIComponent(app.sha256.trim())}`;
       } else {
         shaBox.style.display = "none";
       }
+      updateFollowButton();
 
       // Render All Uploaded Screenshots
       const ssWrapper = document.getElementById("mScreenshotsWrapper");
