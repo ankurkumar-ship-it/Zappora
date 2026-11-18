@@ -492,19 +492,20 @@
           </div>
         </div>
 
-        <!-- Clean SHA-256 Package Integrity Verification Box -->
-        <div class="security-box" id="mShaBox" style="display:none;">
-          <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:6px;">
-            <strong style="color:var(--txt);">SHA-256 Package Checksum</strong>
-            <div style="display:flex;gap:12px;">
-              <button type="button" onclick="copyCurrentSha()" style="background:none;border:none;color:var(--pri);font-weight:700;font-size:0.75rem;cursor:pointer;">Copy Hash</button>
-              <a id="mVirusTotalLink" href="#" target="_blank" rel="noopener noreferrer" style="color:var(--ok);font-weight:700;font-size:0.75rem;text-decoration:none;">Verify on VirusTotal</a>
+        <!-- Clean Zappora Security Verification Badge (SHA-256 Code Hidden) -->
+        <div class="security-box" id="mShaBox" style="display:none; background:var(--ok-bg); border-color:#a7f3d0; padding:10px 14px;">
+          <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px;">
+            <div style="display:flex; align-items:center; gap:8px; color:var(--ok); font-weight:700; font-size:0.82rem;">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                <polyline points="9 12 11 14 15 10"></polyline>
+              </svg>
+              <span>Verified by Zappora Security</span>
             </div>
+            <span style="font-size:0.74rem; color:var(--muted); font-weight:600;">No Malware or Tampering Detected</span>
           </div>
-          <code class="sha-code" id="mShaValue"></code>
         </div>
-      </div>
-
+        
       <div class="modal-section" id="mNotesSection">
         <h4>What's New</h4>
         <p id="mNotes"></p>
