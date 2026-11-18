@@ -1418,8 +1418,7 @@
       document.getElementById("metaOfferedBy").innerText = devName;
 
       const shaBox = document.getElementById("mShaBox");
-      if (app.sha256 && app.sha256.trim() !== "") {
-        shaBox.style.display = "block";
+      shaBox.style.display = "block";
         document.getElementById("mShaValue").innerText = app.sha256;
         const vtLink = document.getElementById("mVirusTotalLink");
         if (vtLink) vtLink.href = `https://www.virustotal.com/gui/file/${encodeURIComponent(app.sha256.trim())}`;
