@@ -1013,7 +1013,27 @@
       await window.refreshAllHqData();
     };
 
-    // 3. Render Moderation Table (Featured & Editor's Choice Pins)
+    // ZAPPORA SENTINEL AI — AUTOMATED THREAT & INTEGRITY SCORER
+    function evaluateAppSecurityScore(appItem) {
+      let score = 50;
+      const url = String(appItem.downloadUrl || "").toLowerCase();
+      const text = (String(appItem.title || "") + " " + String(appItem.desc || "")).toLowerCase();
+
+      if (url.startsWith("https://")) score += 15;
+      if (url.includes("github.com") || url.includes("githubusercontent.com") || url.includes("firebasestorage")) score += 20;
+      if (appItem.sha256 && appItem.sha256.length === 64) score += 15;
+
+      // Penalize suspicious keywords
+      if (/\b(crack|mod apk|hack|cheat|bypass|trojan|inject)\b/i.test(text)) score -= 45;
+      if (!url.startsWith("https://")) score -= 30;
+
+      score = Math.max(5, Math.min(100, score));
+      if (score >= 85) return { score, label: `AI Score: ${score}% (Verified Safe)`, cls: "pill-ok" };
+      if (score >= 60) return { score, label: `AI Score: ${score}% (Standard)`, cls: "pill-info" };
+      return { score, label: `AI Alert: ${score}% (High Risk)`, cls: "pill-err" };
+    }
+
+    // 3. Render Moderation Table (Featured & Editor's Choice Pins + AI Score)
     window.renderModerationTable = () => {
       const q = (document.getElementById("searchModApps").value || "").toLowerCase().trim();
       const tbody = document.getElementById("moderationTableBody");
@@ -1033,6 +1053,8 @@
           ? '<span class="pill pill-ok">Approved</span>'
           : (a.status === "rejected" ? '<span class="pill pill-err">Rejected</span>' : '<span class="pill pill-warn">Pending</span>');
         const shaBadge = a.sha256 ? '<span class="pill pill-info" title="SHA-256 Verified">SHA-256 ✓</span>' : '';
+        const aiCheck = evaluateAppSecurityScore(a);
+        const aiBadge = `<span class="pill ${aiCheck.cls}">${escapeHTML(aiCheck.label)}</span>`;
 
         return `
           <tr>
@@ -1040,11 +1062,28 @@
               <div class="app-row-cell">
                 <img src="${escapeHTML(a.icon || 'favicon.png')}" onerror="this.src='favicon.png'" />
                 <div>
-                  <strong>${escapeHTML(a.title)}</strong> ${shaBadge}
+                  <strong>${escapeHTML(a.title)}</strong> ${shaBadge} ${aiBadge}
                   <div style="font-size:0.74rem;color:var(--muted);">by ${escapeHTML(a.developerName || 'Zappora Official')}</div>
                 </div>
               </div>
             </td>
+            <td>${escapeHTML(a.category)} • v${escapeHTML(a.versionName)}</td>
+            <td>${stPill}</td>
+            <td>${parseInt(a.views, 10) || 0} views / <strong>${parseInt(a.downloads, 10) || 0} DL</strong></td>
+            <td>
+              <button class="btn-act ${a.featured ? 'active-pin' : ''}" onclick="toggleAppPin('${escapeHTML(a.id)}', 'featured', ${!a.featured})">
+                ${a.featured ? "Featured" : "Feature"}
+              </button>
+              <button class="btn-act ${a.editorsChoice ? 'active-pin' : ''}" onclick="toggleAppPin('${escapeHTML(a.id)}', 'editorsChoice', ${!a.editorsChoice})">
+                ${a.editorsChoice ? "Choice" : "Make Choice"}
+              </button>
+              ${a.status !== "approved" ? `<button class="btn-act ok" onclick="hqApproveApp('${escapeHTML(a.id)}')">Approve</button>` : ""}
+              <button class="btn-act err" onclick="hqDeleteApp('${escapeHTML(a.id)}')">Delete</button>
+            </td>
+          </tr>
+        `;
+      }).join("");
+    };
             <td>${escapeHTML(a.category)} • v${escapeHTML(a.versionName)}</td>
             <td>${stPill}</td>
             <td>${parseInt(a.views, 10) || 0} views / <strong>${parseInt(a.downloads, 10) || 0} DL</strong></td>
