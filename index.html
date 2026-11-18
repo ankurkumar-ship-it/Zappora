@@ -70,7 +70,7 @@
     .search-box input:focus, .filter-select:focus { border-color:var(--pri); }
     .filter-select { width:auto; font-weight:600; cursor:pointer; }
 
-    /* Clean Dashboard Navigation Tabs (No Emojis) */
+    /* Clean Dashboard Navigation Tabs */
     .section-tabs { display:flex; gap:8px; margin-bottom:12px; overflow-x:auto; padding-bottom:4px; scrollbar-width:thin; }
     .sec-tab { padding:8px 14px; border-radius:8px; font-size:0.8rem; font-weight:600; cursor:pointer; border:1px solid var(--bdr); background:var(--surf); color:var(--muted); white-space:nowrap; transition:all 0.15s; }
     .sec-tab:hover { color:var(--txt); background:var(--hover); }
@@ -83,36 +83,34 @@
 
     .dev-filter-bar { display:none; align-items:center; justify-content:space-between; background:var(--pri-l); border:1px solid var(--pri); color:var(--txt); padding:10px 16px; border-radius:9px; margin-bottom:18px; font-size:0.84rem; font-weight:600; }
 
-    /* Play Store + Dashboard Styled Cards (No Rainbow Pills or Emojis) */
+    /* Compact Play Store Cards (No Description, No MB on Card) */
     .grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(285px,1fr)); gap:16px; }
-    .card { position:relative; background:var(--surf); border:1px solid var(--bdr); border-radius:14px; padding:18px; display:flex; flex-direction:column; justify-content:space-between; box-shadow:var(--shadow-card); transition:transform 0.18s,box-shadow 0.18s,border-color 0.18s; cursor:pointer; }
-    .card:hover { transform:translateY(-2px); box-shadow:var(--shadow-hover); border-color:#cbd5e1; }
-    body.dark-mode .card:hover { border-color:#475569; }
+    .card { position:relative; background:var(--surf); border:1px solid var(--bdr); border-radius:14px; padding:16px; display:flex; flex-direction:column; justify-content:space-between; box-shadow:var(--shadow-card); transition:transform 0.18s,box-shadow 0.18s,border-color 0.18s; cursor:pointer; }
+    .card:hover { transform:translateY(-2px); box-shadow:var(--shadow-hover); border-color:var(--pri); }
 
     .btn-wish-card { position:absolute; top:14px; right:14px; background:transparent; border:1px solid var(--bdr); width:30px; height:30px; border-radius:8px; display:flex; align-items:center; justify-content:center; cursor:pointer; color:var(--muted); transition:0.15s; }
     .btn-wish-card:hover { background:var(--hover); color:var(--txt); }
     .btn-wish-card.active { color:var(--pri); background:var(--pri-l); border-color:var(--pri); }
 
-    .card-header { display:flex; gap:13px; align-items:flex-start; margin-bottom:12px; padding-right:34px; }
+    .card-header { display:flex; gap:13px; align-items:center; margin-bottom:14px; padding-right:34px; }
     .app-icon { width:58px; height:58px; border-radius:13px; object-fit:cover; background:var(--hover); border:1px solid var(--bdr); flex-shrink:0; }
     .app-title-block h2 { font-size:1.02rem; font-weight:700; color:var(--txt); margin-bottom:2px; line-height:1.25; word-break:break-word; }
-    .dev-label { font-size:0.76rem; color:var(--muted); margin-bottom:5px; font-weight:500; display:inline-block; }
-    .dev-label:hover { color:var(--pri); text-decoration:underline; }
+    .dev-label { font-size:0.76rem; color:var(--pri); margin-bottom:4px; font-weight:600; display:inline-block; }
+    .dev-label:hover { text-decoration:underline; }
 
-    /* Google Play Store Style Clean Metadata Line: "4.6 ★ • Game • 8.5 MB" */
+    /* Clean Play Store Metadata Line: "5.0 ★ • Game" */
     .play-meta-row { display:flex; align-items:center; gap:6px; flex-wrap:wrap; font-size:0.76rem; color:var(--muted); font-weight:600; }
     .play-rating { display:inline-flex; align-items:center; gap:3px; color:var(--txt); font-weight:700; }
     .play-star-svg { width:12px; height:12px; fill:currentColor; color:var(--txt); }
     .meta-dot { color:#cbd5e1; }
     .meta-tag-subtle { background:var(--hover); color:var(--muted); padding:1px 7px; border-radius:4px; font-size:0.68rem; font-weight:600; border:1px solid var(--bdr); }
 
-    .app-desc { color:var(--muted); font-size:0.85rem; line-height:1.5; margin-bottom:16px; display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical; overflow:hidden; flex-grow:1; word-break:break-word; }
     .card-footer { border-top:1px solid var(--bdr); padding-top:12px; }
     .card-actions { display:flex; gap:8px; align-items:center; }
     .btn-download { flex:1; display:inline-flex; align-items:center; justify-content:center; text-align:center; background:var(--pri); color:#fff; text-decoration:none; font-weight:600; font-size:0.84rem; padding:10px 12px; border-radius:8px; border:none; cursor:pointer; white-space:nowrap; transition:background 0.15s; }
     .btn-download:hover { background:var(--pri-d); }
-    .btn-web { flex:0.85; display:inline-flex; align-items:center; justify-content:center; text-align:center; background:var(--hover); color:var(--txt); text-decoration:none; font-weight:600; font-size:0.84rem; padding:10px 12px; border-radius:8px; border:1px solid var(--bdr); white-space:nowrap; transition:0.15s; }
-    .btn-web:hover { border-color:var(--pri); color:var(--pri); }
+    .btn-web { flex:0.85; display:inline-flex; align-items:center; justify-content:center; text-align:center; background:var(--web-bg); color:var(--web-txt); text-decoration:none; font-weight:600; font-size:0.84rem; padding:10px 12px; border-radius:8px; border:1px solid var(--bdr); white-space:nowrap; transition:0.15s; }
+    .btn-web:hover { opacity:0.92; }
 
     .load-more-wrap { text-align:center; margin-top:24px; display:none; }
     .btn-load-more { padding:10px 22px; border-radius:8px; border:1px solid var(--bdr); background:var(--surf); color:var(--txt); font-weight:600; cursor:pointer; }
@@ -149,7 +147,7 @@
 
     /* Screenshots Slider */
     .screenshots-wrapper { margin-bottom:20px; }
-    .screenshots-wrapper h4, .modal-section h4 { font-size:0.8rem; color:var(--muted); font-weight:700; margin-bottom:8px; text-transform:uppercase; letter-spacing:0.4px; }
+    .screenshots-wrapper h4, .modal-section h4 { font-size:0.8rem; color:var(--pri); font-weight:700; margin-bottom:8px; text-transform:uppercase; letter-spacing:0.4px; }
     .screenshots-slider { display:flex; gap:12px; overflow-x:auto; padding-bottom:8px; }
     .screenshot-item { height:205px; width:auto; border-radius:10px; object-fit:cover; border:1px solid var(--bdr); cursor:zoom-in; flex-shrink:0; }
 
@@ -223,8 +221,18 @@
     .lightbox-overlay { position:fixed; inset:0; background:rgba(0,0,0,0.92); display:none; align-items:center; justify-content:center; z-index:25000; padding:16px; }
     .lightbox-overlay.open { display:flex; }
     .lightbox-overlay img { max-width:95%; max-height:92vh; border-radius:10px; }
-    .info-box { margin-top:34px; padding:18px; border-radius:12px; background:var(--surf); border:1px solid var(--bdr); }
-    footer { text-align:center; margin-top:34px; color:var(--muted); font-size:0.8rem; }
+
+    /* Updated Installation Guide & Sky Blue Footer Links */
+    .info-box { margin-top:34px; padding:18px 20px; border-radius:12px; background:var(--pri-l); border:1px solid #bae6fd; }
+    body.dark-mode .info-box { border-color:var(--bdr); }
+    .info-box h3 { color:var(--pri-d); font-size:0.96rem; font-weight:800; margin-bottom:8px; }
+    body.dark-mode .info-box h3 { color:var(--pri); }
+    .info-box ol { margin-left:18px; color:var(--txt); font-size:0.86rem; font-weight:500; line-height:1.65; }
+
+    footer { text-align:center; margin-top:30px; color:var(--muted); font-size:0.8rem; }
+    .footer-links { margin-bottom:8px; display:flex; justify-content:center; gap:16px; flex-wrap:wrap; font-weight:700; }
+    .footer-links a { color:var(--pri); text-decoration:none; transition:0.15s; }
+    .footer-links a:hover { color:var(--pri-d); text-decoration:underline; }
   </style>
 </head>
 <body>
@@ -305,8 +313,8 @@
     </div>
 
     <section class="info-box">
-      <h3 style="color:var(--txt); font-size:0.95rem; margin-bottom:6px;">Installation &amp; Verification Guide</h3>
-      <ol style="margin-left:18px; color:var(--muted); font-size:0.84rem; line-height:1.6;">
+      <h3>Installation &amp; Verification Guide</h3>
+      <ol>
         <li>Click <strong>Download APK</strong> on any application card for direct instant package download.</li>
         <li>Select any card to inspect screenshots, rating breakdown, release notes, and <strong>SHA-256 package checksum</strong>.</li>
         <li>Open the downloaded APK file on your Android device to complete installation.</li>
@@ -314,12 +322,12 @@
     </section>
 
     <footer>
-      <div style="margin-bottom:8px; display:flex; justify-content:center; gap:16px; flex-wrap:wrap; font-weight:600;">
-        <a href="legal.html#privacy" style="color:var(--muted); text-decoration:none;">Privacy Policy</a>
-        <a href="legal.html#terms" style="color:var(--muted); text-decoration:none;">Terms of Service</a>
-        <a href="legal.html#developer" style="color:var(--muted); text-decoration:none;">Developer Agreement</a>
-        <a href="legal.html#copyright" style="color:var(--muted); text-decoration:none;">Copyright / DMCA</a>
-        <a href="legal.html#security" style="color:var(--muted); text-decoration:none;">APK Security Policy</a>
+      <div class="footer-links">
+        <a href="legal.html#privacy">Privacy Policy</a>
+        <a href="legal.html#terms">Terms of Service</a>
+        <a href="legal.html#developer">Developer Agreement</a>
+        <a href="legal.html#copyright">Copyright / DMCA</a>
+        <a href="legal.html#security">APK Security Policy</a>
       </div>
       &copy; 2026 Zappora Store. Official Android App &amp; Game Directory.
     </footer>
@@ -510,7 +518,7 @@
       <!-- Google Play Store Style Ratings & Histogram Section -->
       <div class="reviews-box">
         <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;flex-wrap:wrap;">
-          <h4 style="font-size:0.8rem;color:var(--muted);font-weight:700;text-transform:uppercase;">Ratings and reviews</h4>
+          <h4 style="font-size:0.8rem;color:var(--pri);font-weight:700;text-transform:uppercase;">Ratings and reviews</h4>
           <span id="reviewerIdentityLabel" style="font-size:0.74rem;color:var(--muted);font-weight:600;"></span>
         </div>
 
@@ -1116,7 +1124,7 @@
       renderApps();
     };
 
-    // Play Store Styled Card Renderer (Zero Emojis, Clean Typography)
+    // Compact Card Renderer (No Description, No MB on Card)
     function renderApps() {
       const container = document.getElementById("appsContainer");
       const loadMoreWrap = document.getElementById("loadMoreWrap");
@@ -1150,24 +1158,20 @@
 
         card.innerHTML = `
           <button type="button" class="btn-wish-card ${isWished ? 'active' : ''}" title="Save application">${bookmarkSvg}</button>
-          <div>
-            <div class="card-header">
-              <img src="${escapeHTML(safeUrl(app.icon, 'favicon.png'))}" alt="${escapeHTML(app.title)}" loading="lazy" decoding="async" class="app-icon" onerror="this.src='favicon.png'" />
-              <div class="app-title-block">
-                <h2>${escapeHTML(app.title)}</h2>
-                <div class="dev-label">${escapeHTML(devName)}${blueTickHtml}</div>
-                <div class="play-meta-row">
-                  <span class="play-rating">
-                    ${escapeHTML(avgRating)}
-                    <svg class="play-star-svg" viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
-                  </span>
-                  <span class="meta-dot">•</span>
-                  <span>${escapeHTML(app.category)}</span>
-                  ${app.size ? `<span class="meta-dot">•</span><span>${escapeHTML(app.size)}</span>` : ""}
-                </div>
+          <div class="card-header">
+            <img src="${escapeHTML(safeUrl(app.icon, 'favicon.png'))}" alt="${escapeHTML(app.title)}" loading="lazy" decoding="async" class="app-icon" onerror="this.src='favicon.png'" />
+            <div class="app-title-block">
+              <h2>${escapeHTML(app.title)}</h2>
+              <div class="dev-label">${escapeHTML(devName)}${blueTickHtml}</div>
+              <div class="play-meta-row">
+                <span class="play-rating">
+                  ${escapeHTML(avgRating)}
+                  <svg class="play-star-svg" viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+                </span>
+                <span class="meta-dot">•</span>
+                <span>${escapeHTML(app.category)}</span>
               </div>
             </div>
-            <p class="app-desc">${escapeHTML(app.desc)}</p>
           </div>
           <div class="card-footer">
             <div class="card-actions">
@@ -1260,7 +1264,6 @@
       document.getElementById("alreadyRatedNotice").style.display = rated ? "block" : "none";
     }
 
-    // Play Store Style Histogram Updater (5, 4, 3, 2, 1 Bars)
     function renderRatingHistogram(appItem) {
       const avg = getAppRating(appItem);
       const reviews = Array.isArray(appItem.reviews) ? appItem.reviews : [];
@@ -1452,7 +1455,7 @@
             <img src="${escapeHTML(safeUrl(sim.icon, 'favicon.png'))}" alt="${escapeHTML(sim.title)}" onerror="this.src='favicon.png'" />
             <div>
               <strong>${escapeHTML(sim.title)}</strong>
-              <span>${escapeHTML(getAppRating(sim))} ★ • ${escapeHTML(sim.size || '')}</span>
+              <span>${escapeHTML(getAppRating(sim))} ★</span>
             </div>
           </div>
         `).join("");
