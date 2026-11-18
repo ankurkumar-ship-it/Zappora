@@ -159,9 +159,8 @@
     .about-meta-item span { display:block; font-size:0.75rem; font-weight:600; color:var(--txt); margin-bottom:2px; }
     .about-meta-item strong { display:block; font-size:0.82rem; font-weight:500; color:var(--muted); word-break:break-all; }
 
-    /* SHA-256 Box */
+    /* Security Verification Box */
     .security-box { background:var(--bg); border:1px solid var(--bdr); border-radius:10px; padding:12px 14px; margin-top:14px; font-size:0.78rem; }
-    .sha-code { font-family:monospace; font-size:0.73rem; color:var(--muted); word-break:break-all; background:var(--surf); padding:6px 8px; border-radius:6px; border:1px solid var(--bdr); margin-top:6px; display:block; }
 
     /* Similar Apps Horizontal Strip */
     .similar-strip { display:grid; grid-template-columns:repeat(auto-fill,minmax(170px,1fr)); gap:10px; margin-top:8px; }
@@ -316,7 +315,7 @@
       <h3>Installation &amp; Verification Guide</h3>
       <ol>
         <li>Click <strong>Download APK</strong> on any application card for direct instant package download.</li>
-        <li>Select any card to inspect screenshots, rating breakdown, release notes, and <strong>SHA-256 package checksum</strong>.</li>
+        <li>Select any card to inspect screenshots, rating breakdown, release notes, and <strong>Zappora Security verification</strong>.</li>
         <li>Open the downloaded APK file on your Android device to complete installation.</li>
       </ol>
     </section>
@@ -505,7 +504,8 @@
             <span style="font-size:0.74rem; color:var(--muted); font-weight:600;">No Malware or Tampering Detected</span>
           </div>
         </div>
-        
+      </div>
+
       <div class="modal-section" id="mNotesSection">
         <h4>What's New</h4>
         <p id="mNotes"></p>
@@ -766,13 +766,6 @@
       }
     };
 
-    window.copyCurrentSha = () => {
-      if (!currentModalApp || !currentModalApp.sha256) return;
-      navigator.clipboard.writeText(currentModalApp.sha256).then(() => {
-        showToast("SHA-256 Checksum Copied");
-      }).catch(() => {});
-    };
-
     async function sendZapporaWelcomeEmail(name, username, email) {
       if (!email || !email.includes("@")) return;
       const sentKey = "zappora_welcome_sent_" + email.toLowerCase().trim();
@@ -983,6 +976,7 @@
       window.open(dlUrl, "_blank", "noopener,noreferrer");
       showToast(`Downloading ${appItem.title}...`);
     };
+
     async function loadCatalog() {
       initVisitorSession();
 
@@ -1088,6 +1082,8 @@
           webBtn.style.display = "none";
         }
       }
+
+      if (window.ZapporaOS) return;
 
       const storeApp = activeCatalog.find(a => String(a.title || "").toLowerCase().includes("zappora"));
       if (storeApp && !sessionStorage.getItem("hide_zappora_bar")) {
@@ -1418,13 +1414,7 @@
       document.getElementById("metaOfferedBy").innerText = devName;
 
       const shaBox = document.getElementById("mShaBox");
-      shaBox.style.display = "block";
-        document.getElementById("mShaValue").innerText = app.sha256;
-        const vtLink = document.getElementById("mVirusTotalLink");
-        if (vtLink) vtLink.href = `https://www.virustotal.com/gui/file/${encodeURIComponent(app.sha256.trim())}`;
-      } else {
-        shaBox.style.display = "none";
-      }
+      if (shaBox) shaBox.style.display = "block";
 
       const ssWrapper = document.getElementById("mScreenshotsWrapper");
       const ssList = document.getElementById("mScreenshotsList");
