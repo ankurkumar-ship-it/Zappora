@@ -965,12 +965,23 @@
         document.getElementById("metaDownloads").innerText = `${appItem.downloads.toLocaleString()}+ downloads`;
       }
 
+      updateDoc(doc(db, "apps", appId), { downloads: increment(1) }).catch(() => {});
+
+      // IF RUNNING INSIDE ZAPPORA NATIVE ANDROID OS APP:
+      if (window.ZapporaOS && typeof window.ZapporaOS.downloadAndInstallApk === "function") {
+        window.ZapporaOS.downloadAndInstallApk(
+          String(appItem.id),
+          String(appItem.title || "App"),
+          dlUrl,
+          String(appItem.sha256 || "")
+        );
+        return;
+      }
+
+      // FALLBACK FOR STANDARD WEB BROWSERS:
       window.open(dlUrl, "_blank", "noopener,noreferrer");
       showToast(`Downloading ${appItem.title}...`);
-
-      updateDoc(doc(db, "apps", appId), { downloads: increment(1) }).catch(() => {});
     };
-
     async function loadCatalog() {
       initVisitorSession();
 
