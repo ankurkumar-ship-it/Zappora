@@ -544,6 +544,17 @@
 
       <div class="setting-row">
         <div class="setting-info">
+          <strong>Release Notifications</strong>
+          <span>Get alerts for new apps and updates from followed studios</span>
+        </div>
+        <label class="switch">
+          <input type="checkbox" id="setNotifToggle" onchange="applyNotifSetting(this.checked)" />
+          <span class="slider"></span>
+        </label>
+      </div>
+
+      <div class="setting-row">
+        <div class="setting-info">
           <strong>Default Startup Category</strong>
           <span>Choose what loads first when you open Zappora</span>
         </div>
@@ -932,6 +943,7 @@
     window.openSettingsModal = () => {
       document.getElementById("setDarkToggle").checked = document.body.classList.contains("dark-mode");
       document.getElementById("setAutoSlideToggle").checked = autoSlideEnabled;
+      document.getElementById("setNotifToggle").checked = notifEnabled && ("Notification" in window && Notification.permission === "granted");
       document.getElementById("setDefaultCat").value = localStorage.getItem("zappora_default_cat") || "ALL";
       document.getElementById("settingsModal").classList.add("open");
     };
@@ -952,6 +964,95 @@
       restartSpotlightTimer();
       showToast(enabled ? "Auto-slide enabled" : "Auto-slide paused");
     };
+
+    window.applyNotifSetting = async (enabled) => {
+      const toggle = document.getElementById("setNotifToggle");
+      if (!("Notification" in window)) {
+        toggle.checked = false;
+        showToast("Notifications are not supported in this browser.");
+        return;
+      }
+
+      if (enabled) {
+        const perm = await Notification.requestPermission();
+        if (perm === "granted") {
+          notifEnabled = true;
+          localStorage.setItem("zappora_notif_enabled", "1");
+          showToast("Release notifications enabled.");
+          sendLocalReleaseNotification(
+            "Zappora Notifications Active",
+            "You will be notified when followed developers publish updates.",
+            "favicon.png",
+            ""
+          );
+        } else {
+          notifEnabled = false;
+          localStorage.setItem("zappora_notif_enabled", "0");
+          toggle.checked = false;
+          showToast("Notification permission denied.");
+        }
+      } else {
+        notifEnabled = false;
+        localStorage.setItem("zappora_notif_enabled", "0");
+        showToast("Release notifications disabled.");
+      }
+    };
+
+    function sendLocalReleaseNotification(title, body, icon, appId) {
+      if (!("Notification" in window) || Notification.permission !== "granted") return;
+      const options = {
+        body: body,
+        icon: icon || "favicon.png",
+        badge: "favicon.png",
+        data: { url: appId ? `/?app=${encodeURIComponent(appId)}` : "/" }
+      };
+
+      if (navigator.serviceWorker && navigator.serviceWorker.ready) {
+        navigator.serviceWorker.ready.then(reg => {
+          reg.showNotification(title, options);
+        }).catch(() => {
+          new Notification(title, options);
+        });
+      } else {
+        new Notification(title, options);
+      }
+    }
+
+    function checkFollowedDevReleases(apps) {
+      let seenVersions = {};
+      try {
+        seenVersions = JSON.parse(localStorage.getItem("zappora_seen_versions") || "{}");
+      } catch (e) {}
+
+      const isFirstRun = Object.keys(seenVersions).length === 0;
+      const nextSeen = { ...seenVersions };
+
+      apps.forEach(item => {
+        const currentVer = String(item.versionName || "1.0");
+        const prevVer = seenVersions[item.id];
+        nextSeen[item.id] = currentVer;
+
+        if (!isFirstRun && notifEnabled && followedDevs.includes(item.developerName || "Zappora Official")) {
+          if (!prevVer) {
+            sendLocalReleaseNotification(
+              `New Release: ${item.title}`,
+              `${item.developerName || "Zappora Official"} published a new ${item.category}.`,
+              safeUrl(item.icon, "favicon.png"),
+              item.id
+            );
+          } else if (prevVer !== currentVer) {
+            sendLocalReleaseNotification(
+              `Update Available: ${item.title}`,
+              `Version v${currentVer} is now live on Zappora Store.`,
+              safeUrl(item.icon, "favicon.png"),
+              item.id
+            );
+          }
+        }
+      });
+
+      localStorage.setItem("zappora_seen_versions", JSON.stringify(nextSeen));
+    }
 
     window.applyDefaultCatSetting = (cat) => {
       localStorage.setItem("zappora_default_cat", cat);
@@ -1435,6 +1536,7 @@
         if (fbApps.length > 0) {
           activeCatalog = fbApps;
           localStorage.setItem("zappora_catalog_cache", JSON.stringify(fbApps));
+          checkFollowedDevReleases(fbApps);
           setupSpotlightAndFloatingBar();
           window.filterCatalog();
         }
@@ -1480,6 +1582,7 @@
         const spotState = getNativeAppActionState(spot);
         dlBtn.className = "btn-spot-dl " + spotState.extraClass;
         dlBtn.innerText = spotState.label;
+        document.getElementById("setNotifToggle").checked = notifEnabled && ("Notification" in window && Notification.permission === "granted");
         dlBtn.onclick = (e) => window.handlePrimaryAppAction(spot.id, e);
 
         const webBtn = document.getElementById("spotWebBtn");
