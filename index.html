@@ -299,6 +299,21 @@
     .dl-history-left img { width:34px; height:34px; border-radius:8px; object-fit:cover; border:1px solid var(--bdr); flex-shrink:0; }
     .dl-history-left div strong { display:block; font-size:0.82rem; color:var(--txt); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width:190px; }
     .dl-history-left div span { display:block; font-size:0.7rem; color:var(--muted); }
+    /* Dedicated Developer Studio Banner */
+    .studio-banner { display:none; background:linear-gradient(135deg,#0f172a 0%,#1e293b 100%); border:1px solid #334155; border-radius:16px; padding:22px 24px; color:#fff; margin-bottom:20px; box-shadow:var(--shadow-card); }
+    .studio-top { display:flex; align-items:center; justify-content:space-between; gap:16px; flex-wrap:wrap; }
+    .studio-id { display:flex; align-items:center; gap:15px; }
+    .studio-avatar { width:62px; height:62px; border-radius:15px; background:var(--pri); color:#fff; display:flex; align-items:center; justify-content:center; font-size:1.6rem; font-weight:800; flex-shrink:0; border:2px solid rgba(255,255,255,0.22); }
+    .studio-id h2 { font-size:1.32rem; font-weight:800; margin-bottom:3px; display:flex; align-items:center; gap:6px; }
+    .studio-id p { font-size:0.8rem; color:#94a3b8; font-weight:500; }
+    .studio-actions { display:flex; gap:8px; flex-wrap:wrap; }
+    .btn-studio-pri { background:var(--pri); color:#fff; border:none; padding:9px 16px; border-radius:8px; font-size:0.8rem; font-weight:700; cursor:pointer; }
+    .btn-studio-pri.active { background:#059669; }
+    .btn-studio-sec { background:rgba(255,255,255,0.08); color:#f8fafc; border:1px solid rgba(255,255,255,0.18); padding:9px 14px; border-radius:8px; font-size:0.8rem; font-weight:600; cursor:pointer; }
+    .btn-studio-sec:hover { background:rgba(255,255,255,0.16); }
+    .studio-stats { display:grid; grid-template-columns:repeat(3,1fr); gap:10px; margin-top:18px; padding-top:16px; border-top:1px solid rgba(255,255,255,0.1); }
+    .studio-stat-box span { display:block; font-size:0.68rem; color:#94a3b8; text-transform:uppercase; font-weight:700; letter-spacing:0.4px; margin-bottom:2px; }
+    .studio-stat-box strong { font-size:1.15rem; font-weight:800; color:#f8fafc; }
   </style>
 </head>
 <body>
@@ -372,10 +387,37 @@
       <div class="pill" id="pill-App" onclick="setCategory('App')">Apps</div>
     </div>
 
-    <div id="devFilterBar" class="dev-filter-bar">
-      <span id="devFilterText">Showing apps by Developer</span>
-      <button onclick="clearDevFilter()" style="background:none;border:none;color:var(--pri-d);font-weight:700;cursor:pointer;">Clear Filter</button>
-    </div>
+    <!-- Dedicated Developer Studio Page Banner -->
+    <section id="studioBanner" class="studio-banner">
+      <div class="studio-top">
+        <div class="studio-id">
+          <div class="studio-avatar" id="studioAvatar">Z</div>
+          <div>
+            <h2 id="studioNameHeading">Developer Studio</h2>
+            <p id="studioSubtext">Official Zappora Publisher</p>
+          </div>
+        </div>
+        <div class="studio-actions">
+          <button type="button" id="studioFollowBtn" class="btn-studio-pri" onclick="toggleFollowStudio()">Follow Studio</button>
+          <button type="button" class="btn-studio-sec" onclick="shareStudioLink()">Share Studio</button>
+          <button type="button" class="btn-studio-sec" onclick="clearDevFilter()">Back to Store</button>
+        </div>
+      </div>
+      <div class="studio-stats">
+        <div class="studio-stat-box">
+          <span>Published Releases</span>
+          <strong id="studioAppsCount">0</strong>
+        </div>
+        <div class="studio-stat-box">
+          <span>Total Downloads</span>
+          <strong id="studioDlCount">0</strong>
+        </div>
+        <div class="studio-stat-box">
+          <span>Average Rating</span>
+          <strong id="studioAvgRating">5.0</strong>
+        </div>
+      </div>
+    </section>
 
     <main class="grid" id="appsContainer"></main>
 
@@ -1459,30 +1501,99 @@
     };
 
     function checkUrlDeepLink() {
-      const targetApp = new URLSearchParams(window.location.search).get("app");
-      if (targetApp) window.openModal(targetApp);
+      const params = new URLSearchParams(window.location.search);
+      const targetApp = params.get("app");
+      const targetDev = params.get("dev");
+      if (targetApp) {
+        window.openModal(targetApp);
+      } else if (targetDev) {
+        window.filterByDeveloper(targetDev);
+      }
     }
 
-    window.setSectionTab = (tab) => {
-      activeSectionTab = tab;
-      document.querySelectorAll(".sec-tab").forEach(el => el.classList.remove("active"));
-      const activeEl = document.getElementById("tab-" + tab);
-      if (activeEl) activeEl.classList.add("active");
-      window.resetAndFilter();
+    function updateStudioBanner(devName) {
+      const devApps = activeCatalog.filter(a => (a.developerName || "Zappora Official") === devName);
+      const totalDownloads = devApps.reduce((sum, a) => sum + (parseInt(a.downloads, 10) || 0), 0);
+      const avgRating = devApps.length > 0
+        ? (devApps.reduce((sum, a) => sum + parseFloat(getAppRating(a)), 0) / devApps.length).toFixed(1)
+        : "5.0";
+      const verified = devApps.some(a => isDevVerified(a));
+      const tickHtml = verified ? '<span class="verified-tick" title="Verified Publisher">✓</span>' : "";
+
+      document.getElementById("studioAvatar").innerText = devName.charAt(0).toUpperCase();
+      document.getElementById("studioNameHeading").innerHTML = `${escapeHTML(devName)} ${tickHtml}`;
+      document.getElementById("studioSubtext").innerText = verified ? "Verified Zappora Publisher" : "Independent Zappora Developer";
+      document.getElementById("studioAppsCount").innerText = devApps.length;
+      document.getElementById("studioDlCount").innerText = totalDownloads.toLocaleString();
+      document.getElementById("studioAvgRating").innerText = avgRating;
+
+      const fBtn = document.getElementById("studioFollowBtn");
+      const isFollowing = followedDevs.includes(devName);
+      fBtn.innerText = isFollowing ? "Following" : "Follow Studio";
+      fBtn.classList.toggle("active", isFollowing);
+    }
+
+    window.toggleFollowStudio = () => {
+      if (!activeDeveloperFilter) return;
+      const idx = followedDevs.indexOf(activeDeveloperFilter);
+      if (idx > -1) {
+        followedDevs.splice(idx, 1);
+        showToast(`Unfollowed ${activeDeveloperFilter}`);
+      } else {
+        followedDevs.push(activeDeveloperFilter);
+        showToast(`Following ${activeDeveloperFilter}`);
+      }
+      localStorage.setItem("zappora_followed_devs", JSON.stringify(followedDevs));
+      updateStudioBanner(activeDeveloperFilter);
+    };
+
+    window.shareStudioLink = () => {
+      if (!activeDeveloperFilter) return;
+      const url = `${window.location.origin}${window.location.pathname}?dev=${encodeURIComponent(activeDeveloperFilter)}`;
+      navigator.clipboard.writeText(url).then(() => {
+        showToast("Studio Link Copied");
+      }).catch(() => {
+        showToast("Copy failed");
+      });
     };
 
     window.filterByDeveloper = (devName, e) => {
       if (e) e.stopPropagation();
       activeDeveloperFilter = devName;
-      document.getElementById("devFilterBar").style.display = "flex";
-      document.getElementById("devFilterText").innerText = `Showing releases by: ${devName}`;
+
+      const spot = document.getElementById("spotlightBanner");
+      const ctrl = document.getElementById("carouselControls");
+      if (spot) spot.style.display = "none";
+      if (ctrl) ctrl.style.display = "none";
+
+      updateStudioBanner(devName);
+      document.getElementById("studioBanner").style.display = "block";
+
+      try {
+        const newUrl = `${window.location.pathname}?dev=${encodeURIComponent(devName)}`;
+        window.history.replaceState({}, "", newUrl);
+      } catch (err) {}
+
       window.closeModal();
       window.resetAndFilter();
+      window.scrollTo({ top: 0, behavior: "smooth" });
     };
 
     window.clearDevFilter = () => {
       activeDeveloperFilter = null;
-      document.getElementById("devFilterBar").style.display = "none";
+      document.getElementById("studioBanner").style.display = "none";
+
+      if (spotlightSlides.length > 0) {
+        document.getElementById("spotlightBanner").style.display = "block";
+        if (spotlightSlides.length > 1) {
+          document.getElementById("carouselControls").style.display = "flex";
+        }
+      }
+
+      try {
+        window.history.replaceState({}, "", window.location.pathname);
+      } catch (err) {}
+
       window.resetAndFilter();
     };
 
