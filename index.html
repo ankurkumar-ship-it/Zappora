@@ -812,7 +812,6 @@
     let downloadHistory = [];
     try {
       downloadHistory = JSON.parse(localStorage.getItem("zappora_download_history") || "[]");
-    } catch (e) {}
       wishlistIds = JSON.parse(localStorage.getItem("zappora_wishlist") || "[]");
       recentlyViewedIds = JSON.parse(localStorage.getItem("zappora_recent_views") || "[]");
       followedDevs = JSON.parse(localStorage.getItem("zappora_followed_devs") || "[]");
