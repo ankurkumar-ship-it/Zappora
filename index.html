@@ -314,6 +314,11 @@
     .studio-stats { display:grid; grid-template-columns:repeat(3,1fr); gap:10px; margin-top:18px; padding-top:16px; border-top:1px solid rgba(255,255,255,0.1); }
     .studio-stat-box span { display:block; font-size:0.68rem; color:#94a3b8; text-transform:uppercase; font-weight:700; letter-spacing:0.4px; margin-bottom:2px; }
     .studio-stat-box strong { font-size:1.15rem; font-weight:800; color:#f8fafc; }
+    /* Smart Native Open / Update Button States */
+    .btn-open { background:#059669 !important; color:#ffffff !important; }
+    .btn-open:hover { background:#047857 !important; }
+    .btn-update { background:#d97706 !important; color:#ffffff !important; }
+    .btn-update:hover { background:#b45309 !important; }
   </style>
 </head>
 <body>
@@ -1267,6 +1272,62 @@
       }
     };
 
+    // STEP 3: SMART NATIVE OS STATE DETECTOR (INSTALL / UPDATE / OPEN)
+    function compareVersions(storeVer, installedVer) {
+      const a = String(storeVer || "0").replace(/^v/i, "").split(".").map(n => parseInt(n, 10) || 0);
+      const b = String(installedVer || "0").replace(/^v/i, "").split(".").map(n => parseInt(n, 10) || 0);
+      const len = Math.max(a.length, b.length);
+      for (let i = 0; i < len; i++) {
+        if ((a[i] || 0) > (b[i] || 0)) return 1;
+        if ((a[i] || 0) < (b[i] || 0)) return -1;
+      }
+      return 0;
+    }
+
+    function getNativeAppActionState(appItem) {
+      const defaultState = { mode: "INSTALL", label: "Download APK", extraClass: "", pkg: "" };
+      if (!window.ZapporaOS || typeof window.ZapporaOS.getInstalledVersionCode !== "function") {
+        return defaultState;
+      }
+      const pkg = String(appItem.packageName || appItem.id || "").trim();
+      if (!pkg) return defaultState;
+
+      try {
+        const installedCode = window.ZapporaOS.getInstalledVersionCode(pkg);
+        if (installedCode < 0) return defaultState;
+
+        let needsUpdate = false;
+        if (appItem.versionCode && parseInt(appItem.versionCode, 10) > installedCode) {
+          needsUpdate = true;
+        } else if (typeof window.ZapporaOS.getInstalledVersionName === "function") {
+          const installedVerName = window.ZapporaOS.getInstalledVersionName(pkg);
+          if (installedVerName && compareVersions(appItem.versionName, installedVerName) > 0) {
+            needsUpdate = true;
+          }
+        }
+
+        if (needsUpdate) {
+          return { mode: "UPDATE", label: `Update (v${appItem.versionName || "New"})`, extraClass: "btn-update", pkg };
+        }
+        return { mode: "OPEN", label: "Open App", extraClass: "btn-open", pkg };
+      } catch (e) {
+        return defaultState;
+      }
+    }
+
+    window.handlePrimaryAppAction = (appId, e) => {
+      if (e) e.stopPropagation();
+      const appItem = activeCatalog.find(i => i.id === appId);
+      if (!appItem) return;
+
+      const state = getNativeAppActionState(appItem);
+      if (state.mode === "OPEN" && window.ZapporaOS && typeof window.ZapporaOS.launchInstalledApp === "function") {
+        window.ZapporaOS.launchInstalledApp(state.pkg);
+        return;
+      }
+      window.directDownloadApk(appId, e);
+    };
+
     window.directDownloadApk = (appId, e) => {
       if (e) e.stopPropagation();
       const appItem = activeCatalog.find(i => i.id === appId);
@@ -1415,9 +1476,10 @@
         document.getElementById("spotDesc").innerText = spot.desc;
         document.getElementById("spotClickArea").onclick = () => window.openModal(spot.id);
 
-        const dlBtn = document.getElementById("spotDlBtn");
-        dlBtn.innerText = "Download APK";
-        dlBtn.onclick = (e) => window.directDownloadApk(spot.id, e);
+        const spotState = getNativeAppActionState(spot);
+        dlBtn.className = "btn-spot-dl " + spotState.extraClass;
+        dlBtn.innerText = spotState.label;
+        dlBtn.onclick = (e) => window.handlePrimaryAppAction(spot.id, e);
 
         const webBtn = document.getElementById("spotWebBtn");
         if (spot.webUrl && safeUrl(spot.webUrl) !== "#") {
@@ -1620,6 +1682,7 @@
         const isWished = wishlistIds.includes(app.id);
         const cleanWebUrl = safeUrl(app.webUrl, "");
         const webBtnLabel = app.category === "Game" ? "Web Play" : "Web View";
+        const actionState = getNativeAppActionState(app);
 
         const webButtonHtml = cleanWebUrl
           ? `<button type="button" class="btn-web" onclick="openWebArcade('${escapeHTML(app.id)}', event)">${webBtnLabel}</button>`
@@ -1652,7 +1715,7 @@
           </div>
           <div class="card-footer">
             <div class="card-actions">
-              <button type="button" class="btn-download">Download APK</button>
+              <button type="button" class="btn-download ${actionState.extraClass}">${escapeHTML(actionState.label)}</button>
               ${webButtonHtml}
             </div>
           </div>
@@ -1661,7 +1724,7 @@
         card.querySelector(".btn-wish-card").addEventListener("click", (e) => window.toggleWishlist(app.id, e));
         card.querySelector(".dev-label").addEventListener("click", (e) => window.filterByDeveloper(devName, e));
         card.querySelector(".card-actions").addEventListener("click", (e) => e.stopPropagation());
-        card.querySelector(".btn-download").addEventListener("click", (e) => window.directDownloadApk(app.id, e));
+        card.querySelector(".btn-download").addEventListener("click", (e) => window.handlePrimaryAppAction(app.id, e));
         container.appendChild(card);
       });
 
@@ -1933,9 +1996,10 @@
         similarSec.style.display = "none";
       }
 
-      const dlBtn = document.getElementById("mDownloadBtn");
-      dlBtn.innerText = "Download APK";
-      dlBtn.onclick = (e) => window.directDownloadApk(app.id, e);
+      const modalState = getNativeAppActionState(app);
+      dlBtn.className = "btn-download " + modalState.extraClass;
+      dlBtn.innerText = modalState.label;
+      dlBtn.onclick = (e) => window.handlePrimaryAppAction(app.id, e);
 
       const webBtn = document.getElementById("mWebBtn");
       const cleanWeb = safeUrl(app.webUrl, "");
