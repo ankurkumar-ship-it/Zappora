@@ -1576,43 +1576,39 @@
 
       setTimeout(() => {
         try {
-          // ... aapka poora purana spotlight code yahan rahega ...
+          document.getElementById("spotTag").innerText = `Popular Release ${currentSlideIdx + 1} of ${spotlightSlides.length}`;
+          document.getElementById("spotIcon").src = safeUrl(spot.icon, "favicon.png");
+          document.getElementById("spotTitle").innerText = spot.title;
+          document.getElementById("spotDesc").innerText = spot.desc;
+          document.getElementById("spotClickArea").onclick = () => window.openModal(spot.id);
+
+          const dlBtn = document.getElementById("spotDlBtn");
+          const spotState = getNativeAppActionState(spot);
+          dlBtn.className = "btn-spot-dl " + spotState.extraClass;
+          dlBtn.innerText = spotState.label;
+          dlBtn.onclick = (e) => window.handlePrimaryAppAction(spot.id, e);
+
+          const webBtn = document.getElementById("spotWebBtn");
+          if (spot.webUrl && safeUrl(spot.webUrl) !== "#") {
+            webBtn.style.display = "inline-block";
+            webBtn.href = safeUrl(spot.webUrl);
+            webBtn.onclick = (e) => window.openWebArcade(spot.id, e);
+            webBtn.innerText = spot.category === "Game" ? "Web Play" : "Web View";
+          } else {
+            webBtn.style.display = "none";
+          }
+
+          document.querySelectorAll(".c-dot").forEach((d, idx) => {
+            d.classList.toggle("active", idx === currentSlideIdx);
+          });
         } catch (err) {
           console.error("Spotlight error:", err);
         } finally {
           inner.style.opacity = "1";
         }
       }, 120);
-        document.getElementById("spotTag").innerText = `Popular Release ${currentSlideIdx + 1} of ${spotlightSlides.length}`;
-        document.getElementById("spotIcon").src = safeUrl(spot.icon, "favicon.png");
-        document.getElementById("spotTitle").innerText = spot.title;
-        document.getElementById("spotDesc").innerText = spot.desc;
-        document.getElementById("spotClickArea").onclick = () => window.openModal(spot.id);
-
-        const dlBtn = document.getElementById("spotDlBtn");
-        const spotState = getNativeAppActionState(spot);
-        dlBtn.className = "btn-spot-dl " + spotState.extraClass;
-        dlBtn.innerText = spotState.label;
-        document.getElementById("setNotifToggle").checked = notifEnabled && ("Notification" in window && Notification.permission === "granted");
-        dlBtn.onclick = (e) => window.handlePrimaryAppAction(spot.id, e);
-
-        const webBtn = document.getElementById("spotWebBtn");
-        if (spot.webUrl && safeUrl(spot.webUrl) !== "#") {
-          webBtn.style.display = "inline-block";
-          webBtn.href = safeUrl(spot.webUrl);
-          webBtn.onclick = (e) => window.openWebArcade(spot.id, e);
-          webBtn.innerText = spot.category === "Game" ? "Web Play" : "Web View";
-        } else {
-          webBtn.style.display = "none";
-        }
-
-        document.querySelectorAll(".c-dot").forEach((d, idx) => {
-          d.classList.toggle("active", idx === currentSlideIdx);
-        });
-        inner.style.opacity = "1";
-      }, 120);
     }
-
+    
     function restartSpotlightTimer() {
       if (slideIntervalId) clearInterval(slideIntervalId);
       if (autoSlideEnabled && spotlightSlides.length > 1) {
