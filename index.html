@@ -943,7 +943,10 @@
     window.openSettingsModal = () => {
       document.getElementById("setDarkToggle").checked = document.body.classList.contains("dark-mode");
       document.getElementById("setAutoSlideToggle").checked = autoSlideEnabled;
-      document.getElementById("setNotifToggle").checked = notifEnabled && ("Notification" in window && Notification.permission === "granted");
+      const notifEl = document.getElementById("setNotifToggle");
+      if (notifEl) {
+        notifEl.checked = (typeof notifEnabled !== "undefined" && notifEnabled) && ("Notification" in window && Notification.permission === "granted");
+      }
       document.getElementById("setDefaultCat").value = localStorage.getItem("zappora_default_cat") || "ALL";
       document.getElementById("settingsModal").classList.add("open");
     };
@@ -1572,6 +1575,14 @@
       inner.style.opacity = "0.35";
 
       setTimeout(() => {
+        try {
+          // ... aapka poora purana spotlight code yahan rahega ...
+        } catch (err) {
+          console.error("Spotlight error:", err);
+        } finally {
+          inner.style.opacity = "1";
+        }
+      }, 120);
         document.getElementById("spotTag").innerText = `Popular Release ${currentSlideIdx + 1} of ${spotlightSlides.length}`;
         document.getElementById("spotIcon").src = safeUrl(spot.icon, "favicon.png");
         document.getElementById("spotTitle").innerText = spot.title;
