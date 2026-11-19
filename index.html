@@ -279,6 +279,26 @@
     .footer-links { margin-bottom:8px; display:flex; justify-content:center; gap:16px; flex-wrap:wrap; font-weight:700; }
     .footer-links a { color:var(--pri); text-decoration:none; transition:0.15s; }
     .footer-links a:hover { color:var(--pri-d); text-decoration:underline; }
+    /* Fullscreen Web Arcade Modal */
+    .arcade-overlay { position:fixed; inset:0; background:#070b14; z-index:22000; display:none; flex-direction:column; }
+    .arcade-overlay.open { display:flex; }
+    .arcade-bar { height:54px; background:#0f172a; border-bottom:1px solid #1e293b; padding:0 16px; display:flex; align-items:center; justify-content:space-between; gap:12px; flex-shrink:0; }
+    .arcade-title-wrap { display:flex; align-items:center; gap:10px; min-width:0; }
+    .arcade-title-wrap img { width:30px; height:30px; border-radius:7px; object-fit:cover; border:1px solid #334155; }
+    .arcade-title-wrap strong { color:#f8fafc; font-size:0.92rem; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+    .arcade-actions { display:flex; align-items:center; gap:8px; flex-shrink:0; }
+    .btn-arcade { background:#1e293b; color:#f8fafc; border:1px solid #334155; padding:7px 12px; border-radius:7px; font-size:0.78rem; font-weight:600; cursor:pointer; text-decoration:none; }
+    .btn-arcade:hover { border-color:var(--pri); color:var(--pri); }
+    .btn-arcade-close { background:#dc2626; color:#fff; border:none; padding:7px 14px; border-radius:7px; font-size:0.78rem; font-weight:700; cursor:pointer; }
+    .arcade-frame { flex:1; width:100%; border:none; background:#000; }
+
+    /* Profile My Downloads History */
+    .dl-history-list { display:flex; flex-direction:column; gap:8px; max-height:190px; overflow-y:auto; }
+    .dl-history-item { display:flex; align-items:center; justify-content:space-between; gap:10px; background:var(--bg); border:1px solid var(--bdr); border-radius:9px; padding:8px 10px; }
+    .dl-history-left { display:flex; align-items:center; gap:10px; min-width:0; }
+    .dl-history-left img { width:34px; height:34px; border-radius:8px; object-fit:cover; border:1px solid var(--bdr); flex-shrink:0; }
+    .dl-history-left div strong { display:block; font-size:0.82rem; color:var(--txt); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width:190px; }
+    .dl-history-left div span { display:block; font-size:0.7rem; color:var(--muted); }
   </style>
 </head>
 <body>
@@ -432,6 +452,13 @@
         <div id="profFollowedList" style="display:flex;gap:6px;flex-wrap:wrap;font-size:0.82rem;color:var(--muted);">None yet</div>
       </div>
 
+      <div style="margin-bottom:18px;">
+        <div style="font-size:0.76rem;font-weight:700;color:var(--pri);text-transform:uppercase;margin-bottom:8px;">My Downloads</div>
+        <div id="profDownloadsList" class="dl-history-list">
+          <span style="font-size:0.8rem;color:var(--muted);">No downloads yet.</span>
+        </div>
+      </div>
+
       <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;padding-top:14px;border-top:1px solid var(--bdr);flex-wrap:wrap;">
         <button type="button" class="btn-secondary-act" onclick="closeProfileModal(); setSectionTab('WISHLIST');">View Saved Apps</button>
         <button type="button" class="btn-danger-outline" onclick="signOutFromProfile()">Sign Out</button>
@@ -490,7 +517,7 @@
 
       <div style="display:flex;justify-content:space-between;align-items:center;margin-top:16px;padding-top:12px;border-top:1px solid var(--bdr);font-size:0.8rem;">
         <a href="legal.html#privacy" style="color:var(--pri);font-weight:600;text-decoration:none;">Privacy &amp; Legal Center</a>
-        <span style="color:var(--muted);font-weight:600;">Zappora Store v2.0</span>
+        <span style="color:var(--muted);font-weight:600;">Zappora Store</span>
       </div>
     </div>
   </div>
@@ -705,6 +732,22 @@
     </div>
   </div>
 
+  <!-- Built-in Fullscreen Web Arcade -->
+  <div class="arcade-overlay" id="arcadeModal">
+    <div class="arcade-bar">
+      <div class="arcade-title-wrap">
+        <img id="arcadeIcon" src="favicon.png" alt="App" onerror="this.src='favicon.png'" />
+        <strong id="arcadeTitle">Zappora Web Arcade</strong>
+      </div>
+      <div class="arcade-actions">
+        <a id="arcadeExternalBtn" href="#" target="_blank" rel="noopener noreferrer" class="btn-arcade">Open in New Tab</a>
+        <button type="button" class="btn-arcade" onclick="toggleArcadeFullscreen()">Fullscreen</button>
+        <button type="button" class="btn-arcade-close" onclick="closeWebArcade()">Close</button>
+      </div>
+    </div>
+    <iframe id="arcadeFrame" class="arcade-frame" src="about:blank" allow="fullscreen; autoplay; gamepad"></iframe>
+  </div>
+
   <div class="lightbox-overlay" id="lightbox" onclick="closeLightbox()">
     <img id="lightboxImg" src="" alt="Fullscreen" />
   </div>
@@ -766,8 +809,10 @@
 
     let wishlistIds = [];
     let recentlyViewedIds = [];
-    let followedDevs = [];
+    let downloadHistory = [];
     try {
+      downloadHistory = JSON.parse(localStorage.getItem("zappora_download_history") || "[]");
+    } catch (e) {}
       wishlistIds = JSON.parse(localStorage.getItem("zappora_wishlist") || "[]");
       recentlyViewedIds = JSON.parse(localStorage.getItem("zappora_recent_views") || "[]");
       followedDevs = JSON.parse(localStorage.getItem("zappora_followed_devs") || "[]");
@@ -900,6 +945,26 @@
         fBox.innerHTML = followedDevs.map(dev =>
           `<button type="button" class="btn-secondary-act" style="padding:5px 10px;font-size:0.74rem;" onclick="closeProfileModal(); filterByDeveloper('${escapeHTML(dev)}');">${escapeHTML(dev)}</button>`
         ).join("");
+      }
+
+      const dlBox = document.getElementById("profDownloadsList");
+      if (dlBox) {
+        if (downloadHistory.length === 0) {
+          dlBox.innerHTML = '<span style="font-size:0.8rem;color:var(--muted);">No downloads yet.</span>';
+        } else {
+          dlBox.innerHTML = downloadHistory.map(item => `
+            <div class="dl-history-item">
+              <div class="dl-history-left">
+                <img src="${escapeHTML(safeUrl(item.icon, 'favicon.png'))}" alt="${escapeHTML(item.title)}" onerror="this.src='favicon.png'" />
+                <div>
+                  <strong>${escapeHTML(item.title)}</strong>
+                  <span>v${escapeHTML(item.version)} • ${escapeHTML(item.date)}</span>
+                </div>
+              </div>
+              <button type="button" class="btn-secondary-act" style="padding:6px 10px;font-size:0.74rem;" onclick="directDownloadApk('${escapeHTML(item.id)}', event)">Download</button>
+            </div>
+          `).join("");
+        }
       }
 
       document.getElementById("profileModal").classList.add("open");
@@ -1171,6 +1236,18 @@
       appItem.downloads = (parseInt(appItem.downloads, 10) || 0) + 1;
       localStorage.setItem("zappora_catalog_cache", JSON.stringify(activeCatalog));
 
+      downloadHistory = [
+        {
+          id: appItem.id,
+          title: appItem.title || "Application",
+          icon: safeUrl(appItem.icon, "favicon.png"),
+          version: appItem.versionName || "1.0",
+          date: new Date().toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })
+        },
+        ...downloadHistory.filter(h => h.id !== appItem.id)
+      ].slice(0, 20);
+      localStorage.setItem("zappora_download_history", JSON.stringify(downloadHistory));
+
       if (currentModalApp && currentModalApp.id === appId) {
         document.getElementById("mDownloads").innerText = appItem.downloads;
         document.getElementById("metaDownloads").innerText = `${appItem.downloads.toLocaleString()}+ downloads`;
@@ -1304,6 +1381,7 @@
         if (spot.webUrl && safeUrl(spot.webUrl) !== "#") {
           webBtn.style.display = "inline-block";
           webBtn.href = safeUrl(spot.webUrl);
+          webBtn.onclick = (e) => window.openWebArcade(spot.id, e);
           webBtn.innerText = spot.category === "Game" ? "Web Play" : "Web View";
         } else {
           webBtn.style.display = "none";
@@ -1433,7 +1511,7 @@
         const webBtnLabel = app.category === "Game" ? "Web Play" : "Web View";
 
         const webButtonHtml = cleanWebUrl
-          ? `<a href="${escapeHTML(cleanWebUrl)}" class="btn-web" target="_blank" rel="noopener noreferrer">${webBtnLabel}</a>`
+          ? `<button type="button" class="btn-web" onclick="openWebArcade('${escapeHTML(app.id)}', event)">${webBtnLabel}</button>`
           : "";
 
         const bookmarkSvg = isWished
@@ -1753,6 +1831,7 @@
       if (cleanWeb) {
         webBtn.style.display = "inline-flex";
         webBtn.href = cleanWeb;
+        webBtn.onclick = (e) => window.openWebArcade(app.id, e);
         webBtn.innerText = app.category === "Game" ? "Web Play" : "Web View";
       } else {
         webBtn.style.display = "none";
@@ -1774,6 +1853,38 @@
       document.getElementById("lightbox").classList.add("open");
     };
     window.closeLightbox = () => document.getElementById("lightbox").classList.remove("open");
+
+    // BUILT-IN FULLSCREEN WEB ARCADE
+    window.openWebArcade = (appId, e) => {
+      if (e) { e.preventDefault(); e.stopPropagation(); }
+      const appItem = activeCatalog.find(i => i.id === appId);
+      if (!appItem) return;
+      const webUrl = safeUrl(appItem.webUrl, "");
+      if (!webUrl || webUrl === "#") return;
+
+      document.getElementById("arcadeIcon").src = safeUrl(appItem.icon, "favicon.png");
+      document.getElementById("arcadeTitle").innerText = appItem.title || "Web Arcade";
+      document.getElementById("arcadeExternalBtn").href = webUrl;
+      document.getElementById("arcadeFrame").src = webUrl;
+      document.getElementById("arcadeModal").classList.add("open");
+    };
+
+    window.closeWebArcade = () => {
+      if (document.fullscreenElement) {
+        document.exitFullscreen().catch(() => {});
+      }
+      document.getElementById("arcadeFrame").src = "about:blank";
+      document.getElementById("arcadeModal").classList.remove("open");
+    };
+
+    window.toggleArcadeFullscreen = () => {
+      const el = document.getElementById("arcadeModal");
+      if (!document.fullscreenElement) {
+        el.requestFullscreen().catch(() => {});
+      } else {
+        document.exitFullscreen().catch(() => {});
+      }
+    };
 
     window.shareCurrentApp = async () => {
       if (!currentModalApp) return;
