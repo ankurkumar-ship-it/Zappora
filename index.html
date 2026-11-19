@@ -1476,6 +1476,7 @@
         document.getElementById("spotDesc").innerText = spot.desc;
         document.getElementById("spotClickArea").onclick = () => window.openModal(spot.id);
 
+        const dlBtn = document.getElementById("spotDlBtn");
         const spotState = getNativeAppActionState(spot);
         dlBtn.className = "btn-spot-dl " + spotState.extraClass;
         dlBtn.innerText = spotState.label;
@@ -1994,8 +1995,9 @@
         `).join("");
       } else {
         similarSec.style.display = "none";
-      }
+      }     
 
+      const dlBtn = document.getElementById("mDownloadBtn");
       const modalState = getNativeAppActionState(app);
       dlBtn.className = "btn-download " + modalState.extraClass;
       dlBtn.innerText = modalState.label;
