@@ -2350,6 +2350,13 @@
         if (cleanWindowsUrl) platforms.push("Windows");
         if (cleanAppleUrl) platforms.push("Apple");
         if (cleanWebUrl) platforms.push("Web");
+        const rawScreenshots = document.getElementById("appScreenshots").value.trim();
+        const screenshotsArray = rawScreenshots
+          ? (rawScreenshots.includes(" | ")
+              ? rawScreenshots.split(" | ")
+              : rawScreenshots.split(/,(?=\s*(?:https?:\/\/|data:image\/))/i)
+            ).map(s => safeUrl(s.trim(), "")).filter(Boolean)
+          : [];
         let finalDevName = existing ? existing.developerName : currentDeveloperDoc.studioName;
         if (isSuperAdmin) {
           const selectedBrand = document.getElementById("appPublisherBrand").value;
