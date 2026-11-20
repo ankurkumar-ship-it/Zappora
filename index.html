@@ -1562,7 +1562,10 @@
 
         if (fbApps.length > 0) {
           activeCatalog = fbApps;
-          localStorage.setItem("zappora_catalog_cache", JSON.stringify(fbApps));
+          try {
+            const lightCache = fbApps.map(({ screenshots, ...rest }) => rest);
+            localStorage.setItem("zappora_catalog_cache", JSON.stringify(lightCache));
+          } catch (e) {}
           checkFollowedDevReleases(fbApps);
           setupSpotlightAndFloatingBar();
           window.filterCatalog();
@@ -1893,7 +1896,7 @@
         card.innerHTML = `
           <button type="button" class="btn-wish-card ${isWished ? 'active' : ''}" title="Save application">${bookmarkSvg}</button>
           <div class="card-header">
-            <img src="${escapeHTML(safeUrl(app.icon, 'favicon.png'))}" alt="${escapeHTML(app.title)}" loading="lazy" decoding="async" class="app-icon" onerror="this.src='favicon.png'" />
+            <img src="${escapeHTML(safeUrl(app.icon, 'favicon.png'))}" alt="${escapeHTML(app.title)}" fetchpriority="high" class="app-icon" onerror="this.src='favicon.png'" />
             <div class="app-title-block">
               <h2>${escapeHTML(app.title)}</h2>
               <div class="dev-label">${escapeHTML(devName)}${blueTickHtml}</div>
