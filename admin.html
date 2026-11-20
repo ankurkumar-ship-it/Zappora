@@ -1247,14 +1247,20 @@
                     </div>
                     <span class="platform-opt">Optional</span>
                   </div>
+                  <div class="file-dropzone" onclick="document.getElementById('winFileInput').click()">
+                    <input type="file" id="winFileInput" accept=".exe,.msi,.zip" onchange="handlePlatformFile(event, 'windows')" />
+                    <span class="dropzone-label">Select .exe / .msi / .zip File to Auto-Calculate Size &amp; SHA-256 Checksum</span>
+                    <div id="winFileName" style="font-size: 0.82rem; color: var(--primary-dark); font-weight: 600; margin-top: 4px;"></div>
+                  </div>
                   <div class="form-row">
                     <div style="flex: 3; min-width: 220px;">
                       <input type="url" id="appWindowsUrl" placeholder="https://.../setup.exe or .zip (Direct HTTPS URL)" oninput="updateLiveCardPreview()" />
                     </div>
                     <div style="flex: 1; min-width: 110px;">
-                      <input type="text" id="appWindowsSize" maxlength="20" placeholder="Size (e.g. 45MB)" />
+                      <input type="text" id="appWindowsSize" maxlength="20" placeholder="Size (e.g. 105MB)" />
                     </div>
                   </div>
+                  <input type="text" id="appWindowsSha256" placeholder="Windows SHA-256 Checksum (Auto-generated when file is selected above)" readonly style="margin-top:8px; font-size:0.78rem; background:var(--surface-subtle); color:var(--text-muted);" />
                 </div>
 
                 <!-- 3. APPLE -->
@@ -1264,9 +1270,14 @@
                       <span class="platform-icon apple">
                         <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M15.96 6.32c.67-.81 1.12-1.94 1-3.07-.96.04-2.13.64-2.82 1.45-.61.7-.15 1.85-.99 2.96 1.07.08 2.15-.53 2.81-1.34z"/></svg>
                       </span>
-                      <span>Apple Build (macOS .dmg / iOS Link)</span>
+                      <span>Apple Build (macOS .dmg / .zip / iOS .ipa)</span>
                     </div>
                     <span class="platform-opt">Optional</span>
+                  </div>
+                  <div class="file-dropzone" onclick="document.getElementById('appleFileInput').click()">
+                    <input type="file" id="appleFileInput" accept=".dmg,.ipa,.zip,.pkg" onchange="handlePlatformFile(event, 'apple')" />
+                    <span class="dropzone-label">Select .dmg / .ipa / .zip File to Auto-Calculate Size &amp; SHA-256 Checksum</span>
+                    <div id="appleFileName" style="font-size: 0.82rem; color: var(--primary-dark); font-weight: 600; margin-top: 4px;"></div>
                   </div>
                   <div class="form-row">
                     <div style="flex: 3; min-width: 220px;">
@@ -1276,10 +1287,8 @@
                       <input type="text" id="appAppleSize" maxlength="20" placeholder="Size (e.g. 52MB)" />
                     </div>
                   </div>
+                  <input type="text" id="appAppleSha256" placeholder="Apple SHA-256 Checksum (Auto-generated when file is selected above)" readonly style="margin-top:8px; font-size:0.78rem; background:var(--surface-subtle); color:var(--text-muted);" />
                 </div>
-
-              </div>
-            </div>
 
             <div class="form-group">
               <label>Web Version URL (Optional — Shows "Web Play" for Games or "Web View" for Apps)</label>
@@ -2243,6 +2252,42 @@
       }
     };
 
+    window.handlePlatformFile = async (event, platform) => {
+      const file = event.target.files[0];
+      if (!file) return;
+
+      const isWin = platform === "windows";
+      const statusEl = document.getElementById(isWin ? "winFileName" : "appleFileName");
+      const sizeInput = document.getElementById(isWin ? "appWindowsSize" : "appAppleSize");
+      const shaInput = document.getElementById(isWin ? "appWindowsSha256" : "appAppleSha256");
+
+      const maxBytes = 500 * 1024 * 1024; // 500MB limit for browser hashing
+      if (file.size > maxBytes || file.size < 1024) {
+        alert("File size must be between 1KB and 500MB for browser checksum calculation.");
+        event.target.value = "";
+        return;
+      }
+
+      const sizeInMB = (file.size / (1024 * 1024)).toFixed(1) + "MB";
+      sizeInput.value = sizeInMB;
+      statusEl.style.color = "var(--primary-dark)";
+      statusEl.innerText = `Computing SHA-256 checksum for ${file.name} (${sizeInMB})...`;
+
+      try {
+        const arrayBuffer = await file.arrayBuffer();
+        const hashBuffer = await crypto.subtle.digest("SHA-256", arrayBuffer);
+        const hashArray = Array.from(new Uint8Array(hashBuffer));
+        const sha256Hex = hashArray.map(b => b.toString(16).padStart(2, "0")).join("");
+
+        shaInput.value = sha256Hex;
+        statusEl.style.color = "var(--success)";
+        statusEl.innerText = `[Verified] ${file.name} (${sizeInMB}) | SHA-256 Locked`;
+      } catch (e) {
+        statusEl.style.color = "var(--text-muted)";
+        statusEl.innerText = `Selected: ${file.name} (${sizeInMB})`;
+      }
+    };
+
     window.resetFormState = () => {
       document.getElementById("appForm").reset();
       const idInput = document.getElementById("appId");
@@ -2255,6 +2300,10 @@
       document.getElementById("statusLog").style.display = "none";
       document.getElementById("formHeading").innerText = "Submit New Application";
       document.getElementById("btnSubmit").innerText = "Submit Application to Catalog";
+      document.getElementById("winFileName").innerText = "";
+      document.getElementById("appWindowsSha256").value = "";
+      document.getElementById("appleFileName").innerText = "";
+      document.getElementById("appAppleSha256").value = "";
     };
 
     window.handleFormSubmit = async (e) => {
@@ -2341,6 +2390,8 @@
           windowsUrl: cleanWindowsUrl,
           windowsSize: document.getElementById("appWindowsSize").value.trim(),
           appleUrl: cleanAppleUrl,
+          windowsSha256: document.getElementById("appWindowsSha256").value.trim() || (existing ? (existing.windowsSha256 || "") : ""),
+          appleSha256: document.getElementById("appAppleSha256").value.trim() || (existing ? (existing.appleSha256 || "") : ""),
           appleSize: document.getElementById("appAppleSize").value.trim(),
           platforms: platforms,
           webUrl: cleanWebUrl,
@@ -2422,6 +2473,8 @@
       document.getElementById("appScreenshots").value = Array.isArray(item.screenshots) ? item.screenshots.join(" | ") : "";
       document.getElementById("appDesc").value = item.desc;
       document.getElementById("appNotes").value = item.releaseNotes || "";
+      document.getElementById("appWindowsSha256").value = item.windowsSha256 || "";
+      document.getElementById("appAppleSha256").value = item.appleSha256 || "";
 
       if (isSuperAdmin) {
         const brandSelect = document.getElementById("appPublisherBrand");
