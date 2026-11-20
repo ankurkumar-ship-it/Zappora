@@ -25,7 +25,22 @@
       --radius-lg: 14px;
       --radius-md: 10px;
       --shadow-sm: 0 1px 3px rgba(15, 23, 42, 0.04);
-      --shadow-lg: 0 20px 40px -15px rgba(15, 23, 42, 0.08);
+      --shadow-lg: 0 20px 40px -15px rgba(15, 23, 42, 0.12);
+    }
+
+    body.dark-mode {
+      --bg-main: #0b1120;
+      --surface: #111827;
+      --surface-subtle: #1e293b;
+      --primary: #38bdf8;
+      --primary-dark: #0284c7;
+      --primary-light: rgba(56, 189, 248, 0.14);
+      --border-color: #1f2937;
+      --text-main: #f1f5f9;
+      --text-muted: #94a3b8;
+      --danger-bg: rgba(220, 38, 38, 0.14);
+      --success-bg: rgba(5, 150, 105, 0.14);
+      --warning-bg: rgba(217, 119, 6, 0.14);
     }
 
     * {
@@ -40,10 +55,11 @@
       color: var(--text-main);
       padding: 24px 16px 80px;
       line-height: 1.5;
+      transition: background-color 0.2s, color 0.2s;
     }
 
     .container {
-      max-width: 1120px;
+      max-width: 1140px;
       margin: 0 auto;
     }
 
@@ -109,7 +125,6 @@
 
     .btn-google:hover {
       background: var(--surface-subtle);
-      border-color: #cbd5e1;
     }
 
     .divider {
@@ -236,9 +251,10 @@
       border: 1px solid #a7f3d0;
     }
 
+    /* Header */
     .header {
       background: var(--surface);
-      padding: 18px 24px;
+      padding: 16px 24px;
       border-radius: var(--radius-lg);
       border: 1px solid var(--border-color);
       margin-bottom: 24px;
@@ -265,7 +281,7 @@
     }
 
     .header h1 {
-      font-size: 1.3rem;
+      font-size: 1.25rem;
       font-weight: 800;
       color: var(--text-main);
       letter-spacing: -0.3px;
@@ -275,13 +291,89 @@
       display: flex;
       align-items: center;
       gap: 10px;
-      flex-wrap: wrap;
+    }
+
+    .header-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 16px;
+      border-radius: 10px;
+      border: 1px solid var(--border-color);
+      background: var(--surface);
+      color: var(--text-main);
+      font-weight: 600;
+      font-size: 0.86rem;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .header-btn:hover {
+      background: var(--surface-subtle);
+      border-color: var(--primary);
+    }
+
+    .header-avatar {
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 1px solid var(--border-color);
+    }
+
+    .btn-primary {
+      padding: 10px 18px;
+      background: var(--primary);
+      color: #ffffff;
+      border: none;
+      border-radius: 10px;
+      font-size: 0.86rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .btn-primary:hover {
+      background: var(--primary-dark);
+    }
+
+    .btn-outline {
+      padding: 8px 14px;
+      border-radius: 8px;
+      border: 1px solid var(--border-color);
+      background: var(--surface);
+      color: var(--text-main);
+      font-weight: 600;
+      font-size: 0.82rem;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      transition: all 0.2s;
+    }
+
+    .btn-outline:hover {
+      background: var(--surface-subtle);
+    }
+
+    .btn-danger-outline {
+      padding: 10px 16px;
+      border-radius: 8px;
+      border: 1px solid #fecaca;
+      background: var(--danger-bg);
+      color: var(--danger);
+      font-weight: 700;
+      font-size: 0.84rem;
+      cursor: pointer;
     }
 
     .role-badge {
-      font-size: 0.74rem;
+      display: inline-block;
+      font-size: 0.72rem;
       font-weight: 700;
-      padding: 5px 12px;
+      padding: 4px 10px;
       border-radius: 20px;
       background: var(--primary-light);
       color: var(--primary-dark);
@@ -295,38 +387,10 @@
       border: 1px solid #fde68a;
     }
 
-    .btn-outline {
-      padding: 8px 14px;
-      border-radius: 8px;
-      border: 1px solid var(--border-color);
-      background: var(--surface);
-      color: var(--text-main);
-      font-weight: 600;
-      font-size: 0.82rem;
-      cursor: pointer;
-      text-decoration: none;
-      transition: all 0.2s;
-    }
-
-    .btn-outline:hover {
-      background: var(--surface-subtle);
-      border-color: #cbd5e1;
-    }
-
-    .btn-logout {
-      padding: 8px 14px;
-      border-radius: 8px;
-      border: 1px solid #fecaca;
-      background: var(--danger-bg);
-      color: var(--danger);
-      font-weight: 600;
-      font-size: 0.82rem;
-      cursor: pointer;
-    }
-
+    /* Stats */
     .stats-row {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
       gap: 16px;
       margin-bottom: 24px;
     }
@@ -340,7 +404,7 @@
     }
 
     .stat-card span {
-      font-size: 0.76rem;
+      font-size: 0.75rem;
       color: var(--text-muted);
       font-weight: 700;
       text-transform: uppercase;
@@ -348,12 +412,13 @@
     }
 
     .stat-card h3 {
-      font-size: 1.85rem;
+      font-size: 1.8rem;
       color: var(--text-main);
       margin-top: 6px;
       font-weight: 800;
     }
 
+    /* Cards & Table */
     .card {
       background: var(--surface);
       border: 1px solid var(--border-color);
@@ -368,16 +433,48 @@
       justify-content: space-between;
       align-items: center;
       margin-bottom: 18px;
-      padding-bottom: 12px;
+      padding-bottom: 14px;
       border-bottom: 1px solid var(--border-color);
       flex-wrap: wrap;
-      gap: 10px;
+      gap: 12px;
     }
 
     .card h2 {
       font-size: 1.15rem;
       color: var(--text-main);
       font-weight: 700;
+    }
+
+    .filter-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+
+    .filter-tabs {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+
+    .filter-tab {
+      padding: 6px 14px;
+      border-radius: 20px;
+      border: 1px solid var(--border-color);
+      background: var(--surface);
+      color: var(--text-muted);
+      font-size: 0.8rem;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .filter-tab.active {
+      background: var(--primary);
+      color: #ffffff;
+      border-color: var(--primary);
     }
 
     .table-responsive {
@@ -388,7 +485,7 @@
       width: 100%;
       border-collapse: collapse;
       text-align: left;
-      font-size: 0.9rem;
+      font-size: 0.88rem;
     }
 
     th, td {
@@ -397,11 +494,17 @@
       vertical-align: middle;
     }
 
+    body.compact-table th,
+    body.compact-table td {
+      padding: 8px 12px;
+      font-size: 0.83rem;
+    }
+
     th {
       background: var(--surface-subtle);
       color: var(--text-muted);
       font-weight: 700;
-      font-size: 0.75rem;
+      font-size: 0.74rem;
       text-transform: uppercase;
       letter-spacing: 0.5px;
     }
@@ -413,9 +516,9 @@
     }
 
     .table-icon {
-      width: 44px;
-      height: 44px;
-      min-width: 44px;
+      width: 42px;
+      height: 42px;
+      min-width: 42px;
       border-radius: 10px;
       object-fit: cover;
       border: 1px solid var(--border-color);
@@ -436,9 +539,9 @@
     .status-rejected { background: var(--danger-bg); color: var(--danger); }
 
     .action-btn {
-      padding: 6px 12px;
+      padding: 6px 10px;
       border-radius: 6px;
-      font-size: 0.76rem;
+      font-size: 0.75rem;
       font-weight: 600;
       cursor: pointer;
       border: 1px solid transparent;
@@ -449,15 +552,88 @@
     .btn-approve { background: var(--success-bg); color: var(--success); border-color: #a7f3d0; }
     .btn-reject { background: var(--warning-bg); color: var(--warning); border-color: #fde68a; }
     .btn-edit { background: var(--primary-light); color: var(--primary-dark); }
+    .btn-copy { background: var(--surface-subtle); color: var(--text-main); border-color: var(--border-color); }
     .btn-delete { background: var(--danger-bg); color: var(--danger); }
 
+    /* Editor Page Layout */
+    .editor-grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      gap: 24px;
+      align-items: start;
+    }
+
+    @media (max-width: 900px) {
+      .editor-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .preview-card-sticky {
+      position: sticky;
+      top: 20px;
+    }
+
+    .store-card-preview {
+      border: 1px solid var(--border-color);
+      border-radius: 14px;
+      padding: 18px;
+      background: var(--bg-main);
+    }
+
+    .preview-top {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 14px;
+    }
+
+    .preview-top img {
+      width: 56px;
+      height: 56px;
+      border-radius: 12px;
+      object-fit: cover;
+      border: 1px solid var(--border-color);
+      background: var(--surface);
+    }
+
+    .preview-dev-row {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-top: 4px;
+      font-size: 0.8rem;
+      color: var(--primary);
+      font-weight: 600;
+    }
+
+    .preview-dev-row img {
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+
+    .preview-btn-mock {
+      width: 100%;
+      padding: 10px;
+      border-radius: 8px;
+      background: var(--primary);
+      color: #ffffff;
+      text-align: center;
+      font-weight: 700;
+      font-size: 0.84rem;
+      margin-top: 12px;
+    }
+
+    /* Forms */
     .form-group {
       margin-bottom: 16px;
     }
 
     .form-group label {
       display: block;
-      font-size: 0.84rem;
+      font-size: 0.83rem;
       font-weight: 600;
       margin-bottom: 6px;
       color: var(--text-main);
@@ -468,7 +644,7 @@
       padding: 11px 14px;
       border-radius: var(--radius-md);
       border: 1px solid var(--border-color);
-      font-size: 0.92rem;
+      font-size: 0.9rem;
       color: var(--text-main);
       background: var(--surface);
       outline: none;
@@ -487,19 +663,18 @@
     }
 
     .file-dropzone {
-      border: 2px dashed #cbd5e1;
+      border: 2px dashed var(--border-color);
       border-radius: var(--radius-md);
       padding: 16px;
       background: var(--bg-main);
       text-align: center;
       cursor: pointer;
       margin-bottom: 8px;
-      transition: border-color 0.2s, background 0.2s;
+      transition: border-color 0.2s;
     }
 
     .file-dropzone:hover {
       border-color: var(--primary);
-      background: #f0f9ff;
     }
 
     .file-dropzone input[type="file"] {
@@ -507,7 +682,7 @@
     }
 
     .dropzone-label {
-      font-size: 0.86rem;
+      font-size: 0.84rem;
       color: var(--text-muted);
       font-weight: 600;
     }
@@ -543,7 +718,7 @@
       color: #ffffff;
       border: none;
       border-radius: var(--radius-md);
-      font-size: 0.95rem;
+      font-size: 0.94rem;
       font-weight: 700;
       cursor: pointer;
       width: 100%;
@@ -570,10 +745,167 @@
       font-weight: 600;
       display: none;
     }
+
+    /* Modals */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.55);
+      backdrop-filter: blur(4px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+      z-index: 1000;
+    }
+
+    .modal-overlay.open {
+      display: flex;
+    }
+
+    .modal-box {
+      background: var(--surface);
+      border: 1px solid var(--border-color);
+      border-radius: 16px;
+      width: 100%;
+      max-width: 560px;
+      max-height: 90vh;
+      overflow-y: auto;
+      padding: 24px;
+      box-shadow: var(--shadow-lg);
+    }
+
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-bottom: 14px;
+      margin-bottom: 18px;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .modal-header h3 {
+      font-size: 1.1rem;
+      font-weight: 800;
+    }
+
+    .modal-close {
+      background: var(--surface-subtle);
+      border: 1px solid var(--border-color);
+      color: var(--text-main);
+      padding: 6px 12px;
+      border-radius: 8px;
+      font-size: 0.8rem;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .profile-photo-row {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 18px;
+      padding: 14px;
+      border-radius: 12px;
+      background: var(--surface-subtle);
+      border: 1px solid var(--border-color);
+    }
+
+    .profile-photo-preview {
+      width: 72px;
+      height: 72px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 2px solid var(--primary);
+      background: var(--surface);
+    }
+
+    .setting-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 14px 0;
+      border-bottom: 1px solid var(--border-color);
+      gap: 12px;
+    }
+
+    .setting-row:last-child {
+      border-bottom: none;
+    }
+
+    .setting-info strong {
+      display: block;
+      font-size: 0.9rem;
+      color: var(--text-main);
+    }
+
+    .setting-info span {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+
+    .switch {
+      position: relative;
+      display: inline-block;
+      width: 44px;
+      height: 24px;
+      flex-shrink: 0;
+    }
+
+    .switch input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+
+    .slider {
+      position: absolute;
+      cursor: pointer;
+      inset: 0;
+      background-color: #cbd5e1;
+      transition: 0.25s;
+      border-radius: 24px;
+    }
+
+    .slider:before {
+      position: absolute;
+      content: "";
+      height: 18px;
+      width: 18px;
+      left: 3px;
+      bottom: 3px;
+      background-color: #ffffff;
+      transition: 0.25s;
+      border-radius: 50%;
+    }
+
+    input:checked + .slider {
+      background-color: var(--primary);
+    }
+
+    input:checked + .slider:before {
+      transform: translateX(20px);
+    }
+
+    .toast {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      background: #0f172a;
+      color: #ffffff;
+      padding: 12px 18px;
+      border-radius: 10px;
+      font-size: 0.86rem;
+      font-weight: 600;
+      box-shadow: var(--shadow-lg);
+      display: none;
+      z-index: 2000;
+    }
   </style>
 </head>
 <body>
 
+  <!-- AUTHENTICATION SECTION -->
   <div id="authSection" class="auth-wrapper">
     <div class="auth-logo">
       <img src="favicon.png" alt="Zappora" onerror="this.src='logo.png'" />
@@ -640,7 +972,9 @@
     </div>
   </div>
 
+  <!-- MAIN CONSOLE SECTION -->
   <div id="dashboardSection" class="container" style="display: none;">
+    <!-- CLEAN 2-BUTTON HEADER -->
     <div class="header">
       <div class="brand-header">
         <img src="favicon.png" alt="Zappora Logo" class="brand-logo" onerror="this.src='logo.png'" />
@@ -650,17 +984,256 @@
         </div>
       </div>
       <div class="user-bar">
-        <span id="roleBadge" class="role-badge">Developer</span>
-        <button onclick="toggleProfileCard()" class="btn-outline">Profile Settings</button>
-        <a href="index.html" target="_blank" class="btn-outline">View Live Store</a>
-        <button class="btn-logout" onclick="logoutUser()">Sign Out</button>
+        <button type="button" class="header-btn" onclick="openProfileModal()">
+          <img id="headerAvatar" src="favicon.png" alt="Profile" class="header-avatar" onerror="this.src='favicon.png'" />
+          <span>Profile</span>
+        </button>
+        <button type="button" class="header-btn" onclick="openSettingsModal()">
+          <span>Settings</span>
+        </button>
       </div>
     </div>
 
-    <div id="profileCard" class="card" style="display: none; background: #f8fafc; border-color: #bae6fd;">
-      <div class="card-title-row">
-        <h2>Developer Profile Settings</h2>
+    <!-- PAGE 1: DASHBOARD VIEW -->
+    <div id="dashboardView">
+      <div id="superAdminTools" class="card" style="display: none; background: var(--warning-bg); border-color: #fde68a;">
+        <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px;">
+          <div>
+            <h2 style="color: #92400e; margin-bottom: 4px; font-size: 1.05rem;">Super Administrator Controls (Server UID Locked)</h2>
+            <p style="font-size: 0.84rem; color: #b45309;">Protected by strict Firestore least-privilege rules. Auto-admin creation and client token storage are disabled.</p>
+          </div>
+          <div style="display:flex; gap:8px; flex-wrap:wrap;">
+            <a href="hq.html" style="padding: 10px 16px; background: #0f172a; color: #ffffff; text-decoration: none; border-radius: 8px; font-weight: 700; font-size: 0.84rem;">Open Zappora HQ</a>
+            <button type="button" onclick="importVersionJsonToFirebase()" style="padding: 10px 16px; background: #d97706; color: #ffffff; border: none; border-radius: 8px; font-weight: 700; cursor: pointer; font-size: 0.84rem;">
+              Synchronize Legacy version.json
+            </button>
+          </div>
+        </div>
       </div>
+
+      <div class="stats-row">
+        <div class="stat-card">
+          <span>Total Submissions</span>
+          <h3 id="statTotal">0</h3>
+        </div>
+        <div class="stat-card">
+          <span>Approved & Published</span>
+          <h3 id="statApproved" style="color: var(--success);">0</h3>
+        </div>
+        <div class="stat-card">
+          <span>Pending Verification</span>
+          <h3 id="statPending" style="color: var(--warning);">0</h3>
+        </div>
+        <div class="stat-card">
+          <span>Total Downloads</span>
+          <h3 id="statDownloads">0</h3>
+        </div>
+        <div class="stat-card">
+          <span>Total Store Views</span>
+          <h3 id="statViews" style="color: var(--primary);">0</h3>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title-row">
+          <h2 id="tableHeading">Submitted Applications</h2>
+          <button type="button" class="btn-primary" onclick="openEditorPage(null)">Submit New Application</button>
+        </div>
+
+        <div class="filter-bar">
+          <div class="filter-tabs">
+            <button type="button" class="filter-tab active" data-status="all" onclick="setStatusFilter('all', this)">All</button>
+            <button type="button" class="filter-tab" data-status="approved" onclick="setStatusFilter('approved', this)">Approved</button>
+            <button type="button" class="filter-tab" data-status="pending" onclick="setStatusFilter('pending', this)">Pending</button>
+            <button type="button" class="filter-tab" data-status="rejected" onclick="setStatusFilter('rejected', this)">Rejected</button>
+          </div>
+          <input type="text" id="adminAppSearch" placeholder="Search apps or developers..." oninput="renderAdminTable()" style="max-width: 260px; width: 100%; padding: 8px 12px; border-radius: 8px; border: 1px solid var(--border-color); background: var(--surface); color: var(--text-main); font-size: 0.85rem;" />
+        </div>
+
+        <div class="table-responsive">
+          <table>
+            <thead>
+              <tr>
+                <th>Application & Publisher</th>
+                <th>Category</th>
+                <th>Version</th>
+                <th>Status</th>
+                <th>Views / DL</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="catalogTableBody">
+              <tr>
+                <td colspan="6" style="text-align: center; color: var(--text-muted);">Loading application catalog...</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- PAGE 2: SEPARATE SUBMIT / UPDATE APPLICATION PAGE -->
+    <div id="editorView" style="display: none;">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 18px; flex-wrap: wrap; gap: 12px;">
+        <button type="button" class="btn-outline" onclick="closeEditorPage()">Back to Dashboard</button>
+        <span style="font-size: 0.84rem; color: var(--text-muted); font-weight: 600;">Application Release Editor</span>
+      </div>
+
+      <div class="editor-grid">
+        <div class="card" id="formCard" style="margin-bottom: 0;">
+          <div class="card-title-row">
+            <h2 id="formHeading">Submit New Application</h2>
+            <button type="button" id="cancelEditBtn" onclick="closeEditorPage()" class="btn-outline">Cancel</button>
+          </div>
+
+          <form id="appForm" onsubmit="handleFormSubmit(event)">
+            <div class="form-row">
+              <div class="form-group" style="flex: 1; min-width: 200px;">
+                <label>Unique Package ID (Lowercase letters, numbers, underscores)</label>
+                <input type="text" id="appId" maxlength="40" placeholder="my_application_id" oninput="this.value = this.value.toLowerCase().replace(/[^a-z0-9_-]/g, '_')" required />
+              </div>
+              <div class="form-group" style="flex: 2; min-width: 240px;">
+                <label>Application Title</label>
+                <input type="text" id="appTitle" maxlength="70" placeholder="Official Application Name" oninput="updateLiveCardPreview()" required />
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group" style="flex: 1; min-width: 130px;">
+                <label>Category</label>
+                <select id="appCategory" onchange="updateLiveCardPreview()">
+                  <option value="Game">Game</option>
+                  <option value="App">App</option>
+                </select>
+              </div>
+              <div class="form-group" style="flex: 1; min-width: 130px;">
+                <label>Version Name</label>
+                <input type="text" id="appVersionName" maxlength="20" placeholder="1.0.0" oninput="updateLiveCardPreview()" required />
+              </div>
+              <div class="form-group" style="flex: 1; min-width: 140px;">
+                <label>Package Size</label>
+                <input type="text" id="appSize" maxlength="20" placeholder="Auto-filled or manual (e.g. 8.5MB)" oninput="updateLiveCardPreview()" required />
+              </div>
+            </div>
+
+            <div class="form-group" id="publisherBrandGroup" style="display: none; background: var(--primary-light); padding: 14px; border-radius: 10px; border: 1px solid var(--border-color);">
+              <label style="color: var(--primary-dark);">Publisher / Developer Brand Name (Owner Control)</label>
+              <select id="appPublisherBrand" onchange="updateLiveCardPreview()">
+                <option value="Zappora Official">Zappora Official (Official Platform App)</option>
+                <option value="Ankur Studios">Ankur Studios (Personal Studio App)</option>
+                <option value="KEEP_EXISTING">Keep Existing Developer Name</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label>Application Icon (Select PNG/JPG File or Provide Direct HTTPS URL)</label>
+              <div class="file-dropzone" onclick="document.getElementById('iconFileInput').click()">
+                <input type="file" id="iconFileInput" accept="image/*" onchange="handleIconFile(event)" />
+                <span class="dropzone-label" id="iconUploadPrompt">Select Application Icon File from Device</span>
+                <div class="preview-box">
+                  <img id="iconPreview" alt="Icon Preview" />
+                </div>
+              </div>
+              <input type="text" id="appIcon" placeholder="https://... or Auto-Generated Data Stream" oninput="updateLiveCardPreview()" required />
+            </div>
+
+            <div class="form-group">
+              <label>Android Package (.apk) Integrity Check & Direct Download URL</label>
+              <div class="file-dropzone" onclick="document.getElementById('apkFileInput').click()">
+                <input type="file" id="apkFileInput" accept=".apk" onchange="handleApkFile(event)" />
+                <span class="dropzone-label" id="apkUploadPrompt">Select .apk Package to Auto-Calculate Size & SHA-256 Checksum</span>
+                <div id="apkFileName" style="font-size: 0.84rem; color: var(--primary-dark); font-weight: 600; margin-top: 4px;"></div>
+              </div>
+              <input type="url" id="appDownloadUrl" placeholder="https://github.com/.../releases/download/.../app.apk (Direct HTTPS APK URL)" required />
+              <input type="text" id="appSha256" placeholder="SHA-256 Checksum (Auto-generated when you select your .apk file above)" readonly style="margin-top:8px; font-size:0.8rem; background:var(--surface-subtle); color:var(--text-muted);" />
+            </div>
+
+            <div class="form-group">
+              <label>Web Version URL (Optional — Shows "Web Play" for Games or "Web View" for Apps)</label>
+              <input type="url" id="appWebUrl" placeholder="https://... (Leave blank to show only Download APK)" />
+            </div>
+
+            <div class="form-group">
+              <label>Application Screenshots (Select Up to 4 Images or Provide Comma-Separated HTTPS URLs)</label>
+              <div class="file-dropzone" onclick="document.getElementById('ssFileInput').click()">
+                <input type="file" id="ssFileInput" accept="image/*" multiple onchange="handleScreenshotFiles(event)" />
+                <span class="dropzone-label" id="ssUploadPrompt">Select Application Screenshots from Device</span>
+                <div class="preview-box" id="ssPreviewBox"></div>
+              </div>
+              <textarea id="appScreenshots" rows="2" placeholder="Screenshot URLs or Auto-Compressed Streams"></textarea>
+            </div>
+
+            <div class="form-group">
+              <label>Application Description</label>
+              <textarea id="appDesc" rows="3" maxlength="1500" placeholder="Provide a clear summary of features and functionality..." required></textarea>
+            </div>
+
+            <div class="form-group">
+              <label>Release Notes (Changelog)</label>
+              <textarea id="appNotes" rows="2" maxlength="800" placeholder="List new features, improvements, and bug fixes in this version..." required></textarea>
+            </div>
+
+            <button type="submit" class="btn-submit" id="btnSubmit">Submit Application to Catalog</button>
+            <div class="upload-log" id="statusLog"></div>
+          </form>
+        </div>
+
+        <!-- LIVE STORE CARD PREVIEW -->
+        <div class="card preview-card-sticky">
+          <div class="card-title-row" style="margin-bottom: 14px;">
+            <h2 style="font-size: 1rem;">Live Storefront Preview</h2>
+          </div>
+          <div class="store-card-preview">
+            <div class="preview-top">
+              <img id="livePrevIcon" src="favicon.png" alt="Preview Icon" onerror="this.src='favicon.png'" />
+              <div>
+                <strong id="livePrevTitle" style="font-size: 1rem; display: block;">Application Title</strong>
+                <div class="preview-dev-row">
+                  <img id="livePrevDevPhoto" src="favicon.png" alt="Dev" onerror="this.src='favicon.png'" />
+                  <span id="livePrevDevName">Studio Name</span>
+                </div>
+                <div id="livePrevMeta" style="font-size: 0.78rem; color: var(--text-muted); margin-top: 3px;">Game | v1.0.0 | 0 MB</div>
+              </div>
+            </div>
+            <div class="preview-btn-mock">Download APK</div>
+          </div>
+          <p style="font-size: 0.78rem; color: var(--text-muted); margin-top: 12px;">
+            Your studio profile photo and brand name will automatically sync with Zappora Store listings upon publishing.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PROFILE MODAL -->
+  <div id="profileModal" class="modal-overlay" onclick="if(event.target === this) closeProfileModal()">
+    <div class="modal-box">
+      <div class="modal-header">
+        <div>
+          <h3>Developer Profile</h3>
+          <span id="roleBadge" class="role-badge" style="margin-top: 4px;">Standard Developer</span>
+        </div>
+        <button type="button" class="modal-close" onclick="closeProfileModal()">Close</button>
+      </div>
+
+      <div class="profile-photo-row">
+        <img id="profPhotoPreview" src="favicon.png" alt="Profile Photo" class="profile-photo-preview" onerror="this.src='favicon.png'" />
+        <div style="flex: 1;">
+          <strong style="font-size: 0.9rem; display: block; margin-bottom: 4px;">Studio Profile Photo</strong>
+          <p style="font-size: 0.78rem; color: var(--text-muted); margin-bottom: 10px;">Displayed on your Zappora Store studio page and published application cards.</p>
+          <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+            <input type="file" id="profPhotoInput" accept="image/*" style="display: none;" onchange="handleProfilePhotoFile(event)" />
+            <button type="button" class="btn-outline" onclick="document.getElementById('profPhotoInput').click()">Upload Photo</button>
+            <button type="button" class="btn-outline" onclick="removeProfilePhoto()">Remove</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Profile Photo HTTPS URL (Auto-filled on Upload)</label>
+        <input type="text" id="profPhotoUrl" placeholder="https://... or uploaded image stream" oninput="document.getElementById('profPhotoPreview').src = this.value || 'favicon.png'" />
+      </div>
+
       <div class="form-row">
         <div class="form-group" style="flex: 1; min-width: 200px;">
           <label>Unique Username (@handle)</label>
@@ -670,175 +1243,100 @@
           <label>Studio / Publisher Name</label>
           <input type="text" id="profStudioName" maxlength="45" placeholder="Ankur Studios" />
         </div>
+      </div>
+
+      <div class="form-group">
+        <label>Studio Bio (Shown on Your Public Studio Page)</label>
+        <textarea id="profBio" rows="2" maxlength="250" placeholder="Short description of your studio or indie projects..."></textarea>
+      </div>
+
+      <div class="form-row">
         <div class="form-group" style="flex: 1; min-width: 200px;">
           <label>Official Website or GitHub URL</label>
           <input type="url" id="profWebsite" placeholder="https://github.com/..." />
         </div>
-      </div>
-      <button onclick="saveDeveloperProfile()" class="btn-submit" style="width: auto; padding: 10px 22px;">Save Profile Changes</button>
-    </div>
-
-    <div id="superAdminTools" class="card" style="display: none; background: var(--warning-bg); border-color: #fde68a;">
-      <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px;">
-        <div>
-          <h2 style="color: #92400e; margin-bottom: 4px; font-size: 1.05rem;">Super Administrator Controls (Server UID Locked)</h2>
-          <p style="font-size: 0.84rem; color: #b45309;">Protected by strict Firestore least-privilege rules. Auto-admin creation and client token storage are disabled.</p>
-        </div>
-        <div style="display:flex; gap:8px; flex-wrap:wrap;">
-          <a href="hq.html" style="padding: 10px 16px; background: #0f172a; color: #ffffff; text-decoration: none; border-radius: 8px; font-weight: 700; font-size: 0.84rem;">Open Zappora HQ</a>
-          <button onclick="importVersionJsonToFirebase()" style="padding: 10px 16px; background: #d97706; color: #ffffff; border: none; border-radius: 8px; font-weight: 700; cursor: pointer; font-size: 0.84rem;">
-            Synchronize Legacy version.json
-          </button>
+        <div class="form-group" style="flex: 1; min-width: 200px;">
+          <label>Public Support Email</label>
+          <input type="email" id="profSupportEmail" placeholder="support@yourstudio.com" />
         </div>
       </div>
-    </div>
 
-    <div class="stats-row">
-      <div class="stat-card">
-        <span>Total Submissions</span>
-        <h3 id="statTotal">0</h3>
+      <div style="display: flex; gap: 10px; flex-wrap: wrap; margin-top: 8px;">
+        <button type="button" onclick="saveDeveloperProfile()" class="btn-primary" style="flex: 1;">Save & Sync Profile</button>
+        <button type="button" onclick="copyStudioLink()" class="btn-outline">Copy Studio Link</button>
       </div>
-      <div class="stat-card">
-        <span>Approved & Published</span>
-        <h3 id="statApproved" style="color: var(--success);">0</h3>
-      </div>
-      <div class="stat-card">
-        <span>Pending Verification</span>
-        <h3 id="statPending" style="color: var(--warning);">0</h3>
-      </div>
-      <div class="stat-card">
-        <span>Total Downloads</span>
-        <h3 id="statDownloads">0</h3>
-      </div>
-      <div class="stat-card">
-        <span>Total Store Views</span>
-        <h3 id="statViews" style="color: var(--primary);">0</h3>
-      </div>
-    </div>
-
-    <div class="card">
-      <div class="card-title-row">
-        <h2 id="tableHeading">Submitted Applications</h2>
-        <input type="text" id="adminAppSearch" placeholder="Search apps or developers..." oninput="renderAdminTable()" style="max-width: 260px; padding: 8px 12px; border-radius: 8px; border: 1px solid var(--border-color); font-size: 0.85rem;" />
-      </div>
-      <div class="table-responsive">
-        <table>
-          <thead>
-            <tr>
-              <th>Application & Publisher</th>
-              <th>Category</th>
-              <th>Version</th>
-              <th>Status</th>
-              <th>Views / DL</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody id="catalogTableBody">
-            <tr>
-              <td colspan="6" style="text-align: center; color: var(--text-muted);">Loading application catalog...</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
-
-    <div class="card" id="formCard">
-      <div class="card-title-row">
-        <h2 id="formHeading">Submit or Update Application</h2>
-        <button type="button" id="cancelEditBtn" onclick="resetFormState()" class="btn-outline" style="display: none;">Cancel Edit</button>
-      </div>
-      <form id="appForm" onsubmit="handleFormSubmit(event)">
-        <div class="form-row">
-          <div class="form-group" style="flex: 1; min-width: 200px;">
-            <label>Unique Package ID (Lowercase letters, numbers, underscores)</label>
-            <input type="text" id="appId" maxlength="40" placeholder="my_application_id" oninput="this.value = this.value.toLowerCase().replace(/[^a-z0-9_-]/g, '_')" required />
-          </div>
-          <div class="form-group" style="flex: 2; min-width: 260px;">
-            <label>Application Title</label>
-            <input type="text" id="appTitle" maxlength="70" placeholder="Official Application Name" required />
-          </div>
-        </div>
-
-        <div class="form-row">
-          <div class="form-group" style="flex: 1; min-width: 130px;">
-            <label>Category</label>
-            <select id="appCategory">
-              <option value="Game">Game</option>
-              <option value="App">App</option>
-            </select>
-          </div>
-          <div class="form-group" style="flex: 1; min-width: 130px;">
-            <label>Version Name</label>
-            <input type="text" id="appVersionName" maxlength="20" placeholder="1.0.0" required />
-          </div>
-          <div class="form-group" style="flex: 1; min-width: 140px;">
-            <label>Package Size</label>
-            <input type="text" id="appSize" maxlength="20" placeholder="Auto-filled or manual (e.g. 8.5MB)" required />
-          </div>
-        </div>
-
-        <div class="form-group" id="publisherBrandGroup" style="display: none; background: #f0f9ff; padding: 14px; border-radius: 10px; border: 1px solid #bae6fd;">
-          <label style="color: #0369a1;">Publisher / Developer Brand Name (Owner Control)</label>
-          <select id="appPublisherBrand">
-            <option value="Zappora Official">Zappora Official (Official Platform App)</option>
-            <option value="Ankur Studios">Ankur Studios (Personal Studio App)</option>
-            <option value="KEEP_EXISTING">Keep Existing Developer Name</option>
-          </select>
-        </div>
-
-        <div class="form-group">
-          <label>Application Icon (Select PNG/JPG File or Provide Direct HTTPS URL)</label>
-          <div class="file-dropzone" onclick="document.getElementById('iconFileInput').click()">
-            <input type="file" id="iconFileInput" accept="image/*" onchange="handleIconFile(event)" />
-            <span class="dropzone-label" id="iconUploadPrompt">Select Application Icon File from Device</span>
-            <div class="preview-box">
-              <img id="iconPreview" alt="Icon Preview" />
-            </div>
-          </div>
-          <input type="text" id="appIcon" placeholder="https://... or Auto-Generated Data Stream" required />
-        </div>
-
-        <div class="form-group">
-          <label>Android Package (.apk) Integrity Check & Direct Download URL</label>
-          <div class="file-dropzone" onclick="document.getElementById('apkFileInput').click()">
-            <input type="file" id="apkFileInput" accept=".apk" onchange="handleApkFile(event)" />
-            <span class="dropzone-label" id="apkUploadPrompt">Select .apk Package to Auto-Calculate Size & SHA-256 Checksum</span>
-            <div id="apkFileName" style="font-size: 0.84rem; color: var(--primary-dark); font-weight: 600; margin-top: 4px;"></div>
-          </div>
-          <input type="url" id="appDownloadUrl" placeholder="https://github.com/.../releases/download/.../app.apk (Direct HTTPS APK URL)" required />
-          <input type="text" id="appSha256" placeholder="SHA-256 Checksum (Auto-generated when you select your .apk file above)" readonly style="margin-top:8px; font-size:0.8rem; background:var(--surface-subtle); color:var(--text-muted);" />
-        </div>
-
-        <div class="form-group">
-          <label>Web Version URL (Optional — Shows "Web Play" for Games or "Web View" for Apps)</label>
-          <input type="url" id="appWebUrl" placeholder="https://... (Leave blank to show only Download APK)" />
-        </div>
-
-        <div class="form-group">
-          <label>Application Screenshots (Select Up to 4 Images or Provide Comma-Separated HTTPS URLs)</label>
-          <div class="file-dropzone" onclick="document.getElementById('ssFileInput').click()">
-            <input type="file" id="ssFileInput" accept="image/*" multiple onchange="handleScreenshotFiles(event)" />
-            <span class="dropzone-label" id="ssUploadPrompt">Select Application Screenshots from Device</span>
-            <div class="preview-box" id="ssPreviewBox"></div>
-          </div>
-          <textarea id="appScreenshots" rows="2" placeholder="Screenshot URLs or Auto-Compressed Streams"></textarea>
-        </div>
-
-        <div class="form-group">
-          <label>Application Description</label>
-          <textarea id="appDesc" rows="3" maxlength="1500" placeholder="Provide a clear summary of features and functionality..." required></textarea>
-        </div>
-
-        <div class="form-group">
-          <label>Release Notes (Changelog)</label>
-          <textarea id="appNotes" rows="2" maxlength="800" placeholder="List new features, improvements, and bug fixes in this version..." required></textarea>
-        </div>
-
-        <button type="submit" class="btn-submit" id="btnSubmit">Submit Application to Catalog</button>
-        <div class="upload-log" id="statusLog"></div>
-      </form>
     </div>
   </div>
+
+  <!-- SETTINGS MODAL -->
+  <div id="settingsModal" class="modal-overlay" onclick="if(event.target === this) closeSettingsModal()">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h3>Console Settings</h3>
+        <button type="button" class="modal-close" onclick="closeSettingsModal()">Close</button>
+      </div>
+
+      <div class="setting-row">
+        <div class="setting-info">
+          <strong>Dark Mode</strong>
+          <span>Switch between light and dark developer workspace themes</span>
+        </div>
+        <label class="switch">
+          <input type="checkbox" id="setDarkMode" onchange="toggleDarkMode(this.checked)" />
+          <span class="slider"></span>
+        </label>
+      </div>
+
+      <div class="setting-row">
+        <div class="setting-info">
+          <strong>Compact Table View</strong>
+          <span>Display more application rows per screen in the dashboard</span>
+        </div>
+        <label class="switch">
+          <input type="checkbox" id="setCompactTable" onchange="toggleCompactTable(this.checked)" />
+          <span class="slider"></span>
+        </label>
+      </div>
+
+      <div class="setting-row">
+        <div class="setting-info">
+          <strong>Live Storefront</strong>
+          <span>Open Zappora Store in a new tab to inspect your public listings</span>
+        </div>
+        <a href="index.html" target="_blank" class="btn-outline">View Live Store</a>
+      </div>
+
+      <div class="setting-row">
+        <div class="setting-info">
+          <strong>Export Catalog Backup</strong>
+          <span>Download a JSON backup of all your submitted applications</span>
+        </div>
+        <button type="button" class="btn-outline" onclick="exportDeveloperCatalog()">Export JSON</button>
+      </div>
+
+      <div class="setting-row">
+        <div class="setting-info">
+          <strong>Publishing & APK Guidelines</strong>
+          <span>Review SHA-256 verification and store policy requirements</span>
+        </div>
+        <a href="legal.html" target="_blank" class="btn-outline">Open Policy</a>
+      </div>
+
+      <div class="setting-row">
+        <div class="setting-info">
+          <strong>Account Security</strong>
+          <span>Send a password reset link to your registered email</span>
+        </div>
+        <button type="button" class="btn-outline" onclick="sendAccountPasswordReset()">Reset Password</button>
+      </div>
+
+      <div style="margin-top: 20px; padding-top: 16px; border-top: 1px solid var(--border-color); display: flex; justify-content: flex-end;">
+        <button type="button" class="btn-danger-outline" onclick="logoutUser()">Sign Out of Console</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="toast" class="toast"></div>
 
   <script type="module">
     import { ZAPPORA_CONFIG } from "./config.js";
@@ -873,7 +1371,6 @@
     const db = getFirestore(app);
     const googleProvider = new GoogleAuthProvider();
 
-    // Clean up any legacy token stored in localStorage from older versions
     localStorage.removeItem("zappora_gh_token");
 
     let authMode = "login";
@@ -882,7 +1379,26 @@
     let isSuperAdmin = false;
     let allApps = [];
     let visibleAppsCache = [];
+    let statusFilter = "all";
     let lastSubmitTimestamp = 0;
+
+    // Apply saved UI preferences on load
+    if (localStorage.getItem("zappora_admin_dark") === "1") {
+      document.body.classList.add("dark-mode");
+    }
+    if (localStorage.getItem("zappora_admin_compact") === "1") {
+      document.body.classList.add("compact-table");
+    }
+
+    function showToast(msg) {
+      const el = document.getElementById("toast");
+      el.innerText = msg;
+      el.style.display = "block";
+      clearTimeout(window._toastTimer);
+      window._toastTimer = setTimeout(() => {
+        el.style.display = "none";
+      }, 3000);
+    }
 
     function escapeHTML(str) {
       return String(str ?? "")
@@ -901,7 +1417,6 @@
       return fallback;
     }
 
-    // PHASE 1 SECURITY: Activity & Audit Logger
     async function logAuditAction(action, targetId, details = "") {
       if (!currentUser) return;
       try {
@@ -916,7 +1431,6 @@
       } catch (e) {}
     }
 
-    // EMAILJS AUTO-WELCOME EMAIL SENDER
     async function sendZapporaWelcomeEmail(name, username, email) {
       if (!email || !email.includes("@")) return;
       const sentKey = "zappora_welcome_sent_" + email.toLowerCase().trim();
@@ -1046,6 +1560,10 @@
             username: username,
             studioName: finalStudio,
             email: email,
+            photoURL: "",
+            bio: "",
+            website: "",
+            supportEmail: email,
             verified: false,
             banned: false,
             welcomeEmailSent: true,
@@ -1062,10 +1580,11 @@
     };
 
     window.logoutUser = async () => {
+      closeSettingsModal();
+      closeProfileModal();
       await signOut(auth);
     };
 
-    // PHASE 1 SECURITY: Strictly Read-Only Super Admin Verification (No automatic creation)
     async function verifyStrictSuperAdmin(user) {
       try {
         const configRef = doc(db, "settings", "admin_config");
@@ -1093,7 +1612,10 @@
           username: baseHandle,
           studioName: user.displayName || baseHandle,
           email: user.email || "",
+          photoURL: user.photoURL || "",
+          bio: "",
           website: "",
+          supportEmail: user.email || "",
           verified: false,
           banned: false,
           welcomeEmailSent: true,
@@ -1106,20 +1628,74 @@
         }
       }
 
-      document.getElementById("profUsername").value = currentDeveloperDoc.username || "";
-      document.getElementById("profStudioName").value = currentDeveloperDoc.studioName || "";
-      document.getElementById("profWebsite").value = currentDeveloperDoc.website || "";
+      syncProfileUI();
     }
 
-    window.toggleProfileCard = () => {
-      const card = document.getElementById("profileCard");
-      card.style.display = card.style.display === "none" ? "block" : "none";
+    function syncProfileUI() {
+      const photo = safeUrl(currentDeveloperDoc.photoURL || (currentUser && currentUser.photoURL), "favicon.png");
+      document.getElementById("headerAvatar").src = photo;
+      document.getElementById("profPhotoPreview").src = photo;
+      document.getElementById("profPhotoUrl").value = currentDeveloperDoc.photoURL || "";
+      document.getElementById("profUsername").value = currentDeveloperDoc.username || "";
+      document.getElementById("profStudioName").value = currentDeveloperDoc.studioName || "";
+      document.getElementById("profBio").value = currentDeveloperDoc.bio || "";
+      document.getElementById("profWebsite").value = currentDeveloperDoc.website || "";
+      document.getElementById("profSupportEmail").value = currentDeveloperDoc.supportEmail || (currentUser ? currentUser.email : "");
+      document.getElementById("welcomeText").innerText = `${currentDeveloperDoc.studioName} (@${currentDeveloperDoc.username}) | ${currentUser.email}`;
+    }
+
+    // PROFILE MODAL FUNCTIONS
+    window.openProfileModal = () => {
+      syncProfileUI();
+      document.getElementById("profileModal").classList.add("open");
+    };
+
+    window.closeProfileModal = () => {
+      document.getElementById("profileModal").classList.remove("open");
+    };
+
+    window.handleProfilePhotoFile = (event) => {
+      const file = event.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        const img = new Image();
+        img.onload = () => {
+          const canvas = document.createElement("canvas");
+          canvas.width = 160;
+          canvas.height = 160;
+          canvas.getContext("2d").drawImage(img, 0, 0, 160, 160);
+          const dataUrl = canvas.toDataURL("image/webp", 0.85);
+          document.getElementById("profPhotoPreview").src = dataUrl;
+          document.getElementById("profPhotoUrl").value = dataUrl;
+        };
+        img.src = e.target.result;
+      };
+      reader.readAsDataURL(file);
+    };
+
+    window.removeProfilePhoto = () => {
+      document.getElementById("profPhotoPreview").src = "favicon.png";
+      document.getElementById("profPhotoUrl").value = "";
+    };
+
+    window.copyStudioLink = () => {
+      const studio = encodeURIComponent(currentDeveloperDoc.studioName || "");
+      const url = `${window.location.origin}/?dev=${studio}`;
+      navigator.clipboard.writeText(url).then(() => {
+        showToast("Public studio link copied to clipboard.");
+      }).catch(() => {
+        prompt("Copy your studio link:", url);
+      });
     };
 
     window.saveDeveloperProfile = async () => {
       const newHandle = document.getElementById("profUsername").value.trim().toLowerCase();
       const newStudio = document.getElementById("profStudioName").value.trim();
+      const newBio = document.getElementById("profBio").value.trim();
       const newWeb = safeUrl(document.getElementById("profWebsite").value.trim(), "");
+      const newSupport = document.getElementById("profSupportEmail").value.trim();
+      const newPhoto = safeUrl(document.getElementById("profPhotoUrl").value.trim(), "");
 
       if (!newHandle || newHandle.length < 3) {
         alert("Username must contain at least 3 characters.");
@@ -1135,20 +1711,120 @@
         }
       }
 
+      const finalStudio = newStudio || newHandle;
+
       await updateDoc(doc(db, "developers", currentUser.uid), {
         username: newHandle,
-        studioName: newStudio || newHandle,
-        website: newWeb
+        studioName: finalStudio,
+        bio: newBio,
+        website: newWeb,
+        supportEmail: newSupport,
+        photoURL: newPhoto
       });
 
       currentDeveloperDoc.username = newHandle;
-      currentDeveloperDoc.studioName = newStudio || newHandle;
+      currentDeveloperDoc.studioName = finalStudio;
+      currentDeveloperDoc.bio = newBio;
       currentDeveloperDoc.website = newWeb;
+      currentDeveloperDoc.supportEmail = newSupport;
+      currentDeveloperDoc.photoURL = newPhoto;
 
-      document.getElementById("welcomeText").innerText = `${currentDeveloperDoc.studioName} (@${currentDeveloperDoc.username}) | ${currentUser.email}`;
-      document.getElementById("profileCard").style.display = "none";
-      await logAuditAction("PROFILE_UPDATE", currentUser.uid, `Updated studio to ${currentDeveloperDoc.studioName}`);
-      alert("Developer profile updated successfully.");
+      // Sync developer photo and handle to this developer's apps so it displays on Zappora Store
+      try {
+        const myApps = allApps.filter(a => a.developerUid === currentUser.uid);
+        for (const item of myApps) {
+          await updateDoc(doc(db, "apps", item.id), {
+            developerPhoto: newPhoto,
+            developerUsername: newHandle
+          });
+        }
+      } catch (e) {}
+
+      syncProfileUI();
+      closeProfileModal();
+      await logAuditAction("PROFILE_UPDATE", currentUser.uid, `Updated studio profile and photo for ${finalStudio}`);
+      showToast("Developer profile saved and synced to Zappora Store.");
+    };
+
+    // SETTINGS MODAL FUNCTIONS
+    window.openSettingsModal = () => {
+      document.getElementById("setDarkMode").checked = document.body.classList.contains("dark-mode");
+      document.getElementById("setCompactTable").checked = document.body.classList.contains("compact-table");
+      document.getElementById("settingsModal").classList.add("open");
+    };
+
+    window.closeSettingsModal = () => {
+      document.getElementById("settingsModal").classList.remove("open");
+    };
+
+    window.toggleDarkMode = (enabled) => {
+      document.body.classList.toggle("dark-mode", enabled);
+      localStorage.setItem("zappora_admin_dark", enabled ? "1" : "0");
+    };
+
+    window.toggleCompactTable = (enabled) => {
+      document.body.classList.toggle("compact-table", enabled);
+      localStorage.setItem("zappora_admin_compact", enabled ? "1" : "0");
+    };
+
+    window.exportDeveloperCatalog = () => {
+      const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(visibleAppsCache, null, 2));
+      const a = document.createElement("a");
+      a.href = dataStr;
+      a.download = `zappora_catalog_${currentDeveloperDoc.username || "backup"}.json`;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      showToast("Catalog backup exported as JSON.");
+    };
+
+    window.sendAccountPasswordReset = async () => {
+      if (!currentUser || !currentUser.email) return;
+      try {
+        await sendPasswordResetEmail(auth, currentUser.email);
+        showToast(`Password reset email sent to ${currentUser.email}.`);
+      } catch (err) {
+        alert("Could not send reset email: " + err.message);
+      }
+    };
+
+    // PAGE NAVIGATION (DASHBOARD <-> SEPARATE EDITOR PAGE)
+    window.openEditorPage = (editAppId = null) => {
+      window.resetFormState();
+      if (editAppId) {
+        window.populateEdit(editAppId);
+      }
+      document.getElementById("dashboardView").style.display = "none";
+      document.getElementById("editorView").style.display = "block";
+      updateLiveCardPreview();
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    };
+
+    window.closeEditorPage = () => {
+      window.resetFormState();
+      document.getElementById("editorView").style.display = "none";
+      document.getElementById("dashboardView").style.display = "block";
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    };
+
+    window.updateLiveCardPreview = () => {
+      const title = document.getElementById("appTitle").value.trim() || "Application Title";
+      const cat = document.getElementById("appCategory").value || "Game";
+      const ver = document.getElementById("appVersionName").value.trim() || "1.0.0";
+      const size = document.getElementById("appSize").value.trim() || "0 MB";
+      const icon = safeUrl(document.getElementById("appIcon").value.trim(), "favicon.png");
+
+      let devName = currentDeveloperDoc ? currentDeveloperDoc.studioName : "Studio Name";
+      if (isSuperAdmin) {
+        const brandVal = document.getElementById("appPublisherBrand").value;
+        if (brandVal && brandVal !== "KEEP_EXISTING") devName = brandVal;
+      }
+
+      document.getElementById("livePrevTitle").innerText = title;
+      document.getElementById("livePrevIcon").src = icon;
+      document.getElementById("livePrevDevName").innerText = devName;
+      document.getElementById("livePrevDevPhoto").src = safeUrl(currentDeveloperDoc && currentDeveloperDoc.photoURL, "favicon.png");
+      document.getElementById("livePrevMeta").innerText = `${cat} | v${ver} | ${size}`;
     };
 
     onAuthStateChanged(auth, async (user) => {
@@ -1166,8 +1842,6 @@
 
         isSuperAdmin = await verifyStrictSuperAdmin(user);
 
-        document.getElementById("welcomeText").innerText = `${currentDeveloperDoc.studioName} (@${currentDeveloperDoc.username}) | ${user.email}`;
-
         const badge = document.getElementById("roleBadge");
         if (isSuperAdmin) {
           badge.innerText = "Super Administrator";
@@ -1176,7 +1850,7 @@
           document.getElementById("publisherBrandGroup").style.display = "block";
           document.getElementById("tableHeading").innerText = "All Developer Submissions (Administrator View)";
         } else {
-          badge.innerText = currentDeveloperDoc.verified ? "Verified Developer ✓" : "Standard Developer";
+          badge.innerText = currentDeveloperDoc.verified ? "Verified Developer" : "Standard Developer";
           badge.classList.remove("admin");
           document.getElementById("superAdminTools").style.display = "none";
           document.getElementById("publisherBrandGroup").style.display = "none";
@@ -1190,7 +1864,6 @@
       }
     });
 
-    // PHASE 1 SECURITY: Least-privilege query (Developers only query their own apps)
     async function loadAppsFromFirebase() {
       const tbody = document.getElementById("catalogTableBody");
       try {
@@ -1216,15 +1889,25 @@
       }
     }
 
+    window.setStatusFilter = (status, btnEl) => {
+      statusFilter = status;
+      document.querySelectorAll(".filter-tab").forEach(b => b.classList.remove("active"));
+      if (btnEl) btnEl.classList.add("active");
+      window.renderAdminTable();
+    };
+
     window.renderAdminTable = () => {
       const tbody = document.getElementById("catalogTableBody");
       const q = (document.getElementById("adminAppSearch").value || "").toLowerCase().trim();
 
-      const filtered = visibleAppsCache.filter(a =>
-        String(a.title || "").toLowerCase().includes(q) ||
-        String(a.id || "").toLowerCase().includes(q) ||
-        String(a.developerName || "").toLowerCase().includes(q)
-      );
+      const filtered = visibleAppsCache.filter(a => {
+        const matchesQuery =
+          String(a.title || "").toLowerCase().includes(q) ||
+          String(a.id || "").toLowerCase().includes(q) ||
+          String(a.developerName || "").toLowerCase().includes(q);
+        const matchesStatus = statusFilter === "all" || (a.status || "pending") === statusFilter;
+        return matchesQuery && matchesStatus;
+      });
 
       tbody.innerHTML = "";
       if (filtered.length === 0) {
@@ -1278,10 +1961,19 @@
           }
         }
 
+        const btnCopy = document.createElement("button");
+        btnCopy.className = "action-btn btn-copy";
+        btnCopy.innerText = "Copy Link";
+        btnCopy.onclick = () => {
+          const shareUrl = `${window.location.origin}/?app=${encodeURIComponent(app.id)}`;
+          navigator.clipboard.writeText(shareUrl).then(() => showToast("Application link copied."));
+        };
+        actionCell.appendChild(btnCopy);
+
         const btnEdit = document.createElement("button");
         btnEdit.className = "action-btn btn-edit";
         btnEdit.innerText = "Edit";
-        btnEdit.onclick = () => window.populateEdit(app.id);
+        btnEdit.onclick = () => window.openEditorPage(app.id);
         actionCell.appendChild(btnEdit);
 
         const btnDel = document.createElement("button");
@@ -1309,6 +2001,7 @@
           document.getElementById("iconPreview").src = dataUrl;
           document.getElementById("iconPreview").style.display = "inline-block";
           document.getElementById("appIcon").value = dataUrl;
+          updateLiveCardPreview();
         };
         img.src = e.target.result;
       };
@@ -1350,7 +2043,6 @@
       });
     };
 
-    // OS-LEVEL BINARY APK INSPECTOR + SHA-256 + AI RISK ENGINE
     window.handleApkFile = async (event) => {
       const file = event.target.files[0];
       if (!file) return;
@@ -1371,6 +2063,7 @@
 
       const sizeInMB = (file.size / (1024 * 1024)).toFixed(1) + "MB";
       document.getElementById("appSize").value = sizeInMB;
+      updateLiveCardPreview();
       statusEl.style.color = "var(--primary-dark)";
       statusEl.innerText = `Scanning Android binary headers & computing SHA-256 for ${file.name}...`;
 
@@ -1378,7 +2071,6 @@
         const arrayBuffer = await file.arrayBuffer();
         const bytes = new Uint8Array(arrayBuffer);
 
-        // 1. OS-Level Magic Byte Verification (PK\x03\x04 archive signature required for valid Android APK)
         const isValidApkHeader = bytes.length > 4 &&
           bytes[0] === 0x50 && bytes[1] === 0x4B && bytes[2] === 0x03 && bytes[3] === 0x04;
 
@@ -1391,11 +2083,9 @@
           return;
         }
 
-        // 2. Internal AndroidManifest.xml & classes.dex structure check
         const asciiSample = new TextDecoder("utf-8", { fatal: false }).decode(bytes.slice(0, Math.min(bytes.length, 512000)));
         const hasManifest = asciiSample.includes("AndroidManifest.xml") || asciiSample.includes("classes.dex") || asciiSample.includes("META-INF");
 
-        // 3. Cryptographic SHA-256 Hash Calculation
         const hashBuffer = await crypto.subtle.digest("SHA-256", arrayBuffer);
         const hashArray = Array.from(new Uint8Array(hashBuffer));
         const sha256Hex = hashArray.map(b => b.toString(16).padStart(2, "0")).join("");
@@ -1418,22 +2108,20 @@
       document.getElementById("ssPreviewBox").innerHTML = "";
       document.getElementById("apkFileName").innerText = "";
       document.getElementById("appSha256").value = "";
-      document.getElementById("formHeading").innerText = "Submit or Update Application";
+      document.getElementById("statusLog").style.display = "none";
+      document.getElementById("formHeading").innerText = "Submit New Application";
       document.getElementById("btnSubmit").innerText = "Submit Application to Catalog";
-      document.getElementById("cancelEditBtn").style.display = "none";
     };
 
     window.handleFormSubmit = async (e) => {
       e.preventDefault();
 
-      // Client-side rate limit (10 seconds cooldown between submissions)
       if (Date.now() - lastSubmitTimestamp < 10000) {
         alert("Please wait a few seconds before submitting again.");
         return;
       }
 
       const btn = document.getElementById("btnSubmit");
-      const log = document.getElementById("statusLog");
       btn.disabled = true;
 
       try {
@@ -1504,6 +2192,7 @@
           developerUid: existing ? existing.developerUid : currentUser.uid,
           developerName: finalDevName,
           developerUsername: existing ? (existing.developerUsername || currentDeveloperDoc.username) : currentDeveloperDoc.username,
+          developerPhoto: existing ? (existing.developerPhoto || currentDeveloperDoc.photoURL || "") : (currentDeveloperDoc.photoURL || ""),
           status: isSuperAdmin ? "approved" : "pending",
           createdAt: existing && existing.createdAt ? existing.createdAt : Date.now(),
           updatedAt: Date.now()
@@ -1513,14 +2202,11 @@
         lastSubmitTimestamp = Date.now();
         await logAuditAction(existing ? "APP_UPDATE" : "APP_SUBMIT", appId, `${appData.title} v${newVersionName}`);
 
-        window.resetFormState();
-
-        log.style.display = "block";
-        log.innerText = isSuperAdmin
-          ? "Application published/updated directly on the live store."
-          : "Application submitted successfully. Status: Pending Administrator Verification.";
-
         await loadAppsFromFirebase();
+        window.closeEditorPage();
+        showToast(isSuperAdmin
+          ? "Application published/updated directly on the live store."
+          : "Application submitted. Status: Pending Verification.");
       } catch (err) {
         alert("Submission Error: " + err.message);
       } finally {
@@ -1533,6 +2219,7 @@
       await updateDoc(doc(db, "apps", id), { status: "approved", rejectReason: "" });
       await logAuditAction("APP_APPROVE", id, "Approved by Super Admin");
       await loadAppsFromFirebase();
+      showToast("Application approved.");
     };
 
     window.rejectApp = async (id) => {
@@ -1542,6 +2229,7 @@
       await updateDoc(doc(db, "apps", id), { status: "rejected", rejectReason: reason });
       await logAuditAction("APP_REJECT", id, reason);
       await loadAppsFromFirebase();
+      showToast("Application rejected.");
     };
 
     window.deleteApp = async (id) => {
@@ -1549,6 +2237,7 @@
         await deleteDoc(doc(db, "apps", id));
         await logAuditAction("APP_DELETE", id, "Deleted application");
         await loadAppsFromFirebase();
+        showToast("Application deleted.");
       }
     };
 
@@ -1584,8 +2273,6 @@
 
       document.getElementById("formHeading").innerText = "Editing Application: " + item.title;
       document.getElementById("btnSubmit").innerText = "Update Application";
-      document.getElementById("cancelEditBtn").style.display = "inline-block";
-      document.getElementById("formCard").scrollIntoView({ behavior: "smooth" });
     };
 
     window.importVersionJsonToFirebase = async () => {
@@ -1603,6 +2290,7 @@
             developerUid: currentUser.uid,
             developerName: "Zappora Official",
             developerUsername: currentDeveloperDoc.username || "ankur",
+            developerPhoto: currentDeveloperDoc.photoURL || "",
             status: "approved",
             downloads: parseInt(item.downloads, 10) || 0,
             createdAt: Date.now(),
@@ -1610,7 +2298,7 @@
           });
         }
         await logAuditAction("LEGACY_IMPORT", "version.json", `Synchronized ${list.length} apps`);
-        alert(`Successfully synchronized ${list.length} applications from version.json.`);
+        showToast(`Synchronized ${list.length} applications from version.json.`);
         await loadAppsFromFirebase();
       } catch (err) {
         alert("Synchronization failed: " + err.message);
