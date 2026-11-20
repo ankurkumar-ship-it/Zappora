@@ -321,6 +321,19 @@
     .btn-open:hover { background:#047857 !important; }
     .btn-update { background:#d97706 !important; color:#ffffff !important; }
     .btn-update:hover { background:#b45309 !important; }
+    /* Developer Profile Photos & Multi-Platform Badges */
+    .dev-label { display:inline-flex; align-items:center; gap:5px; }
+    .dev-avatar-mini { width:16px; height:16px; border-radius:50%; object-fit:cover; border:1px solid var(--bdr); flex-shrink:0; }
+    .studio-avatar img { width:100%; height:100%; border-radius:13px; object-fit:cover; display:block; }
+    .plat-icons-inline { display:inline-flex; align-items:center; gap:5px; margin-left:4px; color:var(--muted); }
+    .plat-icons-inline svg { width:12px; height:12px; display:block; }
+    .modal-platforms-box { display:none; flex-wrap:wrap; gap:8px; margin-bottom:18px; padding:12px; border-radius:10px; background:var(--bg); border:1px solid var(--bdr); }
+    .modal-platforms-title { width:100%; font-size:0.72rem; font-weight:700; color:var(--muted); text-transform:uppercase; letter-spacing:0.4px; margin-bottom:2px; }
+    .btn-plat-dl { display:inline-flex; align-items:center; gap:7px; padding:9px 14px; border-radius:8px; font-size:0.8rem; font-weight:700; border:1px solid var(--bdr); background:var(--surf); color:var(--txt); cursor:pointer; text-decoration:none; transition:0.15s; }
+    .btn-plat-dl:hover { border-color:var(--pri); color:var(--pri); background:var(--hover); }
+    .btn-plat-dl.android svg { color:#16a34a; }
+    .btn-plat-dl.windows svg { color:#0284c7; }
+    .btn-plat-dl.apple svg { color:var(--txt); }
   </style>
 </head>
 <body>
@@ -690,6 +703,8 @@
         <button type="button" class="btn-secondary-act" onclick="reportCurrentApp()" title="Report an issue with this app">Report</button>
       </div>
 
+      <div id="mPlatformDownloads" class="modal-platforms-box"></div>
+
       <div class="screenshots-wrapper" id="mScreenshotsWrapper" style="display:none;">
         <h4>Preview Screenshots</h4>
         <div class="screenshots-slider" id="mScreenshotsList"></div>
@@ -851,6 +866,8 @@
 
     let activeCatalog = [];
     let verifiedDevelopersMap = {};
+    let developersPhotoMap = {};
+    let notifEnabled = localStorage.getItem("zappora_notif_enabled") === "1";
     let currentFilteredList = [];
     let visibleLimit = 24;
     const PAGE_SIZE = 24;
@@ -1531,11 +1548,15 @@
         }
 
         verifiedDevelopersMap = {};
+        developersPhotoMap = {};
         devSnap.forEach(d => {
           const data = d.data();
           if (data.verified === true) verifiedDevelopersMap[data.uid] = true;
+          if (data.photoURL) {
+            developersPhotoMap[data.uid] = data.photoURL;
+            if (data.studioName) developersPhotoMap[data.studioName] = data.photoURL;
+          }
         });
-
         const fbApps = [];
         appSnap.forEach(d => fbApps.push(d.data()));
 
@@ -1567,6 +1588,39 @@
       if (appItem.featured === true || appItem.editorsChoice === true) return true;
       return (parseInt(appItem.downloads, 10) || 0) >= 2 && parseFloat(getAppRating(appItem)) >= 4.5;
     }
+
+    function getDevPhoto(appItem) {
+      if (!appItem) return "";
+      const raw = appItem.developerPhoto
+        || (appItem.developerUid && developersPhotoMap[appItem.developerUid])
+        || (appItem.developerName && developersPhotoMap[appItem.developerName])
+        || "";
+      return safeUrl(raw, "");
+    }
+
+    const PLAT_SVGS = {
+      Android: '<svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor"><path d="M17.6 9.48l1.84-3.18c.16-.31.04-.69-.26-.85-.29-.15-.65-.06-.83.22l-1.88 3.24a11.463 11.463 0 0 0-8.94 0L5.65 5.67c-.19-.29-.54-.38-.84-.22-.3.16-.42.54-.26.85L6.4 9.48C3.3 11.25 1.28 14.44 1 18h22c-.28-3.56-2.3-6.75-5.4-8.52zM7 15.25a1.25 1.25 0 1 1 0-2.5 1.25 1.25 0 0 1 0 2.5zm10 0a1.25 1.25 0 1 1 0-2.5 1.25 1.25 0 0 1 0 2.5z"/></svg>',
+      Windows: '<svg viewBox="0 0 24 24" width="13" height="13" fill="currentColor"><path d="M0 3.449L9.75 2.1v9.451H0m10.949-9.602L24 0v11.4H10.949M0 12.6h9.75v9.451L0 20.699M10.949 12.6H24V24l-12.9-1.801"/></svg>',
+      Apple: '<svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M15.96 6.32c.67-.81 1.12-1.94 1-3.07-.96.04-2.13.64-2.82 1.45-.61.7-.15 1.85-.99 2.96 1.07.08 2.15-.53 2.81-1.34z"/></svg>'
+    };
+
+    window.downloadPlatformBuild = (appId, platformLabel, url, e) => {
+      if (e) e.stopPropagation();
+      const clean = safeUrl(url, "");
+      if (!clean || clean === "#") return;
+      const appItem = activeCatalog.find(i => i.id === appId);
+      if (appItem) {
+        appItem.downloads = (parseInt(appItem.downloads, 10) || 0) + 1;
+        localStorage.setItem("zappora_catalog_cache", JSON.stringify(activeCatalog));
+        updateDoc(doc(db, "apps", appId), { downloads: increment(1) }).catch(() => {});
+        if (currentModalApp && currentModalApp.id === appId) {
+          document.getElementById("mDownloads").innerText = appItem.downloads;
+          document.getElementById("metaDownloads").innerText = `${appItem.downloads.toLocaleString()}+ downloads`;
+        }
+      }
+      window.open(clean, "_blank", "noopener,noreferrer");
+      showToast(`Downloading ${platformLabel} build...`);
+    };
 
     // 3-SLIDE POPULAR GAMES & APPS CAROUSEL
     function renderSpotlightSlide(index) {
@@ -1696,7 +1750,13 @@
       const verified = devApps.some(a => isDevVerified(a));
       const tickHtml = verified ? '<span class="verified-tick" title="Verified Publisher">✓</span>' : "";
 
-      document.getElementById("studioAvatar").innerText = devName.charAt(0).toUpperCase();
+      const studioPhoto = devApps.map(a => getDevPhoto(a)).find(Boolean) || developersPhotoMap[devName] || "";
+      const avatarEl = document.getElementById("studioAvatar");
+      if (studioPhoto) {
+        avatarEl.innerHTML = `<img src="${escapeHTML(studioPhoto)}" alt="${escapeHTML(devName)}" onerror="this.parentElement.innerText='${escapeHTML(devName.charAt(0).toUpperCase())}'" />`;
+      } else {
+        avatarEl.innerText = devName.charAt(0).toUpperCase();
+      }
       document.getElementById("studioNameHeading").innerHTML = `${escapeHTML(devName)} ${tickHtml}`;
       document.getElementById("studioSubtext").innerText = verified ? "Verified Zappora Publisher" : "Independent Zappora Developer";
       document.getElementById("studioAppsCount").innerText = devApps.length;
@@ -1797,6 +1857,16 @@
         const cleanWebUrl = safeUrl(app.webUrl, "");
         const webBtnLabel = app.category === "Game" ? "Web Play" : "Web View";
         const actionState = getNativeAppActionState(app);
+        const devPhoto = getDevPhoto(app);
+        const devPhotoHtml = devPhoto ? `<img src="${escapeHTML(devPhoto)}" alt="" class="dev-avatar-mini" onerror="this.remove()" />` : "";
+        const hasApk = Boolean(safeUrl(app.downloadUrl, ""));
+        const hasWin = Boolean(safeUrl(app.windowsUrl, ""));
+        const hasApple = Boolean(safeUrl(app.appleUrl, ""));
+        const platIconsHtml = [
+          hasApk ? `<span title="Android">${PLAT_SVGS.Android}</span>` : "",
+          hasWin ? `<span title="Windows">${PLAT_SVGS.Windows}</span>` : "",
+          hasApple ? `<span title="Apple">${PLAT_SVGS.Apple}</span>` : ""
+        ].filter(Boolean).join("");
 
         const webButtonHtml = cleanWebUrl
           ? `<button type="button" class="btn-web" onclick="openWebArcade('${escapeHTML(app.id)}', event)">${webBtnLabel}</button>`
@@ -1816,7 +1886,7 @@
             <img src="${escapeHTML(safeUrl(app.icon, 'favicon.png'))}" alt="${escapeHTML(app.title)}" loading="lazy" decoding="async" class="app-icon" onerror="this.src='favicon.png'" />
             <div class="app-title-block">
               <h2>${escapeHTML(app.title)}</h2>
-              <div class="dev-label">${escapeHTML(devName)}${blueTickHtml}</div>
+              <div class="dev-label">${devPhotoHtml}<span>${escapeHTML(devName)}</span>${blueTickHtml}</div>
               <div class="play-meta-row">
                 <span class="play-rating">
                   ${escapeHTML(avgRating)}
@@ -1824,6 +1894,7 @@
                 </span>
                 <span class="meta-dot">•</span>
                 <span>${escapeHTML(app.category)}</span>
+                ${platIconsHtml ? `<span class="plat-icons-inline">${platIconsHtml}</span>` : ""}
               </div>
             </div>
           </div>
@@ -1838,7 +1909,18 @@
         card.querySelector(".btn-wish-card").addEventListener("click", (e) => window.toggleWishlist(app.id, e));
         card.querySelector(".dev-label").addEventListener("click", (e) => window.filterByDeveloper(devName, e));
         card.querySelector(".card-actions").addEventListener("click", (e) => e.stopPropagation());
-        card.querySelector(".btn-download").addEventListener("click", (e) => window.handlePrimaryAppAction(app.id, e));
+        const dlBtnCard = card.querySelector(".btn-download");
+        if (hasApk) {
+          dlBtnCard.addEventListener("click", (e) => window.handlePrimaryAppAction(app.id, e));
+        } else if (hasWin) {
+          dlBtnCard.innerText = "Download Windows";
+          dlBtnCard.addEventListener("click", (e) => window.downloadPlatformBuild(app.id, "Windows", app.windowsUrl, e));
+        } else if (hasApple) {
+          dlBtnCard.innerText = "Download Apple";
+          dlBtnCard.addEventListener("click", (e) => window.downloadPlatformBuild(app.id, "Apple", app.appleUrl, e));
+        } else {
+          dlBtnCard.style.display = "none";
+        }
         container.appendChild(card);
       });
 
@@ -2039,7 +2121,9 @@
       document.getElementById("mIcon").src = safeUrl(app.icon, "favicon.png");
       document.getElementById("mTitle").innerText = app.title;
       const devEl = document.getElementById("mDeveloper");
-      devEl.innerHTML = `${escapeHTML(devName)}${tick}`;
+      const devPhotoModal = getDevPhoto(app);
+      const devPhotoModalHtml = devPhotoModal ? `<img src="${escapeHTML(devPhotoModal)}" alt="" class="dev-avatar-mini" style="vertical-align:middle;margin-right:5px;" onerror="this.remove()" />` : "";
+      devEl.innerHTML = `${devPhotoModalHtml}${escapeHTML(devName)}${tick}`;
       devEl.onclick = (e) => window.filterByDeveloper(devName, e);
 
       document.getElementById("mBadge").innerText = app.category;
@@ -2111,6 +2195,30 @@
       }     
 
       const dlBtn = document.getElementById("mDownloadBtn");
+      const hasApkM = Boolean(safeUrl(app.downloadUrl, ""));
+      const hasWinM = Boolean(safeUrl(app.windowsUrl, ""));
+      const hasAppleM = Boolean(safeUrl(app.appleUrl, ""));
+
+      dlBtn.style.display = hasApkM ? "inline-flex" : "none";
+
+     const platBox = document.getElementById("mPlatformDownloads");
+     if (platBox) {
+       const btns = [];
+       if (hasWinM) {
+       const wSize = app.windowsSize ? ` (${escapeHTML(app.windowsSize)})` : "";
+       btns.push(`<button type="button" class="btn-plat-dl windows" onclick="downloadPlatformBuild('${escapeHTML(app.id)}', 'Windows', '${escapeHTML(safeUrl(app.windowsUrl))}', event)">${PLAT_SVGS.Windows}<span>Windows${wSize}</span></button>`);
+     }
+     if (hasAppleM) {
+       const aSize = app.appleSize ? ` (${escapeHTML(app.appleSize)})` : "";
+       btns.push(`<button type="button" class="btn-plat-dl apple" onclick="downloadPlatformBuild('${escapeHTML(app.id)}', 'Apple', '${escapeHTML(safeUrl(app.appleUrl))}', event)">${PLAT_SVGS.Apple}<span>Apple${aSize}</span></button>`);
+     }
+     if (btns.length > 0) {
+       platBox.innerHTML = `<div class="modal-platforms-title">Available Desktop &amp; Apple Builds</div>` + btns.join("");
+       platBox.style.display = "flex";
+     } else {
+       platBox.style.display = "none";
+     }
+   }
       const modalState = getNativeAppActionState(app);
       dlBtn.className = "btn-download " + modalState.extraClass;
       dlBtn.innerText = modalState.label;
