@@ -279,18 +279,20 @@
     .footer-links { margin-bottom:8px; display:flex; justify-content:center; gap:16px; flex-wrap:wrap; font-weight:700; }
     .footer-links a { color:var(--pri); text-decoration:none; transition:0.15s; }
     .footer-links a:hover { color:var(--pri-d); text-decoration:underline; }
-    /* Fullscreen Web Arcade Modal */
-    .arcade-overlay { position:fixed; inset:0; background:#070b14; z-index:22000; display:none; flex-direction:column; }
-    .arcade-overlay.open { display:flex; }
-    .arcade-bar { height:54px; background:#0f172a; border-bottom:1px solid #1e293b; padding:0 16px; display:flex; align-items:center; justify-content:space-between; gap:12px; flex-shrink:0; }
-    .arcade-title-wrap { display:flex; align-items:center; gap:10px; min-width:0; }
-    .arcade-title-wrap img { width:30px; height:30px; border-radius:7px; object-fit:cover; border:1px solid #334155; }
-    .arcade-title-wrap strong { color:#f8fafc; font-size:0.92rem; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
-    .arcade-actions { display:flex; align-items:center; gap:8px; flex-shrink:0; }
-    .btn-arcade { background:#1e293b; color:#f8fafc; border:1px solid #334155; padding:7px 12px; border-radius:7px; font-size:0.78rem; font-weight:600; cursor:pointer; text-decoration:none; }
-    .btn-arcade:hover { border-color:var(--pri); color:var(--pri); }
-    .btn-arcade-close { background:#dc2626; color:#fff; border:none; padding:7px 14px; border-radius:7px; font-size:0.78rem; font-weight:700; cursor:pointer; }
-    .arcade-frame { flex:1; width:100%; border:none; background:#000; }
+    /* Fullscreen Web Arcade (Zero Top-Bar, Floating Controls) */
+    .arcade-overlay { position:fixed; inset:0; width:100vw; height:100dvh; background:#000; z-index:22000; display:none; }
+    .arcade-overlay.open { display:block; }
+    .arcade-frame { width:100%; height:100%; border:none; display:block; background:#000; }
+    .arcade-float-wrap { position:fixed; top:12px; right:12px; z-index:22005; display:flex; flex-direction:column; align-items:flex-end; gap:8px; }
+    .arcade-pill-toggle { display:inline-flex; align-items:center; gap:6px; padding:6px 12px; border-radius:999px; border:1px solid rgba(255,255,255,0.18); background:rgba(15,23,42,0.55); backdrop-filter:blur(8px); -webkit-backdrop-filter:blur(8px); color:#fff; font-size:0.76rem; font-weight:700; cursor:pointer; opacity:0.65; transition:opacity 0.2s, background 0.2s; }
+    .arcade-pill-toggle:hover, .arcade-float-wrap.expanded .arcade-pill-toggle { opacity:1; background:rgba(15,23,42,0.92); }
+    .arcade-pill-toggle img { width:16px; height:16px; border-radius:4px; object-fit:cover; }
+    .arcade-float-menu { display:none; flex-direction:column; gap:6px; min-width:150px; padding:8px; border-radius:12px; border:1px solid rgba(255,255,255,0.15); background:rgba(15,23,42,0.92); backdrop-filter:blur(12px); -webkit-backdrop-filter:blur(12px); box-shadow:0 12px 30px rgba(0,0,0,0.45); }
+    .arcade-float-wrap.expanded .arcade-float-menu { display:flex; }
+    .arcade-menu-btn { width:100%; padding:8px 12px; border-radius:8px; border:1px solid rgba(255,255,255,0.12); background:rgba(255,255,255,0.06); color:#f8fafc; font-size:0.78rem; font-weight:600; text-align:left; text-decoration:none; cursor:pointer; transition:background 0.15s; }
+    .arcade-menu-btn:hover { background:rgba(255,255,255,0.16); }
+    .arcade-menu-btn.danger { background:rgba(220,38,38,0.85); border-color:rgba(248,113,113,0.4); color:#fff; }
+    .arcade-menu-btn.danger:hover { background:#dc2626; }
 
     /* Profile My Downloads History */
     .dl-history-list { display:flex; flex-direction:column; gap:8px; max-height:190px; overflow-y:auto; }
@@ -792,18 +794,19 @@
 
   <!-- Built-in Fullscreen Web Arcade -->
   <div class="arcade-overlay" id="arcadeModal">
-    <div class="arcade-bar">
-      <div class="arcade-title-wrap">
+    <div id="arcadeFloatWrap" class="arcade-float-wrap">
+      <button type="button" class="arcade-pill-toggle" onclick="document.getElementById('arcadeFloatWrap').classList.toggle('expanded')">
         <img id="arcadeIcon" src="favicon.png" alt="App" onerror="this.src='favicon.png'" />
-        <strong id="arcadeTitle">Zappora Web Arcade</strong>
-      </div>
-      <div class="arcade-actions">
-        <a id="arcadeExternalBtn" href="#" target="_blank" rel="noopener noreferrer" class="btn-arcade">Open in New Tab</a>
-        <button type="button" class="btn-arcade" onclick="toggleArcadeFullscreen()">Fullscreen</button>
-        <button type="button" class="btn-arcade-close" onclick="closeWebArcade()">Close</button>
+        <span id="arcadeTitle">Zappora Web Arcade</span>
+        <span>| Menu</span>
+      </button>
+      <div class="arcade-float-menu">
+        <button type="button" class="arcade-menu-btn" onclick="toggleArcadeFullscreen(); document.getElementById('arcadeFloatWrap').classList.remove('expanded');">Fullscreen</button>
+        <a id="arcadeExternalBtn" href="#" target="_blank" rel="noopener noreferrer" class="arcade-menu-btn">Open in New Tab</a>
+        <button type="button" class="arcade-menu-btn danger" onclick="document.getElementById('arcadeFloatWrap').classList.remove('expanded'); closeWebArcade();">Close</button>
       </div>
     </div>
-    <iframe id="arcadeFrame" class="arcade-frame" src="about:blank" allow="fullscreen; autoplay; gamepad"></iframe>
+    <iframe id="arcadeFrame" class="arcade-frame" src="about:blank" allowfullscreen allow="fullscreen; autoplay; gamepad"></iframe>
   </div>
 
   <div class="lightbox-overlay" id="lightbox" onclick="closeLightbox()">
