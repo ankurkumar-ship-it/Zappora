@@ -2006,7 +2006,7 @@
     
     window.setCategory = (cat) => {
       document.getElementById("categoryFilter").value = cat;
-      document.querySelectorAll(".pill").forEach(p => p.classList.remove("active"));
+      document.querySelectorAll(".category-pills:not(#platformPills) .pill")
       const activePill = document.getElementById("pill-" + cat);
       if (activePill) activePill.classList.add("active");
       window.resetAndFilter();
@@ -2036,17 +2036,14 @@
         else if (activePlatformFilter === "Apple") matchesPlat = Boolean(safeUrl(item.appleUrl, ""));
         else if (activePlatformFilter === "Web") matchesPlat = Boolean(safeUrl(item.webUrl, ""));
 
-        return matchesSearch && matchesCat && matchesDev && matchesTab && matchesPlat;
-
         let matchesTab = true;
         if (activeSectionTab === "TRENDING") matchesTab = (parseInt(item.downloads, 10) || 0) >= 1;
         else if (activeSectionTab === "CHOICE") matchesTab = isEditorsChoice(item);
         else if (activeSectionTab === "WISHLIST") matchesTab = wishlistIds.includes(item.id);
         else if (activeSectionTab === "RECENT") matchesTab = recentlyViewedIds.includes(item.id);
 
-        return matchesSearch && matchesCat && matchesDev && matchesTab;
+        return matchesSearch && matchesCat && matchesDev && matchesTab && matchesPlat;
       });
-
       if (activeSectionTab === "UPDATED") {
         currentFilteredList.sort((a, b) => (b.updatedAt || 0) - (a.updatedAt || 0));
       } else if (activeSectionTab === "RECENT") {
