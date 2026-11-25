@@ -3,98 +3,36 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Zappora Legal & Policy Center — Official Terms, Privacy & Security</title>
+  <title>ZAPPORA Legal & Policy Center — Zone for Apps, Programs, Playable Online Releases & APKs</title>
   <link rel="icon" type="image/png" href="favicon.png" />
   <style>
-    :root {
-      --bg: #f8fafc;
-      --surf: #ffffff;
-      --pri: #0284c7;
-      --pri-d: #0369a1;
-      --pri-l: #e0f2fe;
-      --bdr: #e2e8f0;
-      --txt: #0f172a;
-      --muted: #475569;
-    }
-    * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
-    body { background: var(--bg); color: var(--txt); line-height: 1.65; padding: 20px 14px 80px; }
-    .container { max-width: 1020px; margin: 0 auto; }
-    .header {
-      background: var(--surf);
-      border: 1px solid var(--bdr);
-      border-radius: 14px;
-      padding: 16px 22px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 22px;
-      flex-wrap: wrap;
-      gap: 12px;
-    }
-    .brand { display: flex; align-items: center; gap: 10px; text-decoration: none; }
-    .brand img { width: 38px; height: 38px; border-radius: 9px; }
-    .brand span { font-size: 1.25rem; font-weight: 800; color: var(--pri); }
-    .btn-back {
-      background: var(--pri-l);
-      color: var(--pri-d);
-      text-decoration: none;
-      font-weight: 700;
-      font-size: 0.84rem;
-      padding: 8px 14px;
-      border-radius: 8px;
-    }
-    .layout { display: grid; grid-template-columns: 250px 1fr; gap: 20px; }
-    .policy-nav {
-      background: var(--surf);
-      border: 1px solid var(--bdr);
-      border-radius: 14px;
-      padding: 12px;
-      height: fit-content;
-      position: sticky;
-      top: 16px;
-    }
-    .nav-btn {
-      width: 100%;
-      text-align: left;
-      padding: 10px 12px;
-      border: none;
-      background: transparent;
-      color: var(--muted);
-      font-weight: 600;
-      font-size: 0.85rem;
-      border-radius: 8px;
-      cursor: pointer;
-      margin-bottom: 4px;
-    }
-    .nav-btn:hover { background: #f1f5f9; color: var(--txt); }
-    .nav-btn.active { background: var(--pri); color: #ffffff; font-weight: 700; }
-    .policy-card {
-      background: var(--surf);
-      border: 1px solid var(--bdr);
-      border-radius: 14px;
-      padding: 28px;
-    }
-    .policy-sec { display: none; }
-    .policy-sec.active { display: block; }
-    h1 { font-size: 1.45rem; margin-bottom: 6px; color: var(--txt); }
-    .updated-tag { font-size: 0.78rem; color: var(--muted); margin-bottom: 18px; display: block; font-weight: 600; }
-    h2 { font-size: 1.05rem; margin: 18px 0 8px; color: var(--pri-d); }
-    p, li { font-size: 0.92rem; color: var(--muted); margin-bottom: 10px; }
-    ul { padding-left: 20px; margin-bottom: 12px; }
-    .notice-box {
-      background: var(--pri-l);
-      border-left: 4px solid var(--pri);
-      padding: 12px 16px;
-      border-radius: 8px;
-      font-size: 0.86rem;
-      color: var(--txt);
-      margin: 14px 0;
-    }
-    @media (max-width: 760px) {
-      .layout { grid-template-columns: 1fr; }
-      .policy-nav { position: static; display: flex; overflow-x: auto; gap: 6px; padding: 10px; }
-      .nav-btn { white-space: nowrap; width: auto; margin-bottom: 0; }
-    }
+    :root { --bg:#f8fafc; --surf:#ffffff; --pri:#0284c7; --pri-d:#0369a1; --pri-l:#e0f2fe; --bdr:#e2e8f0; --txt:#0f172a; --muted:#475569; }
+    * { box-sizing:border-box; margin:0; padding:0; font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif; }
+    body { background:var(--bg); color:var(--txt); line-height:1.65; padding:20px 14px 80px; }
+    .container { max-width:1020px; margin:0 auto; }
+    .header { background:var(--surf); border:1px solid var(--bdr); border-radius:14px; padding:16px 22px; display:flex; justify-content:space-between; align-items:center; margin-bottom:22px; flex-wrap:wrap; gap:12px; }
+    .brand { display:flex; align-items:center; gap:10px; text-decoration:none; }
+    .brand img { width:38px; height:38px; border-radius:9px; }
+    .brand-text { display:flex; flex-direction:column; }
+    .brand-title { font-size:1.2rem; font-weight:800; color:var(--pri); line-height:1.1; }
+    .brand-sub { font-size:0.72rem; color:var(--muted); font-weight:600; }
+    .btn-back { background:var(--pri-l); color:var(--pri-d); text-decoration:none; font-weight:700; font-size:0.84rem; padding:8px 14px; border-radius:8px; }
+    .layout { display:grid; grid-template-columns:250px 1fr; gap:20px; }
+    .policy-nav { background:var(--surf); border:1px solid var(--bdr); border-radius:14px; padding:12px; height:fit-content; position:sticky; top:16px; }
+    .nav-btn { width:100%; text-align:left; padding:10px 12px; border:none; background:transparent; color:var(--muted); font-weight:600; font-size:0.85rem; border-radius:8px; cursor:pointer; margin-bottom:4px; }
+    .nav-btn:hover { background:#f1f5f9; color:var(--txt); }
+    .nav-btn.active { background:var(--pri); color:#ffffff; font-weight:700; }
+    .policy-card { background:var(--surf); border:1px solid var(--bdr); border-radius:14px; padding:28px; }
+    .policy-sec { display:none; }
+    .policy-sec.active { display:block; }
+    h1 { font-size:1.45rem; margin-bottom:6px; color:var(--txt); }
+    .updated-tag { font-size:0.78rem; color:var(--muted); margin-bottom:18px; display:block; font-weight:600; }
+    h2 { font-size:1.05rem; margin:18px 0 8px; color:var(--pri-d); }
+    p, li { font-size:0.92rem; color:var(--muted); margin-bottom:10px; }
+    ul { padding-left:20px; margin-bottom:12px; }
+    .notice-box { background:var(--pri-l); border-left:4px solid var(--pri); padding:12px 16px; border-radius:8px; font-size:0.86rem; color:var(--txt); margin:14px 0; }
+    .legal-footer { text-align:center; margin-top:28px; font-size:0.82rem; color:var(--muted); }
+    @media (max-width:760px) { .layout { grid-template-columns:1fr; } .policy-nav { position:static; display:flex; overflow-x:auto; gap:6px; padding:10px; } .nav-btn { white-space:nowrap; width:auto; margin-bottom:0; } }
   </style>
 </head>
 <body>
@@ -102,9 +40,12 @@
     <header class="header">
       <a href="index.html" class="brand">
         <img src="favicon.png" alt="Zappora" onerror="this.src='logo.png'" />
-        <span>ZAPPORA LEGAL CENTER</span>
+        <div class="brand-text">
+          <span class="brand-title">ZAPPORA LEGAL CENTER</span>
+          <span class="brand-sub">Zone for Apps, Programs, Playable Online Releases &amp; APKs</span>
+        </div>
       </a>
-      <a href="index.html" class="btn-back">← Back to Zappora Store</a>
+      <a href="index.html" class="btn-back">&larr; Back to Zappora Store</a>
     </header>
 
     <div class="layout">
@@ -117,7 +58,7 @@
         <button class="nav-btn" onclick="openPolicy('refund', this)">6. Pricing &amp; Refund Policy</button>
         <button class="nav-btn" onclick="openPolicy('community', this)">7. Community Guidelines</button>
         <button class="nav-btn" onclick="openPolicy('child', this)">8. Child Safety Policy</button>
-        <button class="nav-btn" onclick="openPolicy('security', this)">9. Security &amp; APK Integrity</button>
+        <button class="nav-btn" onclick="openPolicy('security', this)">9. Security &amp; File Integrity</button>
       </aside>
 
       <main class="policy-card">
@@ -126,12 +67,12 @@
           <h1>1. Privacy Policy</h1>
           <span class="updated-tag">Effective Date: November 2026 | Compliance: India DPDP Act &amp; Global Standards</span>
           <div class="notice-box">
-            <strong>Data Minimization Principle:</strong> Zappora allows instant APK downloads and web gameplay without mandatory account registration.
+            <strong>Data Minimization Principle:</strong> ZAPPORA allows instant Android APK, Windows, Apple, and Web App access without mandatory account registration.
           </div>
           <h2>Information We Collect</h2>
           <ul>
-            <li><strong>Public Visitors:</strong> You may browse and download applications without sharing personal data. Local preferences (such as dark mode, wishlist, and recently viewed apps) are stored locally in your browser's <code>localStorage</code>.</li>
-            <li><strong>Registered Users &amp; Developers:</strong> When you create an account or sign in via Google, we store your display name, chosen <code>@username</code>, and email address in Google Firebase Authentication and Cloud Firestore to enable verified reviews and app publishing.</li>
+            <li><strong>Public Visitors:</strong> You may browse, download software, and play web games without sharing personal data. Local preferences (such as dark mode, default category, wishlist, and recently viewed items) are stored locally in your browser's <code>localStorage</code>.</li>
+            <li><strong>Registered Users &amp; Developers:</strong> When you create an account or sign in via Google, we store your display name, chosen <code>@username</code>, studio profile photo, and email address in Google Firebase Authentication and Cloud Firestore to enable verified reviews and multi-platform app publishing.</li>
           </ul>
           <h2>How We Use Your Data</h2>
           <p>We use registered account details strictly to display your developer studio identity, attribute community ratings, send a one-time welcome confirmation email, and prevent platform abuse. We never sell or rent user email addresses to third parties.</p>
@@ -143,12 +84,12 @@
         <section id="sec-terms" class="policy-sec">
           <h1>2. Terms and Conditions</h1>
           <span class="updated-tag">Last Updated: November 2026</span>
-          <p>By accessing or using Zappora Store (<code>https://zappora.onrender.com</code>), you agree to abide by these Terms and Conditions.</p>
+          <p>By accessing or using <strong>ZAPPORA</strong> (Zone for Apps, Programs, Playable Online Releases &amp; APKs) via our web storefront or official desktop/mobile clients, you agree to abide by these Terms and Conditions.</p>
           <h2>Platform Nature</h2>
-          <p>Zappora is an independent directory and distribution hub for Android packages (<code>.apk</code>) and HTML5 web games created by Zappora Official and registered independent developers.</p>
+          <p>ZAPPORA is an independent multi-platform directory and distribution hub for Android packages (<code>.apk</code>), Windows programs (<code>.exe</code>, <code>.msi</code>, <code>.zip</code>), Apple builds (<code>.dmg</code>, <code>.ipa</code>, TestFlight/App Store links), and playable HTML5 web apps/games created by Zappora Official and registered independent developers.</p>
           <h2>User Responsibilities</h2>
           <ul>
-            <li>Users must verify the publisher name and SHA-256 package checksum before installing any third-party Android package on their device.</li>
+            <li>Users must verify the publisher name and SHA-256 package checksum before installing any third-party Android, Windows, or macOS package on their device.</li>
             <li>Users may not attempt to manipulate download counters, view counters, or community review ratings via automated scripts.</li>
           </ul>
         </section>
@@ -159,7 +100,7 @@
           <span class="updated-tag">Last Updated: November 2026</span>
           <p>This agreement governs indie developers publishing applications through the Zappora Developer Console (<code>admin.html</code>).</p>
           <h2>Intellectual Property &amp; Ownership</h2>
-          <p>Developers retain 100% ownership and intellectual property rights over their original applications and games. By submitting an app to Zappora, you grant Zappora a non-exclusive, worldwide, royalty-free license to display your app icon, screenshots, metadata, and direct HTTPS download links on the storefront.</p>
+          <p>Developers retain 100% ownership and intellectual property rights over their original applications, programs, and games. By submitting a release to ZAPPORA, you grant ZAPPORA a non-exclusive, worldwide, royalty-free license to display your app icon, screenshots, metadata, and direct HTTPS download links on the storefront.</p>
           <h2>Verification &amp; Moderation</h2>
           <p>All submissions from non-admin accounts enter the <strong>Pending Review Queue</strong>. Super Administrators reserve the right to approve, reject, or remove any application or suspend accounts that violate platform security rules.</p>
         </section>
@@ -170,14 +111,14 @@
           <span class="updated-tag">Last Updated: November 2026</span>
           <h2>Technical Requirements</h2>
           <ul>
-            <li>All Android packages must be valid <code>.apk</code> files hosted over a secure <code>HTTPS</code> URL (such as GitHub Releases) and under the 250MB size limit.</li>
-            <li>Developers should generate the package <strong>SHA-256 Integrity Checksum</strong> in the submission form so users can verify file authenticity.</li>
+            <li>All downloadable builds (Android <code>.apk</code>, Windows <code>.exe/.msi/.zip</code>, Apple <code>.dmg/.ipa/.zip</code>) and Web URLs must be hosted over a secure <code>HTTPS</code> URL (such as GitHub Releases).</li>
+            <li>Browser-based SHA-256 verification supports up to <strong>250MB</strong> for Android APKs and up to <strong>500MB</strong> for Windows and Apple builds. Developers are strongly encouraged to generate the <strong>SHA-256 Integrity Checksum</strong> in the submission form so users can verify file authenticity.</li>
           </ul>
           <h2>Prohibited Content</h2>
           <ul>
             <li>Trojans, spyware, adware, rootkits, or hidden background crypto-miners.</li>
             <li>Real-money gambling, unauthorized betting apps, or deceptive financial schemes.</li>
-            <li>Modified ("modded") or pirated versions of copyrighted commercial applications.</li>
+            <li>Modified ("modded") or pirated versions of copyrighted commercial applications or PC software.</li>
           </ul>
         </section>
 
@@ -185,9 +126,9 @@
         <section id="sec-copyright" class="policy-sec">
           <h1>5. Copyright &amp; DMCA Takedown Policy</h1>
           <span class="updated-tag">Last Updated: November 2026</span>
-          <p>Zappora respects intellectual property rights and complies with copyright laws. Developers are prohibited from uploading assets, icons, or code they do not own or have permission to distribute.</p>
+          <p>ZAPPORA respects intellectual property rights and complies with copyright laws. Developers are prohibited from uploading assets, icons, binaries, or code they do not own or have permission to distribute.</p>
           <h2>Filing a Takedown Notice</h2>
-          <p>If you believe an application listed on Zappora infringes your copyright or trademark, please use the <strong>Report Issue</strong> button on the app's store page or email <strong>zapporastore.official@gmail.com</strong> with the App ID, proof of ownership, and your contact details. Verified infringement reports are processed and removed within 24–48 hours.</p>
+          <p>If you believe an application listed on ZAPPORA infringes your copyright or trademark, please use the <strong>Report Issue</strong> button on the app's store page or email <strong>zapporastore.official@gmail.com</strong> with the App ID, proof of ownership, and your contact details. Verified infringement reports are processed and removed within 24–48 hours.</p>
         </section>
 
         <!-- 6. Pricing & Refund Policy -->
@@ -195,11 +136,11 @@
           <h1>6. Pricing, Monetization &amp; Refund Policy</h1>
           <span class="updated-tag">Last Updated: November 2026</span>
           <div class="notice-box">
-            <strong>100% Free Platform Disclosure:</strong> Zappora is a completely free platform for both users and indie developers.
+            <strong>100% Free Platform Disclosure:</strong> ZAPPORA is a completely free platform for both users and indie developers.
           </div>
           <ul>
-            <li><strong>For Users:</strong> Downloading APKs, playing HTML5 web games, and registering a gamer account on Zappora are 100% free of charge. Because Zappora does not process payments or sell paid applications, no monetary refunds apply on the storefront.</li>
-            <li><strong>For Developers:</strong> Creating a developer account and submitting apps to the Zappora catalog is free.</li>
+            <li><strong>For Users:</strong> Downloading Android APKs, Windows/Apple builds, playing HTML5 web games, and registering an account on ZAPPORA are 100% free of charge. Because ZAPPORA does not process payments or sell paid applications, no monetary refunds apply on the storefront.</li>
+            <li><strong>For Developers:</strong> Creating a developer account and submitting multi-platform releases to the ZAPPORA catalog is free.</li>
           </ul>
         </section>
 
@@ -217,28 +158,32 @@
         <section id="sec-child" class="policy-sec">
           <h1>8. Child Safety &amp; Age Appropriateness Policy</h1>
           <span class="updated-tag">Last Updated: November 2026</span>
-          <p>Zappora is committed to maintaining a safe environment for young gamers, students, and learners:</p>
+          <p>ZAPPORA is committed to maintaining a safe environment for young gamers, students, and learners:</p>
           <ul>
             <li>Zero tolerance for adult, sexually explicit, or extreme graphic violence content.</li>
             <li>Applications aimed at general audiences must not silently collect personal location, contact lists, or microphone/camera recordings without explicit user consent.</li>
           </ul>
         </section>
 
-        <!-- 9. Security & APK Integrity Policy -->
+        <!-- 9. Security & File Integrity Policy -->
         <section id="sec-security" class="policy-sec">
-          <h1>9. Security &amp; APK Integrity Policy</h1>
+          <h1>9. Security &amp; File Integrity Policy</h1>
           <span class="updated-tag">Last Updated: November 2026</span>
           <div class="notice-box">
-            <strong>Transparent Security Disclosure:</strong> Zappora provides SHA-256 cryptographic checksum verification and manual moderator review, but does not claim automated server-side antivirus scanning unless explicitly linked via VirusTotal.
+            <strong>Transparent Security Disclosure:</strong> ZAPPORA provides SHA-256 cryptographic checksum verification and manual moderator review, but does not claim automated server-side antivirus scanning unless explicitly linked via VirusTotal.
           </div>
-          <h2>How Zappora Protects Users &amp; Developers</h2>
+          <h2>How ZAPPORA Protects Users &amp; Developers</h2>
           <ul>
-            <li><strong>SHA-256 Checksums:</strong> Every APK submitted through the Developer Console can have its SHA-256 hash computed in-browser and displayed publicly on the store page, plus a direct 1-click lookup link to <strong>VirusTotal</strong>.</li>
+            <li><strong>SHA-256 Checksums:</strong> Android APKs, Windows executables, and Apple packages submitted through the Developer Console can have their SHA-256 hashes computed in-browser and displayed publicly on the store page, plus a direct 1-click lookup link to <strong>VirusTotal</strong>.</li>
             <li><strong>Strict Firestore Rules:</strong> Database access is governed by least-privilege Firebase Security Rules, locking administrative operations to the verified Super Administrator UID.</li>
           </ul>
         </section>
       </main>
     </div>
+
+    <footer class="legal-footer">
+      &copy; 2026 <strong>ZAPPORA</strong> — Zone for Apps, Programs, Playable Online Releases &amp; APKs.
+    </footer>
   </div>
 
   <script>
