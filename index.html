@@ -334,6 +334,14 @@
     .btn-plat-dl.android svg { color:#16a34a; }
     .btn-plat-dl.windows svg { color:#0284c7; }
     .btn-plat-dl.apple svg { color:var(--txt); }
+    .vt-links-row { display:flex; flex-wrap:wrap; gap:6px; margin-top:8px; padding-top:8px; border-top:1px solid rgba(5,150,105,0.2); }
+    .btn-vt-check { display:inline-flex; align-items:center; gap:5px; padding:4px 10px; border-radius:6px; background:var(--surf); border:1px solid #a7f3d0; color:var(--ok); font-size:0.72rem; font-weight:700; text-decoration:none; transition:0.15s; }
+    .btn-vt-check:hover { background:var(--ok); color:#fff; border-color:var(--ok); }
+    .ver-history-list { display:flex; flex-direction:column; gap:8px; margin-top:8px; }
+    .ver-history-item { background:var(--bg); border:1px solid var(--bdr); border-radius:9px; padding:10px 12px; font-size:0.8rem; }
+    .ver-history-head { display:flex; justify-content:space-between; align-items:center; margin-bottom:3px; }
+    .ver-history-head strong { color:var(--txt); font-size:0.82rem; }
+    .ver-history-head span { color:var(--muted); font-size:0.72rem; }
   </style>
 </head>
 <body>
@@ -405,6 +413,14 @@
       <div class="pill active" id="pill-ALL" onclick="setCategory('ALL')">All Formats</div>
       <div class="pill" id="pill-Game" onclick="setCategory('Game')">Games</div>
       <div class="pill" id="pill-App" onclick="setCategory('App')">Apps</div>
+    </div>
+
+    <div class="category-pills" id="platformPills">
+      <div class="pill active" id="plat-ALL" onclick="setPlatformFilter('ALL')">All Platforms</div>
+      <div class="pill" id="plat-Android" onclick="setPlatformFilter('Android')">Android</div>
+      <div class="pill" id="plat-Windows" onclick="setPlatformFilter('Windows')">Windows</div>
+      <div class="pill" id="plat-Apple" onclick="setPlatformFilter('Apple')">Apple</div>
+      <div class="pill" id="plat-Web" onclick="setPlatformFilter('Web')">Web</div>
     </div>
 
     <!-- Dedicated Developer Studio Page Banner -->
@@ -749,6 +765,7 @@
                 <polyline points="9 12 11 14 15 10"></polyline>
               </svg>
               <span>Verified by Zappora Security</span>
+              <div id="mVtLinks" class="vt-links-row" style="display:none;"></div> 
             </div>
             <span style="font-size:0.74rem; color:var(--muted); font-weight:600;">No Malware or Tampering Detected</span>
           </div>
@@ -758,6 +775,11 @@
       <div class="modal-section" id="mNotesSection">
         <h4>What's New</h4>
         <p id="mNotes"></p>
+      </div>
+
+      <div class="modal-section" id="mVersionHistorySection" style="display:none;">
+        <h4>Version History</h4>
+        <div id="mVersionHistoryList" class="ver-history-list"></div>
       </div>
 
       <div class="modal-section" id="mSimilarSection" style="display:none;">
@@ -875,6 +897,17 @@
     let selectedStarCount = 5;
     let activeDeveloperFilter = null;
     let activeSectionTab = "ALL";
+    let activePlatformFilter = "ALL";
+    const CACHE_TTL_MS = 10 * 60 * 1000; // 10 minutes smart cache
+
+    function detectUserOS() {
+      const ua = navigator.userAgent || "";
+      if (/android/i.test(ua)) return "Android";
+      if (/win/i.test(ua)) return "Windows";
+      if (/iphone|ipad|ipod|macintosh|mac os/i.test(ua)) return "Apple";
+      return "Android";
+    }
+    const USER_OS = detectUserOS();
     let currentVisitor = null;
     let currentAuthMode = "register";
     let pendingAuthAction = null;
@@ -1088,6 +1121,7 @@
       recentlyViewedIds = [];
       localStorage.removeItem("zappora_recent_views");
       localStorage.removeItem("zappora_catalog_cache");
+      localStorage.removeItem("zappora_catalog_cache_ts");
       showToast("Local history and cache cleared");
       window.closeSettingsModal();
       window.filterCatalog();
@@ -1508,6 +1542,9 @@
       }
 
       const cached = localStorage.getItem("zappora_catalog_cache");
+      const cachedTs = parseInt(localStorage.getItem("zappora_catalog_cache_ts") || "0", 10);
+      const isCacheFresh = cached && (Date.now() - cachedTs < CACHE_TTL_MS);
+
       if (cached) {
         try {
           activeCatalog = JSON.parse(cached);
@@ -1525,6 +1562,10 @@
         } catch (e) {}
       }
 
+      if (isCacheFresh && activeCatalog.length > 0) {
+        checkUrlDeepLink();
+        return; // 0 Firestore reads when cache is fresh (<10 min)
+      }
       try {
         const approvedQuery = query(collection(db, "apps"), where("status", "==", "approved"));
         const [cfgSnap, devSnap, appSnap] = await Promise.all([
@@ -1565,6 +1606,7 @@
           try {
             const lightCache = fbApps.map(({ screenshots, ...rest }) => rest);
             localStorage.setItem("zappora_catalog_cache", JSON.stringify(lightCache));
+            localStorage.setItem("zappora_catalog_cache_ts", String(Date.now()));
           } catch (e) {}
           checkFollowedDevReleases(fbApps);
           setupSpotlightAndFloatingBar();
@@ -1923,7 +1965,13 @@
         card.querySelector(".dev-label").addEventListener("click", (e) => window.filterByDeveloper(devName, e));
         card.querySelector(".card-actions").addEventListener("click", (e) => e.stopPropagation());
         const dlBtnCard = card.querySelector(".btn-download");
-        if (hasApk) {
+        if (USER_OS === "Windows" && hasWin && !window.ZapporaOS) {
+          dlBtnCard.innerText = "Download Windows";
+          dlBtnCard.addEventListener("click", (e) => window.downloadPlatformBuild(app.id, "Windows", app.windowsUrl, e));
+        } else if (USER_OS === "Apple" && hasApple && !window.ZapporaOS) {
+          dlBtnCard.innerText = "Download Apple";
+          dlBtnCard.addEventListener("click", (e) => window.downloadPlatformBuild(app.id, "Apple", app.appleUrl, e));
+        } else if (hasApk) {
           dlBtnCard.addEventListener("click", (e) => window.handlePrimaryAppAction(app.id, e));
         } else if (hasWin) {
           dlBtnCard.innerText = "Download Windows";
@@ -1945,6 +1993,14 @@
       document.querySelectorAll(".sec-tab").forEach(t => t.classList.remove("active"));
       const activeTab = document.getElementById("tab-" + tab);
       if (activeTab) activeTab.classList.add("active");
+      window.resetAndFilter();
+    };
+
+    window.setPlatformFilter = (plat) => {
+      activePlatformFilter = plat;
+      document.querySelectorAll("#platformPills .pill").forEach(p => p.classList.remove("active"));
+      const activeEl = document.getElementById("plat-" + plat);
+      if (activeEl) activeEl.classList.add("active");
       window.resetAndFilter();
     };
     
@@ -1974,6 +2030,13 @@
         const matchesSearch = title.includes(q) || desc.includes(q) || dev.includes(q);
         const matchesCat = selectedCategory === "ALL" || item.category === selectedCategory;
         const matchesDev = !activeDeveloperFilter || (item.developerName || "Zappora Official") === activeDeveloperFilter;
+        let matchesPlat = true;
+        if (activePlatformFilter === "Android") matchesPlat = Boolean(safeUrl(item.downloadUrl, ""));
+        else if (activePlatformFilter === "Windows") matchesPlat = Boolean(safeUrl(item.windowsUrl, ""));
+        else if (activePlatformFilter === "Apple") matchesPlat = Boolean(safeUrl(item.appleUrl, ""));
+        else if (activePlatformFilter === "Web") matchesPlat = Boolean(safeUrl(item.webUrl, ""));
+
+        return matchesSearch && matchesCat && matchesDev && matchesTab && matchesPlat;
 
         let matchesTab = true;
         if (activeSectionTab === "TRENDING") matchesTab = (parseInt(item.downloads, 10) || 0) >= 1;
@@ -2166,6 +2229,37 @@
 
       const shaBox = document.getElementById("mShaBox");
       if (shaBox) shaBox.style.display = "block";
+
+      const vtBox = document.getElementById("mVtLinks");
+      if (vtBox) {
+        const vtBtns = [];
+        if (app.sha256) vtBtns.push(`<a href="https://www.virustotal.com/gui/file/${encodeURIComponent(app.sha256)}" target="_blank" rel="noopener noreferrer" class="btn-vt-check">VirusTotal: Android SHA-256 ↗</a>`);
+        if (app.windowsSha256) vtBtns.push(`<a href="https://www.virustotal.com/gui/file/${encodeURIComponent(app.windowsSha256)}" target="_blank" rel="noopener noreferrer" class="btn-vt-check">VirusTotal: Windows SHA-256 ↗</a>`);
+        if (app.appleSha256) vtBtns.push(`<a href="https://www.virustotal.com/gui/file/${encodeURIComponent(app.appleSha256)}" target="_blank" rel="noopener noreferrer" class="btn-vt-check">VirusTotal: Apple SHA-256 ↗</a>`);
+        if (vtBtns.length > 0) {
+          vtBox.innerHTML = vtBtns.join("");
+          vtBox.style.display = "flex";
+        } else {
+          vtBox.style.display = "none";
+        }
+      }
+
+      const vhSec = document.getElementById("mVersionHistorySection");
+      const vhList = document.getElementById("mVersionHistoryList");
+      if (vhSec && vhList && Array.isArray(app.versionHistory) && app.versionHistory.length > 0) {
+        vhSec.style.display = "block";
+        vhList.innerHTML = app.versionHistory.map(v => `
+          <div class="ver-history-item">
+            <div class="ver-history-head">
+              <strong>v${escapeHTML(v.version || "1.0")}</strong>
+              <span>${escapeHTML(formatDisplayDate(v.date, ""))}</span>
+            </div>
+            <p style="margin:0;font-size:0.78rem;color:var(--muted);">${escapeHTML(v.notes || "Performance improvements and bug fixes.")}</p>
+          </div>
+        `).join("");
+      } else if (vhSec) {
+        vhSec.style.display = "none";
+      }
 
       const ssWrapper = document.getElementById("mScreenshotsWrapper");
       const ssList = document.getElementById("mScreenshotsList");
